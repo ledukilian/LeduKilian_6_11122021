@@ -14,7 +14,7 @@ class IndexController extends AbstractController
         return $this->render('@client/pages/index.html.twig', []);
     }
     /**
-     * @Route("/", name="show_index")
+     * @Route("/", name="show_trick")
      */
     public function showTrick()
     {

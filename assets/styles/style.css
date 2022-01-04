@@ -56,18 +56,32 @@ footer img {
     -webkit-box-shadow: -1px 2px 20px -8px #000000, inset 0px 0px 40px -10px #0036b1;
     box-shadow: -1px 2px 20px -8px #000000, inset 0px 0px 40px -10px #0036b1;
 }
-.scroll-down-btn {
-    color: #FFFFFF;
+.scroll-btn {
     transition: 0.4s;
+    font-size: 3rem;
+}
+.scroll-btn:hover {
+    transition: 0.4s;
+    transform: scale(1.15);
+}
+.scroll-down {
     position: absolute;
     right: 20px;
     bottom: 90px;
-    font-size: 3rem;
-}
-.scroll-down-btn:hover {
     color: #FFFFFF;
-    transition: 0.4s;
-    transform: scale(1.2);
+}
+.scroll-down:hover {
+    color: #FFFFFF;
+}
+.scroll-up {
+    float: right;
+    position: relative;
+    right: 20px;
+    bottom: 90px;
+    color: #FFFFFF;
+}
+.scroll-up:hover {
+    color: #FFFFFF;
 }
 .trick {
     transition: 0.4s;

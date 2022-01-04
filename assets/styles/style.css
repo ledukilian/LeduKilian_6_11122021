@@ -24,7 +24,7 @@ footer img {
     font-size: 1.2rem;
 }
 .catchphrase-image {
-    height: 90vh !important;
+    height: 95vh !important;
     background-size: cover;
     background-image: url("https://cdn.ledukilian.fr/img/mountains-g4f8109135_1920.jpg");
 }
@@ -56,15 +56,15 @@ footer img {
     -webkit-box-shadow: -1px 2px 20px -8px #000000, inset 0px 0px 40px -10px #0036b1;
     box-shadow: -1px 2px 20px -8px #000000, inset 0px 0px 40px -10px #0036b1;
 }
-.scrolldown-btn {
+.scroll-down-btn {
     color: #FFFFFF;
     transition: 0.4s;
     position: absolute;
-    right: 50px;
-    bottom: 50px;
+    right: 20px;
+    bottom: 90px;
     font-size: 3rem;
 }
-.scrolldown-btn:hover {
+.scroll-down-btn:hover {
     color: #FFFFFF;
     transition: 0.4s;
     transform: scale(1.2);
@@ -74,5 +74,11 @@ footer img {
 }
 .trick:hover {
     transition: 0.4s;
-    transform: scale(1.03);
+    transform: scale(1.01);
+}
+#mobile-navbar {
+    font-size: 2.2em;
+}
+#mobile-navbar i {
+    filter: drop-shadow(1px 1px 3px #222);
 }

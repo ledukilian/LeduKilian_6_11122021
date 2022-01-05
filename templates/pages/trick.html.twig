@@ -6,8 +6,64 @@
 {% endblock %}
 
 {% block body %}
-    <div class="d-flex flex-row flex-wrap justify-content-around pt-3 pb-5 px-2 text-center">
-
+    <div id="trick-main" class="d-flex align-items-center justify-content-center py-3 py-md-5 text-center">
+        <div class="card col-md-8 p-lg-8 mx-auto p-2 mb-3 catchphrase-background">
+            <h1 class="display-4 fw-normal text-white">Trick</h1>
+        </div>
+        <div class="product-device shadow-sm d-none d-md-block"></div>
+        <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+    </div>
+    <div id="trick-media" class="d-flex flex-row flex-wrap justify-content-around px-2 py-3 text-center">
+        {% for i in 0..3 %}
+            <a href="#" class="col-sm-12 col-md-3 px-2 trick">
+                <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
+                    <img class="mw-100" src="{{ asset('img/default_trick.jpg') }}" alt="Trick" />
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    <hr />
+    <div id="trick-info" class="d-flex flex-row flex-wrap justify-content-around py-2 text-center">
+        <div class="col-sm-12 col-md-7 mb-2">
+            <h1 class="col-12 mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut ultricies leo.</h1>
+            <h3 class="col-12 mt-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut ultricies leo. Morbi suscipit rutrum ligula, vel sodales orci finibus non. Cras eu vulputate tortor.</h3>
+            <p class="col-12 text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut ultricies leo. Morbi suscipit rutrum ligula, vel sodales orci finibus non. Cras eu vulputate tortor. Proin id eleifend ligula, quis dapibus risus. Praesent suscipit ornare nibh sit amet facilisis. Etiam iaculis mattis eros, vel commodo ligula hendrerit aliquet. Praesent pretium id neque ut mattis. Curabitur ultricies tellus ut accumsan imperdiet. Nulla facilisi. Quisque vel consectetur ante, at placerat dui. Curabitur vestibulum, lacus sed scelerisque gravida, odio massa venenatis justo, eu suscipit arcu justo vel elit. Ut condimentum sit amet odio quis varius.</p>
+            <small class="col-12 text-muted mb-1"><i class="fas fa-clock me-2"></i>Trick posté par <span class="fw-bold text-primary">Guy MAUVE</span> le 01/01/2022 à 22:22 </small><br />
+            <small class="col-12 text-muted mb-1"><i class="fas fa-pen me-2"></i>Dernière modification le 01/01/2022 à 22:22 par <span class="fw-bold text-primary">Jean BONNEAU</span></small>
+        </div>
+    </div>
+    <hr />
+    <div id="trick-comments" class="d-flex flex-column flex-wrap justify-content-around align-items-center pt-3 pb-5 px-2 text-center">
+        <div class="container">
+            <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>Vous devez être connecté pour pouvoir ajouter un commentaire
+            </div>
+            <h3 class="h3 mb-3"><i class="fas fa-comment-medical reverse-h text-primary me-2"></i>Ajouter mon commentaire</h3>
+            <i class="fas fa-user text-primary me-2 ml-4"></i> <b>Username</b>
+            <form action="ROUTE" method="POST" class="d-flex flex-row justify-content-end flex-wrap px-3">
+                <textarea class="form-control my-2" id="comment" name="comment"></textarea>
+                <input type="number" class="d-none" id="postId" name="postId" readonly value="ID" />
+                <button class="btn btn-success px-3"><i class="fas fa-paper-plane me-2"></i>Poster</button>
+            </form>
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800 mx-2"><i class="fas fa-comments text-primary me-2"></i>Commentaires</h1>
+            </div>
+            <div class="small text-muted font-italic">Il n'y a pas encore de commentaire</div>
+            {% for i in 0..2 %}
+                <div class="mb-3 col-12">
+                    <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
+                        <i class="fas fa-comment text-primary reverse-h me-1"></i><span class="fw-bold text-primary">Username</span>
+                        <span class="ms-auto text-muted">01/01/01 à 22:22<i class="far fa-clock ms-1"></i></span>
+                        <blockquote class="blockquote col-12 m-0 px-0">
+                            <small class="card card-text border-0 text-dark col-12 p-4 mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut ultricies leo. Morbi suscipit rutrum ligula, vel sodales orci finibus non.</small>
+                        </blockquote>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <button class="btn btn-primary w-25">
+            <i class="fas fa-spinner"></i><br />Charger plus de commentaires
+        </button>
     </div>
 
 {% endblock %}

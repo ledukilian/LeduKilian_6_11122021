@@ -16,9 +16,9 @@
         <a href="#tricks" class="scroll-btn scroll-down"><i class="fas fa-arrow-circle-down"></i></a>
     </div>
     <div id="tricks" class="d-flex flex-row flex-wrap justify-content-around mx-3 pt-3 pb-5 px-2 text-center">
-        <h3 class="display-4 col-12 fw-normal mb-4"><i class="fas fa-snowboarding text-primary me-3"></i>Derniers tricks</h3>
-        {% for i in 0..11 %}
-            <a href="#" class="mb-3 col-sm-12 col-md-3 px-2 trick">
+        <h3 class="display-5 col-12 fw-normal mb-4"><i class="fas fa-snowboarding text-primary me-3"></i>Derniers tricks</h3>
+        {% for i in 0..7 %}
+            <a href="/trick" class="mb-3 col-sm-12 col-md-3 px-2 trick">
                 <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
                     <img class="mw-100" src="{{ asset('img/default_trick.jpg') }}" alt="Trick" />
                     <h5 class="card-title text-dark px-0 mt-1 m-0 fw-bold"><i class="fas fa-chevron-right text-primary me-1"></i>Trick {{ i }}</h5>

@@ -20,4 +20,11 @@ class IndexController extends AbstractController
     {
         return $this->render('@client/pages/trick.html.twig', []);
     }
+    /**
+     * @Route("/admin", name="show_admin")
+     */
+    public function showAdmin()
+    {
+        return $this->render('@client/pages/admin.html.twig', []);
+    }
 }

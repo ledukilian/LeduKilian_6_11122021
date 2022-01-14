@@ -19,16 +19,9 @@
     </head>
     <body>
     <div class="snowflakes" aria-hidden="true">
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❅</div>
+        {% for i in 0..9 %}
+            <div class="snowflake">❅</div>
+        {% endfor %}
     </div>
         {% include "parts/_header.html.twig" %}
         {% block body %}{% endblock %}

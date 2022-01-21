@@ -24,7 +24,9 @@
         {% endfor %}
     </div>
         {% include "parts/_header.html.twig" %}
-        {% block body %}{% endblock %}
+        <main>
+            {% block body %}{% endblock %}
+        </main>
         {% include "parts/_footer.html.twig" %}
     </body>
 </html>

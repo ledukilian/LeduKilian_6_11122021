@@ -6,23 +6,23 @@
 {% endblock %}
 
 {% block body %}
-        <div id="trick-main" class="d-flex flex-row flex-wrap align-items-center justify-content-center py-3 py-md-5 text-center">
-
-            <div class="card col-md-8 p-lg-8 mx-auto p-2 mb-3 catchphrase-background">
+        <section id="trick-hero" class="d-flex flex-row flex-wrap align-items-center justify-content-center pb-3 text-center">
+            <img src="{{ asset('img/default_trick.jpg') }}" class="trick-img" alt="...">
+            <div class="card col-md-8 p-lg-8 mx-auto catchphrase-background p-2 trick-banner">
                 <h1 class="display-4 fw-normal text-white">Trick name</h1>
             </div>
-            <div class="trick-action px-3 py-2 align-self-end ms-auto me-3">
+            <div class="trick-action px-3 py-2 ms-auto me-3">
                 <a href="#"><i class="mx-2 fas fa-pen text-warning"></i></a>
                 <a href="#"><i class="mx-2 fas fa-trash-alt text-danger"></i></a>
             </div>
-        </div>
-        <div id="trick-media" class="d-flex flex-row flex-wrap justify-content-around px-2 py-3 text-center">
+        </section>
+        <section id="trick-media" class="d-flex flex-row flex-wrap justify-content-around px-2 py-3 text-center">
             <div id="carouselExampleControls" class="carousel slide w-100" data-bs-ride="carousel">
                 <div class="carousel-inner py-2">
                     <div class="carousel-item active">
                         <div class="d-flex justify-content-center">
                             {% for i in 0..2 %}
-                                <a href="#" class="col-sm-12 col-md-3 px-2 trick">
+                                <a href="#" class="col-12 col-md-3 px-2 trick">
                                     <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
                                         <img class="mw-100" src="{{ asset('img/default_trick.jpg') }}" alt="Trick" />
                                     </div>
@@ -33,7 +33,7 @@
                     <div class="carousel-item">
                         <div class="d-flex justify-content-center">
                             {% for i in 0..2 %}
-                                <a href="#" class="col-sm-12 col-md-3 px-2 trick">
+                                <a href="#" class="col-12 col-md-3 px-2 trick">
                                     <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
                                         <img class="mw-100" src="{{ asset('img/default_trick.jpg') }}" alt="Trick" />
                                     </div>
@@ -49,9 +49,9 @@
                     <i class="fas fa-chevron-right text-primary"></i>
                 </button>
             </div>
-        </div>
+        </section>
     <div class="container-fluid col-12 col-md-8">
-        <div id="trick-info" class="d-flex flex-row flex-wrap justify-content-around my-3 py-2 text-center">
+        <section id="trick-info" class="d-flex flex-row flex-wrap justify-content-around my-3 py-2 text-center">
             <div class="d-flex flex-row flex-wrap justify-content-center col-12 col-md-7 mb-2">
                 <h3 class="col-12 fw-bold mt-1">Double flip floup 1080</h3>
                 <div class="alert alert-primary trick-category small">Flip</div>
@@ -66,8 +66,8 @@
                     {% endfor %}
                 </div>
             </div>
-        </div>
-        <div id="trick-comments" class="d-flex flex-column flex-wrap justify-content-around align-items-center my-3 pt-5 pb-5 px-2 text-center">
+        </section>
+        <section id="trick-comments" class="d-flex flex-column flex-wrap justify-content-around align-items-center my-3 pt-5 pb-5 px-2 text-center">
             <div class="container">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800 mx-2"><i class="fas fa-comments text-primary me-2"></i>Commentaires</h1>
@@ -99,6 +99,6 @@
             <button class="btn btn-primary w-25">
                 <i class="fas fa-spinner"></i><br />Charger plus de commentaires
             </button>
-        </div>
+        </section>
     </div>
 {% endblock %}

@@ -164,6 +164,8 @@ footer img {
     background: rgba(0,0,0, 0.35);
     border-radius: 30px;
     font-size: 1.5em;
+    position: relative;
+    top:-20vh;
 }
 .trick-action i {
     transition: 0.4s;
@@ -175,4 +177,26 @@ footer img {
 .carousel-control-next, .carousel-control-prev {
     font-size: 3em;
     opacity: 1;
+}
+.trick-img {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+#trick-hero {
+    margin-bottom: -18vh;
+}
+.trick-banner {
+    position: relative;
+    top:-23vh;
+}
+.min-h-80 {
+    min-height: 80vh;
+}
+.form-control {
+    border: none;
+}
+.form-error {
+    color: #da292e;
+    font-weight: bolder;
 }

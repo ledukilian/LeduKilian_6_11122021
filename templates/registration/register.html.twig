@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Inscription -
+    {{parent()}}
+{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+    <section class="container min-h-80">
+        <div class="card border-0 col-12 col-md-8 col-lg-4 px-0 mx-auto bg-primary my-4">
+            <div class="card-header h5 text-white"><i class="fas fa-chevron-right me-2"></i>Inscription</div>
+            <div class="card-body d-flex justify-content-center bg-white text-black">
+                {{ form_start(registrationForm, {'attr': {'class': 'd-flex flex-row flex-wrap'}}) }}
+                <div class="form-control">
+                    <i class="fas fa-at me-1"></i> {{ form_label(registrationForm.email, 'Adresse mail') }}
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'w-100'}}) }}
+                    <small>{{ form_help(registrationForm.email) }}</small>
+                    <div class="form-error">
+                        {{ form_errors(registrationForm.email) }}
+                    </div>
+                </div>
+                <div class="form-control">
+                    <i class="fas fa-user me-1"></i> {{ form_label(registrationForm.username, 'Nom d\'utilisateur') }}
+                    {{ form_widget(registrationForm.username, {'attr': {'class': 'w-100'}}) }}
+                    <small>{{ form_help(registrationForm.username) }}</small>
+                    <div class="form-error">
+                        {{ form_errors(registrationForm.username) }}
+                    </div>
+                </div>
+                <div class="form-control">
+                    <i class="fas fa-key me-1"></i> {{ form_label(registrationForm.plainPassword, 'Mot de passe') }}
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'w-100'}}) }}
+                    <small>{{ form_help(registrationForm.plainPassword) }}</small>
+                    <div class="form-error">
+                        {{ form_errors(registrationForm.plainPassword) }}
+                    </div>
+                </div>
+                <div class="form-control">
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                    {{ form_label(registrationForm.agreeTerms, 'Accepter les CGU') }}
+                    <small>{{ form_help(registrationForm.agreeTerms) }}</small>
+                    <div class="form-error">
+                        {{ form_errors(registrationForm.agreeTerms) }}
+                    </div>
+                </div>
+
+
+
+                <button type="submit" class="btn btn-primary ms-auto">Valider mon inscription</button>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}

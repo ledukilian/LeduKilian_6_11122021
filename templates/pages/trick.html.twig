@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block body %}
-        <section id="trick-hero" class="d-flex flex-row flex-wrap align-items-center justify-content-center pb-3 text-center">
+        <section id="trick-hero" class="d-flex flex-row flex-wrap align-items-center justify-content-center container-fluid px-0 position-relative pb-3 text-center">
             <img src="{{ asset('img/default_trick.jpg') }}" class="trick-img" alt="...">
-            <div class="card col-md-8 p-lg-8 mx-auto catchphrase-background p-2 trick-banner">
+            <div class="card col-md-8 p-lg-8 mx-auto catchphrase-background p-2 container position-absolute">
                 <h1 class="display-4 fw-normal text-white">Trick name</h1>
             </div>
             <div class="trick-action px-3 py-2 ms-auto me-3">
@@ -16,8 +16,8 @@
                 <a href="#"><i class="mx-2 fas fa-trash-alt text-danger"></i></a>
             </div>
         </section>
-        <section id="trick-media" class="d-flex flex-row flex-wrap justify-content-around px-2 py-3 text-center">
-            <div id="carouselExampleControls" class="carousel slide w-100" data-bs-ride="carousel">
+        <section id="trick-media" class="d-flex flex-row flex-wrap justify-content-around container-fluid px-0 py-3 text-center">
+            <div id="carouselExampleControls" class="carousel container slide w-100" data-bs-ride="carousel">
                 <div class="carousel-inner py-2">
                     <div class="carousel-item active">
                         <div class="d-flex justify-content-center">
@@ -50,8 +50,8 @@
                 </button>
             </div>
         </section>
-    <div class="container-fluid col-12 col-md-8">
-        <section id="trick-info" class="d-flex flex-row flex-wrap justify-content-around my-3 py-2 text-center">
+    <div class="container-fluid">
+        <section id="trick-info" class="d-flex flex-row flex-wrap container justify-content-around my-3 py-2 text-center">
             <div class="d-flex flex-row flex-wrap justify-content-center col-12 col-md-7 mb-2">
                 <h3 class="col-12 fw-bold mt-1">Double flip floup 1080</h3>
                 <div class="alert alert-primary trick-category small">Flip</div>
@@ -67,7 +67,7 @@
                 </div>
             </div>
         </section>
-        <section id="trick-comments" class="d-flex flex-column flex-wrap justify-content-around align-items-center my-3 pt-5 pb-5 px-2 text-center">
+        <section id="trick-comments" class="d-flex flex-column flex-wrap container-fluid justify-content-around align-items-center my-3 pt-5 pb-5 text-center">
             <div class="container">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800 mx-2"><i class="fas fa-comments text-primary me-2"></i>Commentaires</h1>

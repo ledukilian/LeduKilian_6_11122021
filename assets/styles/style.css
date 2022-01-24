@@ -181,22 +181,24 @@ footer img {
 .trick-img {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
 }
 #trick-hero {
-    margin-bottom: -18vh;
-}
-.trick-banner {
-    position: relative;
-    top:-23vh;
+    height: 90vh;
 }
 .min-h-80 {
     min-height: 80vh;
 }
 .form-control {
-    border: none;
+    border: 1px solid #dddddd;
 }
 .form-error {
     color: #da292e;
     font-weight: bolder;
+}
+#alert-area {
+    position: fixed;
+    top: 14%;
+    z-index: 9;
 }

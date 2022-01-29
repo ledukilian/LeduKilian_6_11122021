@@ -17,12 +17,18 @@
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/connexion">Se connecter</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/inscription">S'inscrire</a>
-                </li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item">
+                        <a class="nav-link bg-danger" href="/deconnexion">Déconnexion</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/connexion">Se connecter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/inscription">S'inscrire</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

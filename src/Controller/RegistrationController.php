@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\LoginFormType;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
@@ -52,9 +53,10 @@ class RegistrationController extends AbstractController
                     ->subject('SnowTricks : Confirmation de votre adresse mail')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('connexion');
+            $this->addFlash('success', 'Votre compte compte a bien été créé, veuillez confirmer votre adresse mail');
+
+            return $this->redirectToRoute('show_index');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -88,6 +90,6 @@ class RegistrationController extends AbstractController
 
         $this->addFlash('success', 'Votre adresse mail a bien été confirmée.');
 
-        return $this->redirectToRoute('show_index');
+        return $this->redirectToRoute('login');
     }
 }

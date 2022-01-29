@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,6 +22,7 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
+                'required' => true,
                 'label' => 'Nom d\'utilisateur',
                 'attr' => ['class' => 'w-100'],
                 'constraints' => [
@@ -31,7 +33,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Veuillez saisir un nom d\'utilisateur valide',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min' => 3,
                         'minMessage' => 'Votre nom d\'utilisateur doit contenir au moins {{ limit }} caractères',
                         'max' => 4096,
                         'maxMessage' => 'Votre nom d\'utilisateur ne doit pas contenir plus de {{ limit }} caractères',
@@ -39,6 +41,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('email', EmailType::class, [
+                'required' => true,
                 'label' => 'Adresse mail',
                 'attr' => ['class' => 'w-100'],
                 'constraints' => [
@@ -59,10 +62,15 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
+            ->add('plainPassword', RepeatedType::class, [
+                'required' => true,
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les deux mots de passe doivent être identique',
                 'mapped' => false,
                 'label' => 'Mot de passe',
-                'attr' => ['autocomplete' => 'new-password', 'class' => 'w-100'],
+                'first_options'  => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmation mot de passe'],
+                'attr' => ['autocomplete' => 'new-password', 'class' => 'password-field w-100'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un mot de passe valide',

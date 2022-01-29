@@ -10,7 +10,7 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
     <section class="container min-h-80">
-        <div class="card border-0 col-12 col-md-8 col-lg-4 px-0 mx-auto bg-primary my-4">
+        <div class="card border-0 col-12 col-md-8 col-lg-6 px-0 mx-auto bg-primary my-4">
             <div class="card-header h5 text-white"><i class="fas fa-chevron-right me-2"></i>Inscription</div>
             <div class="card-body d-flex justify-content-center bg-white text-black">
                 {{ form_start(registrationForm, {'attr': {'class': 'd-flex flex-row flex-wrap'}}) }}
@@ -31,15 +31,21 @@
                     </div>
                 </div>
                 <div class="w-100 mb-2">
-                    <i class="fas fa-key me-1"></i> {{ form_label(registrationForm.plainPassword) }}
-                    {{ form_widget(registrationForm.plainPassword) }}
-                    <small>{{ form_help(registrationForm.plainPassword) }}</small>
+                    <i class="fas fa-key me-1"></i> {{ form_label(registrationForm.plainPassword.first) }}
+                    {{ form_widget(registrationForm.plainPassword.first) }}
+                    <small>{{ form_help(registrationForm.plainPassword.first) }}</small>
                     <div class="form-error">
-                        {{ form_errors(registrationForm.plainPassword) }}
+                        {{ form_errors(registrationForm.plainPassword.first) }}
                     </div>
                 </div>
-
-
+                <div class="w-100 mb-2">
+                    <i class="fas fa-key me-1"></i> {{ form_label(registrationForm.plainPassword.second) }}
+                    {{ form_widget(registrationForm.plainPassword.second) }}
+                    <small>{{ form_help(registrationForm.plainPassword.second) }}</small>
+                    <div class="form-error">
+                        {{ form_errors(registrationForm.plainPassword.second) }}
+                    </div>
+                </div>
 
                 <button type="submit" class="btn btn-primary ms-auto">Valider mon inscription</button>
                 {{ form_end(registrationForm) }}

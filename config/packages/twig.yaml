@@ -3,8 +3,6 @@ twig:
     paths:
         '%kernel.project_dir%/templates': client
         '%kernel.project_dir%/public/img': img
-        '%kernel.project_dir%/public/css': css
-        '%kernel.project_dir%/public/js': js
     form_themes: ['bootstrap_5_layout.html.twig']
 when@test:
     twig:

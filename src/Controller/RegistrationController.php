@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\LoginFormType;
 use App\Form\RegistrationFormType;
+use App\Form\RequestVerifyUserEmailFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -64,7 +65,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
+    #[Route('/verifier/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
         $id = $request->get('id');
@@ -92,4 +93,46 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('login');
     }
+
+
+
+    #[Route('/renvoyer-confirmation', name: 'app_request_verify_email')]
+    public function requestVerifyUserEmail(
+        Request $request,
+        UserRepository $userRepository
+    ): Response {
+
+        if ($this->getUser()) {
+            return $this->redirectToRoute('show_index');
+        }
+
+        $form = $this->createForm(RequestVerifyUserEmailFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // generate a signed url and email it to the user
+            $user =  $userRepository->findOneByEmail($form->get('email')->getData());
+            if ($user) {
+                $this->emailVerifier->sendEmailConfirmation(
+                    'app_verify_email',
+                    $user,
+                    (new TemplatedEmail())
+                        ->from(new Address('ledu.kilian@gmail.com', 'Kilian LE DU'))
+                        ->to($user->getEmail())
+                        ->subject('SnowTricks : Confirmation de votre adresse mail')
+                        ->htmlTemplate('registration/confirmation_email.html.twig')
+                );
+                // do anything else you need here, like flash message
+                $this->addFlash('success', 'Un mail de confirmation a bien été envoyé à l\'adresse mail associée au compte.');
+                return $this->redirectToRoute('show_index');
+            } else {
+                $this->addFlash('error',  'Email inconnu.');
+            }
+        }
+        return $this->render('registration/request_link.html.twig', [
+            'requestForm' => $form->createView(),
+        ]);
+    }
+
+
+
 }

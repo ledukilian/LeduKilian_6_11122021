@@ -26,6 +26,8 @@ security:
             logout:
                 path: logout
                 target: show_index
+            pattern: ^/
+            user_checker: App\Security\UserChecker
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

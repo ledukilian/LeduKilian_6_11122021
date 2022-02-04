@@ -8,7 +8,7 @@
         Bonjour !<br /><br />
         Veuillez confirmer votre adresse mail en cliquant sur le lien ci-dessous : <br /><br />
         <a href="{{ signedUrl }}"><button class="btn">Confirmer mon adresse mail</button></a> <br /><br />
-        Ce lien expirera dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+        <small>Ce lien expirera dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.</small>
     </p>
 </div>
 <style>

@@ -15,11 +15,6 @@ class UserChecker implements UserCheckerInterface
         if (!$user instanceof AppUser) {
             return;
         }
-        // if ($user->isDeleted()) {
-        //     // the message passed to this exception is meant to be displayed to the user
-        //     throw new CustomUserMessageAccountStatusException('Cet utilisateur n\'existe plus.');
-        // }
-        // !$user->getEnabled()
         if (!$user->isVerified()) {
             // $uniqueResendEmailurl = ....
 

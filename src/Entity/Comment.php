@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -11,6 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Comment
 {
+    use TimestampableEntity;
+
+    public function __construct() {
+        $this->setCreatedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -38,18 +46,6 @@ class Comment
      */
     private $status;
 
-    /**
-     * @var datetime $createdAt
-     * @ORM\Column(type="datetime")
-     */
-    protected $createdAt;
-
-    /**
-     * @var datetime $updatedAt
-     * @ORM\Column(type="datetime", nullable = true)
-     */
-    protected $updatedAt;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -63,18 +59,6 @@ class Comment
     public function setUserId(int $user_id): self
     {
         $this->user_id = $user_id;
-
-        return $this;
-    }
-
-    public function getTrickId(): ?int
-    {
-        return $this->trick_id;
-    }
-
-    public function setTrickId(int $trick_id): self
-    {
-        $this->trick_id = $trick_id;
 
         return $this;
     }
@@ -103,20 +87,23 @@ class Comment
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAtValue()
+    public function getTrickId(): ?int
     {
-        $this->createdAt = new \DateTime();
+        return $this->trick_id;
+    }
+
+    public function setTrickId(int $trick_id): self
+    {
+        $this->trick_id = $trick_id;
+
+        return $this;
     }
 
     /**
-     * Gets triggered every time on update
      * @ORM\PreUpdate
      */
-    public function onPreUpdate()
-    {
-        $this->updatedAt = new \DateTime("now");
+    public function setUpdatedAtValue() {
+        $this->setUpdatedAt(new \DateTime());
     }
+
 }

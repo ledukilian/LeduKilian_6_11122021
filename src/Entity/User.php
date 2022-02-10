@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -18,12 +21,24 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use TimestampableEntity;
+
+    public function __construct() {
+        $this->setCreatedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $username;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -45,23 +60,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="boolean")
      */
     private $isVerified = false;
-
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $username;
-
-    /**
-     * @var datetime $createdAt
-     * @ORM\Column(type="datetime")
-     */
-    protected $createdAt;
-
-    /**
-     * @var datetime $updatedAt
-     * @ORM\Column(type="datetime", nullable = true)
-     */
-    protected $updatedAt;
 
     public function getId(): ?int
     {
@@ -156,21 +154,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAtValue()
+    public function getIsVerified(): ?bool
     {
-        $this->createdAt = new \DateTime();
+        return $this->isVerified;
     }
 
     /**
-     * Gets triggered every time on update
      * @ORM\PreUpdate
      */
-    public function onPreUpdate()
-    {
-        $this->updatedAt = new \DateTime("now");
+    public function setUpdatedAtValue() {
+        $this->setUpdatedAt(new \DateTime());
     }
 
 }

@@ -5,12 +5,20 @@ namespace App\Entity;
 use App\Repository\MediaRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=MediaRepository::class)
  */
 class Media
 {
+    use TimestampableEntity;
+
+    public function __construct() {
+        $this->setCreatedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -42,18 +50,6 @@ class Media
      * @ORM\Column(type="string", length=255)
      */
     private $alt;
-
-    /**
-     * @var datetime $createdAt
-     * @ORM\Column(type="datetime")
-     */
-    protected $createdAt;
-
-    /**
-     * @var datetime $updatedAt
-     * @ORM\Column(type="datetime", nullable = true)
-     */
-    protected $updatedAt;
 
     public function getId(): ?int
     {
@@ -121,19 +117,10 @@ class Media
     }
 
     /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAtValue()
-    {
-        $this->createdAt = new \DateTime();
-    }
-
-    /**
-     * Gets triggered every time on update
      * @ORM\PreUpdate
      */
-    public function onPreUpdate()
-    {
-        $this->updatedAt = new \DateTime("now");
+    public function setUpdatedAtValue() {
+        $this->setUpdatedAt(new \DateTime());
     }
+
 }

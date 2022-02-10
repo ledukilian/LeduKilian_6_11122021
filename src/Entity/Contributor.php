@@ -2,16 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
-use DateTime;
+use App\Repository\ContributorRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass=ContributorRepository::class)
  */
-class Category
+class Contributor
 {
     use TimestampableEntity;
 
@@ -28,40 +26,42 @@ class Category
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="contributors")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $name;
+    private $trick;
 
     /**
-     * @ORM\Column(type="string", length=1000)
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $description;
+    private $user;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTrick(): ?Trick
     {
-        return $this->name;
+        return $this->trick;
     }
 
-    public function setName(string $name): self
+    public function setTrick(?Trick $trick): self
     {
-        $this->name = $name;
+        $this->trick = $trick;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getUser(): ?User
     {
-        return $this->description;
+        return $this->user;
     }
 
-    public function setDescription(string $description): self
+    public function setUser(?User $user): self
     {
-        $this->description = $description;
+        $this->user = $user;
 
         return $this;
     }
@@ -72,5 +72,4 @@ class Category
     public function setUpdatedAtValue() {
         $this->setUpdatedAt(new \DateTime());
     }
-
 }

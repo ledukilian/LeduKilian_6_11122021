@@ -4,13 +4,18 @@ namespace App\Entity;
 
 use App\Repository\TrickRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
  */
 class Trick
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -44,16 +49,22 @@ class Trick
     private $slug;
 
     /**
-     * @var datetime $createdAt
-     * @ORM\Column(type="datetime")
+     * @ORM\OneToMany(targetEntity=TrickMedia::class, mappedBy="trick", orphanRemoval=true)
      */
-    protected $createdAt;
+    private $trickMedia;
 
     /**
-     * @var datetime $updatedAt
-     * @ORM\Column(type="datetime", nullable = true)
+     * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true)
      */
-    protected $updatedAt;
+    private $contributors;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
+        $this->trickMedia = new ArrayCollection();
+        $this->contributors = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,19 +132,70 @@ class Trick
     }
 
     /**
-     * @ORM\PrePersist
+     * @return Collection|TrickMedia[]
      */
-    public function setCreatedAtValue()
+    public function getTrickMedia(): Collection
     {
-        $this->createdAt = new \DateTime();
+        return $this->trickMedia;
+    }
+
+    public function addTrickMedium(TrickMedia $trickMedium): self
+    {
+        if (!$this->trickMedia->contains($trickMedium)) {
+            $this->trickMedia[] = $trickMedium;
+            $trickMedium->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrickMedium(TrickMedia $trickMedium): self
+    {
+        if ($this->trickMedia->removeElement($trickMedium)) {
+            // set the owning side to null (unless already changed)
+            if ($trickMedium->getTrick() === $this) {
+                $trickMedium->setTrick(null);
+            }
+        }
+
+        return $this;
     }
 
     /**
-     * Gets triggered every time on update
+     * @return Collection|Contributor[]
+     */
+    public function getContributors(): Collection
+    {
+        return $this->contributors;
+    }
+
+    public function addContributor(Contributor $contributor): self
+    {
+        if (!$this->contributors->contains($contributor)) {
+            $this->contributors[] = $contributor;
+            $contributor->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContributor(Contributor $contributor): self
+    {
+        if ($this->contributors->removeElement($contributor)) {
+            // set the owning side to null (unless already changed)
+            if ($contributor->getTrick() === $this) {
+                $contributor->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @ORM\PreUpdate
      */
-    public function onPreUpdate()
-    {
-        $this->updatedAt = new \DateTime("now");
+    public function setUpdatedAtValue() {
+        $this->setUpdatedAt(new \DateTime());
     }
+
 }

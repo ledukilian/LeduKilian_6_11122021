@@ -3,22 +3,42 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(fields={"email"}, message="Il y a déjà un compte utilisant cette adresse mail")
+ * @UniqueEntity(fields={"username"}, message="Il y a déjà un compte utilisant ce nom d'utilisateur")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use TimestampableEntity;
+
+    public function __construct() {
+        $this->setCreatedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $username;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -35,6 +55,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
 
     public function getId(): ?int
     {
@@ -69,7 +94,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -97,12 +121,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
+    public function isVerified(): bool
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        return $this->isVerified;
     }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getIsVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue() {
+        $this->setUpdatedAt(new \DateTime());
+    }
+
 }

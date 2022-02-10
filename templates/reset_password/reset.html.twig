@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Réinitialisation -
+    {{parent()}}
+{% endblock %}
+
+{% block body %}
+    <section class="container min-h-80">
+        <div class="card border-0 col-12 col-md-8 col-lg-6 px-0 mx-auto bg-primary my-4">
+            <div class="card-header h5 text-white"><em class="fas fa-lock me-2"></em>Réinitialiser votre mot de passe</div>
+            <div class="card-body d-flex flex-column justify-content-center bg-white text-black">
+                {{ form_start(resetForm) }}
+                {{ form_row(resetForm.plainPassword) }}
+                <button type="submit" class="btn btn-primary mt-4 ms-auto">Réinitialiser mon mot de passe</button>
+                {{ form_end(resetForm) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -25,6 +25,7 @@ class IndexController extends AbstractController
      */
     public function showAdmin()
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('@client/pages/admin.html.twig', []);
     }
 }

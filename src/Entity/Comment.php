@@ -75,18 +75,6 @@ class Comment
         return $this;
     }
 
-    public function getStatus(): ?bool
-    {
-        return $this->status;
-    }
-
-    public function setStatus(bool $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     public function getTrickId(): ?int
     {
         return $this->trick_id;
@@ -104,6 +92,18 @@ class Comment
      */
     public function setUpdatedAtValue() {
         $this->setUpdatedAt(new \DateTime());
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
 }

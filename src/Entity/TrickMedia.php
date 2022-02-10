@@ -39,18 +39,6 @@ class TrickMedia
         return $this->id;
     }
 
-    public function getTrick(): ?Trick
-    {
-        return $this->trick;
-    }
-
-    public function setTrick(?Trick $trick): self
-    {
-        $this->trick = $trick;
-
-        return $this;
-    }
-
     public function getMediaId(): ?Media
     {
         return $this->media_id;
@@ -83,6 +71,18 @@ class TrickMedia
     public function setMedia(?Media $media): self
     {
         $this->media = $media;
+
+        return $this;
+    }
+
+    public function getTrick(): ?Trick
+    {
+        return $this->trick;
+    }
+
+    public function setTrick(?Trick $trick): self
+    {
+        $this->trick = $trick;
 
         return $this;
     }

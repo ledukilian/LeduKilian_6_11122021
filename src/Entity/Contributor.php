@@ -13,11 +13,6 @@ class Contributor
 {
     use TimestampableEntity;
 
-    public function __construct() {
-        $this->setCreatedAt(new \DateTime());
-        $this->setUpdatedAt(new \DateTime());
-    }
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -66,10 +61,4 @@ class Contributor
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedAtValue() {
-        $this->setUpdatedAt(new \DateTime());
-    }
 }

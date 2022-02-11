@@ -60,8 +60,6 @@ class Trick
 
     public function __construct()
     {
-        $this->setCreatedAt(new \DateTime());
-        $this->setUpdatedAt(new \DateTime());
         $this->trickMedia = new ArrayCollection();
         $this->contributors = new ArrayCollection();
     }
@@ -91,6 +89,18 @@ class Trick
     public function setCategoryId(int $category_id): self
     {
         $this->category_id = $category_id;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
@@ -179,23 +189,5 @@ class Trick
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedAtValue() {
-        $this->setUpdatedAt(new \DateTime());
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
 }

@@ -15,11 +15,6 @@ class Category
 {
     use TimestampableEntity;
 
-    public function __construct() {
-        $this->setCreatedAt(new \DateTime());
-        $this->setUpdatedAt(new \DateTime());
-    }
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -42,6 +37,18 @@ class Category
         return $this->id;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
@@ -54,23 +61,5 @@ class Category
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedAtValue() {
-        $this->setUpdatedAt(new \DateTime());
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
 }

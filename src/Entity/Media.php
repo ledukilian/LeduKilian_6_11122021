@@ -14,11 +14,6 @@ class Media
 {
     use TimestampableEntity;
 
-    public function __construct() {
-        $this->setCreatedAt(new \DateTime());
-        $this->setUpdatedAt(new \DateTime());
-    }
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -68,6 +63,18 @@ class Media
         return $this;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     public function getType(): ?string
     {
         return $this->type;
@@ -104,23 +111,5 @@ class Media
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedAtValue() {
-        $this->setUpdatedAt(new \DateTime());
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
 }

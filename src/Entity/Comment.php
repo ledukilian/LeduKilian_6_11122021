@@ -14,11 +14,6 @@ class Comment
 {
     use TimestampableEntity;
 
-    public function __construct() {
-        $this->setCreatedAt(new \DateTime());
-        $this->setUpdatedAt(new \DateTime());
-    }
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -63,18 +58,6 @@ class Comment
         return $this;
     }
 
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
     public function getTrickId(): ?int
     {
         return $this->trick_id;
@@ -87,11 +70,16 @@ class Comment
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedAtValue() {
-        $this->setUpdatedAt(new \DateTime());
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
     }
 
     public function getStatus(): ?bool
@@ -105,5 +93,6 @@ class Comment
 
         return $this;
     }
+
 
 }

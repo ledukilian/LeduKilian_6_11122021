@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ContributorRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use App\Trait\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ContributorRepository::class)

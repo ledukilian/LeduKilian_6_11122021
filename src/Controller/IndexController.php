@@ -13,10 +13,11 @@ class IndexController extends AbstractController
      */
     public function showIndex(ManagerRegistry $doctrine)
     {
-        $repository = $doctrine->getRepository(Trick::class);
-        $tricks = $repository->findBy(
+        $tricks = $doctrine
+            ->getRepository(Trick::class)
+            ->findBy(
             [],
-            ['created_at' => 'DESC'],
+            ['createdAt' => 'DESC'],
             8,
             0
         );

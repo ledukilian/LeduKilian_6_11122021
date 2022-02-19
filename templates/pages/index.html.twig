@@ -29,9 +29,11 @@
                 </a>
         {% endfor %}
         </div>
-        <button class="btn btn-primary">
+        {% if remain_tricks == true %}
+        <button class="btn btn-primary" id="load-more" data-element="trick">
             <em class="fas fa-spinner"></em><br />Charger plus de tricks
         </button>
+        {% endif %}
     </section>
     <a href="#hero" class="scroll-btn scroll-up text-primary"><em class="fas fa-arrow-circle-up"></em></a>
 

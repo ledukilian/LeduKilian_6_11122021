@@ -22,7 +22,8 @@ class IndexController extends AbstractController
             0
         );
         return $this->render('@client/pages/index.html.twig', [
-            'tricks' => $tricks
+            'tricks' => $tricks,
+            'remain_tricks' => true
         ]);
     }
 

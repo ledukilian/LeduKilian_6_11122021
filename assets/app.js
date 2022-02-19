@@ -24,3 +24,16 @@ $(document).on('click', 'a[href^="#"]', function(e) {
     let pos = $id.offset().top - mainNavbarSize;
     $('body, html').animate({scrollTop: pos});
 });
+
+$( document ).ready(function() {
+    $( "#load-more" ).click(function() {
+        $.ajax({
+            type: "POST",
+            url: "/ajax/trick/8",
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+            }
+        });
+    });
+});

@@ -7,7 +7,10 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use App\Trait\TimestampableEntity;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
@@ -17,6 +20,7 @@ class Trick
     use TimestampableEntity;
 
     /**
+     * @Groups("trick")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,43 +28,51 @@ class Trick
     private $id;
 
     /**
+     * @Groups("trick")
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @Groups("trick")
      * @ORM\Column(type="string", length=5000)
      */
     private $description;
 
     /**
+     * @Groups("trick")
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
     /**
+     * @MaxDepth(2)
      * @ORM\OneToMany(targetEntity=TrickMedia::class, mappedBy="trick", orphanRemoval=true)
      */
     private $trickMedia;
 
     /**
+     * @MaxDepth(2)
      * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true)
      */
     private $contributors;
 
     /**
+     * @MaxDepth(3)
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
+     * @MaxDepth(3)
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 
     /**
+     * @MaxDepth(2)
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
      */
     private $comments;
@@ -185,6 +197,13 @@ class Trick
         return $this;
     }
 
+    public function setUserId(int $id): self
+    {
+        $this->user = $id;
+
+        return $this;
+    }
+
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -193,6 +212,13 @@ class Trick
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function setCategoryId(int $id): self
+    {
+        $this->category = $id;
 
         return $this;
     }

@@ -9,7 +9,7 @@
         <section id="trick-hero" class="d-flex flex-row flex-wrap align-items-center justify-content-center container-fluid px-0 position-relative pb-3 text-center">
             <img src="{{ asset('img/default_trick.jpg') }}" class="trick-img" alt="...">
             <div class="card col-md-8 p-lg-8 mx-auto catchphrase-background p-2 container position-absolute">
-                <h1 class="display-4 fw-normal text-white">Trick name</h1>
+                <h1 class="display-4 fw-normal text-white">{{ trick.name }}</h1>
             </div>
             <div class="trick-action px-3 py-2 ms-auto me-3">
                 <a href="#"><em class="mx-2 fas fa-pen text-warning"></em></a>
@@ -50,20 +50,22 @@
                 </button>
             </div>
         </section>
+    {{ dump(trick) }}
     <div class="container-fluid">
         <section id="trick-info" class="d-flex flex-row flex-wrap container justify-content-around my-3 py-2 text-center">
             <div class="d-flex flex-row flex-wrap justify-content-center col-12 col-md-7 mb-2">
-                <h3 class="col-12 fw-bold mt-1">Double flip floup 1080</h3>
-                <div class="alert alert-primary trick-category small">Flip</div>
-                <small class="w-100 text-muted mb-1"><em class="fas fa-clock me-2"></em>Trick posté par <span class="fw-bold text-primary">Guy MAUVE</span> le 01/01/2022 à 22:22 </small>
-                <p class="col-12 text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut ultricies leo. Morbi suscipit rutrum ligula, vel sodales orci finibus non. Cras eu vulputate tortor. Proin id eleifend ligula, quis dapibus risus. Praesent suscipit ornare nibh sit amet facilisis. Etiam iaculis mattis eros, vel commodo ligula hendrerit aliquet. Praesent pretium id neque ut mattis. Curabitur ultricies tellus ut accumsan imperdiet. </p>
+                <h3 class="col-12 fw-bold mt-1">{{ trick.name }}</h3>
+                <div class="alert alert-primary trick-category small">{{ trick.category }}</div>
+                <small class="w-100 text-muted mb-1"><em class="fas fa-clock me-2"></em>Trick posté par <span class="fw-bold text-primary">{{ trick.author }}</span> {{ trick.date }}</small>
+                <p class="col-12 text-justify">{{ trick.description }}</p>
                 <button class="btn btn-outline-primary mx-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     Voir l'historique des contributions
                 </button>
                 <div class="collapse col-12 mt-4" id="collapseExample">
-                    {% for i in 0..12 %}
-                        <div class="w-100 ultra-small text-muted mb-1"><em class="fas fa-clock me-2"></em>Modification le 01/01/2022 à 22:22  par <span class="fw-bold text-primary">Guy MAUVE</span></div>
+                    {% for contributor in trick.contributors %}
+                        <div class="w-100 ultra-small text-muted mb-1"><em class="fas fa-clock me-2"></em>Modification le {{ contributor.date }}  par <span class="fw-bold text-primary">{{ contributor.name }}</span></div>
                     {% endfor %}
+                        <div class="w-100 ultra-small text-muted mb-1"><em class="fas fa-clock me-2"></em>Création le {{ trick.date }}  par <span class="fw-bold text-primary">{{ trick.author }}</span></div>
                 </div>
             </div>
         </section>
@@ -72,33 +74,42 @@
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800 mx-2"><em class="fas fa-comments text-primary me-2"></em>Commentaires</h1>
                 </div>
-                <div class="alert alert-danger" role="alert">
-                    <em class="fas fa-exclamation-circle me-2"></em>Vous devez être connecté pour pouvoir ajouter un commentaire
-                </div>
-                <div class="text-start">
-                    <span class="col-12 fw-bold text-primary"><em class="fas fa-user me-1"></em> Guy MAUVE</span>
-                    <form action="ROUTE" method="POST" class="d-flex flex-row justify-content-end flex-wrap px-3">
-                        <textarea class="form-control my-2" id="comment" name="comment"></textarea>
-                        <input type="number" class="d-none" id="postId" name="postId" readonly value="ID" />
-                        <button class="btn btn-success px-3"><em class="fas fa-paper-plane me-2"></em>Poster</button>
-                    </form>
-                </div>
-                <div class="small text-muted font-italic">Il n'y a pas encore de commentaire</div>
-                {% for i in 0..2 %}
-                    <div class="mb-3 col-12">
-                        <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
-                            <em class="fas fa-comment text-primary reverse-h me-1"></em><span class="fw-bold text-primary">Jean BONNEAU</span>
-                            <span class="ms-auto text-muted">01/01/01 à 22:22<em class="far fa-clock ms-1"></em></span>
-                            <blockquote class="blockquote text-start col-12 m-0 px-0">
-                                <small class="card card-text border-0 text-dark col-12 p-4 mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut ultricies leo. Morbi suscipit rutrum ligula, vel sodales orci finibus non.</small>
-                            </blockquote>
-                        </div>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <div class="text-start mb-3">
+                        <span class="col-12 fw-bold text-primary"><em class="fas fa-user me-1"></em> Guy MAUVE</span>
+                        <form action="ROUTE" method="POST" class="d-flex flex-row justify-content-end flex-wrap px-3">
+                            <textarea class="form-control my-2" id="comment" name="comment"></textarea>
+                            <input type="number" class="d-none" id="postId" name="postId" readonly value="ID" />
+                            <button class="btn btn-success px-3"><em class="fas fa-paper-plane me-2"></em>Poster</button>
+                        </form>
                     </div>
-                {% endfor %}
+                {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        <em class="fas fa-exclamation-circle me-2"></em>Vous devez être connecté pour pouvoir ajouter un commentaire
+                    </div>
+                {% endif %}
+                {% if trick.comments is empty %}
+                    <div class="small text-muted font-italic">Il n'y a pas encore de commentaire</div>
+                {% else %}
+                    {% for comment in trick.comments %}
+                        <div class="mb-3 col-12">
+                            <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
+                                <em class="fas fa-comment text-primary reverse-h me-1"></em><span class="fw-bold text-primary">{{ comment.author }}</span>
+                                <span class="ms-auto text-muted">{{ comment.date }}<em class="far fa-clock ms-1"></em></span>
+                                <blockquote class="blockquote text-start col-12 m-0 px-0">
+                                    <small class="card card-text border-0 text-dark col-12 p-4 mt-2">{{ comment.content }}</small>
+                                </blockquote>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
             </div>
-            <button class="btn btn-primary w-25">
+            {% if remain_comments == true %}
+            <button class="btn btn-primary w-25 mt-5" id="load-more" data-element="comment">
                 <em class="fas fa-spinner"></em><br />Charger plus de commentaires
             </button>
+            {% endif %}
         </section>
     </div>
 {% endblock %}

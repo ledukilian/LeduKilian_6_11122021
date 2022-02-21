@@ -50,22 +50,21 @@
                 </button>
             </div>
         </section>
-    {{ dump(trick) }}
     <div class="container-fluid">
         <section id="trick-info" class="d-flex flex-row flex-wrap container justify-content-around my-3 py-2 text-center">
             <div class="d-flex flex-row flex-wrap justify-content-center col-12 col-md-7 mb-2">
                 <h3 class="col-12 fw-bold mt-1">{{ trick.name }}</h3>
-                <div class="alert alert-primary trick-category small">{{ trick.category }}</div>
-                <small class="w-100 text-muted mb-1"><em class="fas fa-clock me-2"></em>Trick posté par <span class="fw-bold text-primary">{{ trick.author }}</span> {{ trick.date }}</small>
+                <div class="alert alert-primary trick-category small">{{ trick.category.name }}</div>
+                <small class="w-100 text-muted mb-1"><em class="fas fa-clock me-2"></em>Trick posté par <span class="fw-bold text-primary">{{ trick.user.username }}</span> le {{ trick.createdAt|date('d/m/Y à H:i') }}</small>
                 <p class="col-12 text-justify">{{ trick.description }}</p>
                 <button class="btn btn-outline-primary mx-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     Voir l'historique des contributions
                 </button>
                 <div class="collapse col-12 mt-4" id="collapseExample">
                     {% for contributor in trick.contributors %}
-                        <div class="w-100 ultra-small text-muted mb-1"><em class="fas fa-clock me-2"></em>Modification le {{ contributor.date }}  par <span class="fw-bold text-primary">{{ contributor.name }}</span></div>
+                        <div class="w-100 ultra-small text-muted mb-1"><em class="fas fa-clock me-2"></em>Modification le {{ contributor.updatedAt|date('d/m/Y à H:i') }}  par <span class="fw-bold text-primary">{{ contributor.user.username }}</span></div>
                     {% endfor %}
-                        <div class="w-100 ultra-small text-muted mb-1"><em class="fas fa-clock me-2"></em>Création le {{ trick.date }}  par <span class="fw-bold text-primary">{{ trick.author }}</span></div>
+                        <div class="w-100 ultra-small text-muted mb-1"><em class="fas fa-clock me-2"></em>Création le {{ trick.createdAt|date('d/m/Y à H:i') }}  par <span class="fw-bold text-primary">{{ trick.user.username }}</span></div>
                 </div>
             </div>
         </section>
@@ -94,8 +93,8 @@
                     {% for comment in trick.comments %}
                         <div class="mb-3 col-12">
                             <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
-                                <em class="fas fa-comment text-primary reverse-h me-1"></em><span class="fw-bold text-primary">{{ comment.author }}</span>
-                                <span class="ms-auto text-muted">{{ comment.date }}<em class="far fa-clock ms-1"></em></span>
+                                <em class="fas fa-comment text-primary reverse-h me-1"></em><span class="fw-bold text-primary">{{ comment.user.username }}</span>
+                                <span class="ms-auto text-muted">{{ comment.createdAt|date('d/m/Y à H:i') }}<em class="far fa-clock ms-1"></em></span>
                                 <blockquote class="blockquote text-start col-12 m-0 px-0">
                                     <small class="card card-text border-0 text-dark col-12 p-4 mt-2">{{ comment.content }}</small>
                                 </blockquote>

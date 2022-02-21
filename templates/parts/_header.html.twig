@@ -13,7 +13,7 @@
                     <a class="nav-link active" href="/"><em class="fas fa-home me-2"></em>Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><em class="fas fa-snowboarding me-2"></em>Tricks</a>
+                    <a class="nav-link" href="/tricks"><em class="fas fa-snowboarding me-2"></em>Tricks</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
@@ -35,9 +35,13 @@
 </nav>
 <nav id="mobile-navbar"  class="navbar navbar-expand-lg navbar-dark bg-primary shadow-navbar fixed-bottom d-block d-md-none">
     <div class="d-flex flex-row flex-wrap justify-content-center align-items-center text-white py-2">
-            <a aria-label="Accueil" class="col-4 text-center" href="#"><em class="fas fa-home"></em></a>
-            <a aria-label="Tricks" class="col-4 text-center" href="#"><em class="fas fa-snowboarding"></em></a>
-            <a aria-label="Connexion" class="col-4 text-center" href="#"><em class="fas fa-key"></em></a>
+        <a aria-label="Accueil" class="col-4 text-center" href="/"><em class="fas fa-home"></em></a>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a aria-label="Déconnexion" class="col-4 text-center" href="/deconnexion"><em class="fas fa-door-open text-danger"></em></a>
+        {% else %}
+            <a aria-label="Connexion" class="col-4 text-center" href="/connexion"><em class="fas fa-key"></em></a>
+        {% endif %}
+        <a aria-label="Tricks" class="col-4 text-center" href="/tricks"><em class="fas fa-snowboarding"></em></a>
     </div>
 </nav>
 </header>

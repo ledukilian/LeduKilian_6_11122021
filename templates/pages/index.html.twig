@@ -15,7 +15,7 @@
     </section>
     <section id="tricks" class="d-flex flex-row flex-wrap justify-content-around container mt-4 pt-3 pb-5 text-center">
         <h3 class="display-5 col-12 fw-normal mb-4"><em class="fas fa-snowboarding text-primary me-3"></em>Derniers tricks</h3>
-        <div class="d-flex flex-row flex-wrap justify-content-around container text-center">
+        <div class="d-flex flex-row flex-wrap container text-center" id="tricks-list">
         {% for trick in tricks %}
                 <a href="/trick/{{ trick.slug }}" class="mb-3 col-sm-12 col-md-3 px-2 trick">
                     <article class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
@@ -29,8 +29,11 @@
                 </a>
         {% endfor %}
         </div>
+        <div class="w-100">
+            <img id="loader" class="col-12 rounded mx-auto" src="{{ asset('img/loader.gif') }}" alt="Trick" />
+        </div>
         {% if remain_tricks == true %}
-        <button class="btn btn-primary" id="load-more" data-element="trick">
+        <button class="btn btn-primary" id="load-more" data-element="trick" data-format="3" data-limit="4" data-offset="8">
             <em class="fas fa-spinner"></em><br />Charger plus de tricks
         </button>
         {% endif %}

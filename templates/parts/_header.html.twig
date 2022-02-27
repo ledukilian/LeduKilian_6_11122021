@@ -1,19 +1,19 @@
-<header class="container-fluid bg-primary shadow-navbar">
-<nav id="main-navbar" class="navbar navbar-expand-lg navbar-dark container sticky-top d-none d-md-block">
+<header class="container-fluid shadow-navbar">
+<nav id="main-navbar" class="navbar navbar-expand-lg navbar-dark container sticky-top d-none d-lg-block">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
             <img src="{{ asset('img/logo.png') }}" alt="SnowTricks Logo" />
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler d-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <em class="fas fa-bars"></em>
         </button>
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/"><em class="fas fa-home me-2"></em>Accueil</a>
+                    <a class="nav-link {% if app.request.attributes.get('_route') == 'show_index' %}active{% endif %}" href="/"><em class="fas fa-home me-2"></em>Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/tricks"><em class="fas fa-snowboarding me-2"></em>Tricks</a>
+                    <a class="nav-link {% if app.request.attributes.get('_route') == 'show_tricks' or app.request.attributes.get('_route') == 'show_trick' %}active{% endif %}" href="/tricks"><em class="fas fa-snowboarding me-2"></em>Tricks</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
@@ -23,25 +23,33 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/connexion">Se connecter</a>
+                        <a class="nav-link {% if app.request.attributes.get('_route') == 'login' %}active{% endif %}" href="/connexion">Se connecter</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/inscription">S'inscrire</a>
+                        <a class="nav-link {% if app.request.attributes.get('_route') == 'app_register' %}active{% endif %}" href="/inscription">S'inscrire</a>
                     </li>
                 {% endif %}
             </ul>
         </div>
     </div>
 </nav>
-<nav id="mobile-navbar"  class="navbar navbar-expand-lg navbar-dark bg-primary shadow-navbar fixed-bottom d-block d-md-none">
-    <div class="d-flex flex-row flex-wrap justify-content-center align-items-center text-white py-2">
-        <a aria-label="Accueil" class="col-4 text-center" href="/"><em class="fas fa-home"></em></a>
+<nav id="mobile-navbar"  class="navbar navbar-expand-lg navbar-dark shadow-navbar fixed-bottom d-block d-lg-none">
+    <div class="d-flex flex-row flex-wrap justify-content-center align-items-center text-white py-1">
+        <a aria-label="Accueil" class="col-4 text-center" href="/">
+            <em class="fas fa-home {% if app.request.attributes.get('_route') == 'show_index' %}circled-icon{% endif %}"></em>
+        </a>
+        <a aria-label="Tricks" class="col-4 text-center" href="/tricks">
+            <em class="fas fa-snowboarding {% if app.request.attributes.get('_route') == 'show_trick' %}circled-icon{% endif %} {% if app.request.attributes.get('_route') == 'show_tricks' %}circled-icon{% endif %}"></em>
+        </a>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <a aria-label="Déconnexion" class="col-4 text-center" href="/deconnexion"><em class="fas fa-door-open text-danger"></em></a>
+            <a aria-label="Déconnexion" class="col-4 text-center" href="/deconnexion">
+                <em class="fas fa-door-open text-danger"></em>
+            </a>
         {% else %}
-            <a aria-label="Connexion" class="col-4 text-center" href="/connexion"><em class="fas fa-key"></em></a>
+            <a aria-label="Connexion" class="col-4 text-center" href="/connexion">
+                <em class="fas fa-key {% if app.request.attributes.get('_route') == 'login' %}circled-icon{% endif %}"></em>
+            </a>
         {% endif %}
-        <a aria-label="Tricks" class="col-4 text-center" href="/tricks"><em class="fas fa-snowboarding"></em></a>
     </div>
 </nav>
 </header>

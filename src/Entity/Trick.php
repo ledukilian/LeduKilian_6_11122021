@@ -46,34 +46,30 @@ class Trick
     private $slug;
 
     /**
-     * @MaxDepth(2)
      * @ORM\OneToMany(targetEntity=TrickMedia::class, mappedBy="trick", orphanRemoval=true)
      */
     private $trickMedia;
 
     /**
-     * @MaxDepth(2)
      * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true)
      */
     private $contributors;
 
     /**
-     * @MaxDepth(3)
+     * @Groups("user")
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @MaxDepth(3)
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 
     /**
-     * @MaxDepth(2)
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, fetch="EXTRA_LAZY")
      */
     private $comments;
 

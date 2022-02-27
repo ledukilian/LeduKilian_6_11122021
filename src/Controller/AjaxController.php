@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Trick;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,39 +19,40 @@ use Symfony\Component\Serializer\SerializerInterface;
 class AjaxController extends AbstractController
 {
     /**
-     * @Route("/ajax/{entity}/{offset}", name="_loadMore_ajax")
+     * @Route("/ajax/{entity}/{limit}/{offset}", name="_loadMore_ajax")
      */
-    public function loadMore(SerializerInterface $serializer, ManagerRegistry $doctrine, Request $request, String $entity, int $offset = 8)
+    public function loadMore(ManagerRegistry $doctrine, Request $request, String $entity, int $limit = 8, int $offset = 8): JsonResponse
     {
-
-
         $tricks = $doctrine
-            ->getRepository(Trick::class)
-            ->findNext($offset);
+            ->getRepository($this->StringToClass($entity))
+            ->findBy(
+                [],
+                ['createdAt' => 'DESC'],
+                $limit,
+                $offset
+            );
+        return $this->json([
+            'success' => true,
+            'data'    => $tricks,
+            'remain' => $this->CheckElementsRemain($doctrine, $this->StringToClass($entity), $limit+$offset)
+        ], 200, [], ['groups' => ['trick', 'user']]);
 
-        //$trick = $serializer->serialize($result, 'json', ['groups' => ['trick']]);
+    }
 
-        if ($request->isXMLHttpRequest()) {
+    private function CheckElementsRemain(ManagerRegistry $doctrine, String $class, int $asked): bool
+    {
+        return count($doctrine->getRepository($class)->findAll()) >= $asked;
+    }
 
-            try {
-
-                return new JsonResponse([
-                    'success' => true,
-                    'data'    => [$tricks]
-                ]);
-
-            } catch (\Exception $exception) {
-
-                return new JsonResponse([
-                    'success' => false,
-                    'code'    => $exception->getCode(),
-                    'message' => $exception->getMessage(),
-                ]);
-
-            }
-
+    private function StringToClass(string $entity): bool|string
+    {
+        if ($entity=='trick') {
+            return Trick::class;
         }
-
+        if ($entity=='comment') {
+            return Comment::class;
+        }
+        return false;
     }
 
 }

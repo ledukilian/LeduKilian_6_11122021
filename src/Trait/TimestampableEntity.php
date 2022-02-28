@@ -11,6 +11,7 @@ namespace App\Trait;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -23,6 +24,7 @@ trait TimestampableEntity
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="create")
+     * @Groups("datetime")
      * @ORM\Column(type="datetime")
      */
     #[Gedmo\Timestampable(on: 'create')]
@@ -32,6 +34,7 @@ trait TimestampableEntity
     /**
      * @var \DateTime
      * @Gedmo\Timestampable(on="update")
+     * @Groups("datetime")
      * @ORM\Column(type="datetime")
      */
     #[Gedmo\Timestampable(on: 'update')]

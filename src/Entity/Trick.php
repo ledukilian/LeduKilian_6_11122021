@@ -251,10 +251,4 @@ class Trick
     }
 
 
-    public function getFirstComments()
-    {
-        return $this->getComments()->slice(0, 5);
-    }
-
-
 }

@@ -75,9 +75,10 @@
                 </div>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <div class="text-start mb-3">
-                        <span class="col-12 fw-bold text-primary"><em class="fas fa-user me-1"></em> Guy MAUVE</span>
-                        <form action="ROUTE" method="POST" class="d-flex flex-row justify-content-end flex-wrap px-3">
-                            <textarea class="form-control my-2" id="comment" name="comment"></textarea>
+                        <span class="col-12 fw-bold text-primary"><em class="fas fa-user me-1"></em> {{ dump(app.session) }}</span>
+                        <form action="{{ app.request.requesturi }}" method="POST" class="d-flex flex-row justify-content-end flex-wrap px-3">
+                            <textarea class="form-control my-2" id="comment" name="comment">
+                            </textarea>
                             <input type="number" class="d-none" id="postId" name="postId" readonly value="ID" />
                             <button class="btn btn-success px-3"><em class="fas fa-paper-plane me-2"></em>Poster</button>
                         </form>
@@ -108,7 +109,7 @@
             <div class="w-100">
                 <img id="loader" class="col-12 rounded mx-auto" src="{{ asset('img/loader.gif') }}" alt="Trick" />
             </div>
-            <button class="btn btn-primary w-25" id="load-more" data-element="comment" data-id="{{ trick.id }}" data-limit="5" data-offset="5">
+            <button class="btn btn-primary w-25" id="load-more" data-method="load-comments" data-id="{{ trick.id }}" data-limit="5" data-offset="5">
                 <em class="fas fa-spinner"></em><br />Charger plus de commentaires
             </button>
             {% endif %}

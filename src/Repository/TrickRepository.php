@@ -19,22 +19,29 @@ class TrickRepository extends ServiceEntityRepository
         parent::__construct($registry, Trick::class);
     }
 
-    // /**
-    //  * @return Trick[] Returns an array of Trick objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+    * @return Trick[] Returns an array of Trick objects
+    */
+    public function findPostWithFiveComments($slug)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('t.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->orderBy('t.createdAt', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    public function size()
+    {
+        return $this->createQueryBuilder('t')
+            ->select('count(t.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Trick

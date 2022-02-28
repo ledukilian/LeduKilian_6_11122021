@@ -32,16 +32,16 @@ $( document ).ready(function() {
         let infos = this.dataset;
         $.ajax({
             type: "POST",
-            url: "/ajax/"+infos.id+"/"+infos.element+"/"+infos.limit+"/"+infos.offset,
+            url: "/"+infos.method+"/"+infos.id+"/"+infos.limit+"/"+infos.offset,
             dataType: "json",
             success: function(data) {
                 document.getElementById('load-more').dataset.offset = parseInt(document.getElementById('load-more').dataset.offset) + parseInt(document.getElementById('load-more').dataset.limit);
                 $('#loader').hide();
                 $(data.data).each(function(index, data) {
-                    if (infos.element=="trick") {
+                    if (infos.method=="load-tricks") {
                         renderTrick(data.name, data.slug, 'default_trick.jpg', infos.format);
                     }
-                    if (infos.element=="comment") {
+                    if (infos.method=="load-comments") {
                         renderComment(data.content, data.user.username, data.createdAt);
                     }
                 });

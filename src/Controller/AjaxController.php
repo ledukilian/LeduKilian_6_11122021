@@ -52,8 +52,11 @@ class AjaxController extends AbstractController
                 'remain' =>  $this->checkCommentsRemain($doctrine, $page, $limit, $offset)
             ], 200, [], ['groups' => ['trick', 'user', 'comment', 'datetime']]);
         }
+    }
 
-
+    private function checkTricksRemain(ManagerRegistry $doctrine, int $asked): bool
+    {
+        return count($doctrine->getRepository(Trick::class)->findAll()) >= $asked;
     }
 
     private function checkCommentsRemain(ManagerRegistry $doctrine, String $slug, int $limit, int $offset): bool
@@ -66,12 +69,6 @@ class AjaxController extends AbstractController
                 $offset+$limit
             );
         return !empty($remains);
-    }
-
-
-    private function checkTricksRemain(ManagerRegistry $doctrine, int $asked): bool
-    {
-        return count($doctrine->getRepository(Trick::class)->findAll()) >= $asked;
     }
 
 

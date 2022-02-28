@@ -19,40 +19,60 @@ use Symfony\Component\Serializer\SerializerInterface;
 class AjaxController extends AbstractController
 {
     /**
-     * @Route("/ajax/{entity}/{limit}/{offset}", name="_loadMore_ajax")
+     * @Route("/ajax/{page}/{entity}/{limit}/{offset}", name="_loadMore_ajax")
      */
-    public function loadMore(ManagerRegistry $doctrine, Request $request, String $entity, int $limit = 8, int $offset = 8): JsonResponse
+    public function loadMore(ManagerRegistry $doctrine, Request $request, String $page, String $entity, int $limit = 8, int $offset = 8): JsonResponse
     {
-        $tricks = $doctrine
-            ->getRepository($this->StringToClass($entity))
-            ->findBy(
-                [],
-                ['createdAt' => 'DESC'],
+        if ($entity=="trick") {
+            $elements = $doctrine
+                ->getRepository(Trick::class)
+                ->findBy(
+                    [],
+                    ['createdAt' => 'DESC'],
+                    $limit,
+                    $offset
+                );
+            return $this->json([
+                'success' => true,
+                'data'    => $elements,
+                'remain' => $this->CheckTricksRemain($doctrine, $limit+$offset)
+            ], 200, [], ['groups' => ['trick', 'user']]);
+        }
+        if ($entity=="comment") {
+            $elements = $doctrine
+                ->getRepository(Comment::class)
+                ->findNextComments(
+                    $page,
+                    $limit,
+                    $offset
+                );
+            return $this->json([
+                'success' => true,
+                'data'    => $elements,
+                'remain' =>  $this->CheckCommentsRemain($doctrine, $page, $limit, $offset)
+            ], 200, [], ['groups' => ['trick', 'user', 'comment', 'datetime']]);
+        }
+
+
+    }
+
+    private function CheckCommentsRemain(ManagerRegistry $doctrine, String $slug, int $limit, int $offset): bool
+    {
+        $remains = $doctrine
+            ->getRepository(Comment::class)
+            ->findNextComments(
+                $slug,
                 $limit,
-                $offset
+                $offset+$limit
             );
-        return $this->json([
-            'success' => true,
-            'data'    => $tricks,
-            'remain' => $this->CheckElementsRemain($doctrine, $this->StringToClass($entity), $limit+$offset)
-        ], 200, [], ['groups' => ['trick', 'user']]);
-
+        return !empty($remains);
     }
 
-    private function CheckElementsRemain(ManagerRegistry $doctrine, String $class, int $asked): bool
+
+    private function CheckTricksRemain(ManagerRegistry $doctrine, int $asked): bool
     {
-        return count($doctrine->getRepository($class)->findAll()) >= $asked;
+        return count($doctrine->getRepository(Trick::class)->findAll()) >= $asked;
     }
 
-    private function StringToClass(string $entity): bool|string
-    {
-        if ($entity=='trick') {
-            return Trick::class;
-        }
-        if ($entity=='comment') {
-            return Comment::class;
-        }
-        return false;
-    }
 
 }

@@ -70,6 +70,7 @@ class Trick
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comments;
 
@@ -247,6 +248,12 @@ class Trick
         }
 
         return $this;
+    }
+
+
+    public function getFirstComments()
+    {
+        return $this->getComments()->slice(0, 5);
     }
 
 

@@ -32,14 +32,19 @@ $( document ).ready(function() {
         let infos = this.dataset;
         $.ajax({
             type: "POST",
-            url: "/ajax/"+infos.element+"/"+infos.limit+"/"+infos.offset,
+            url: "/ajax/"+infos.id+"/"+infos.element+"/"+infos.limit+"/"+infos.offset,
             dataType: "json",
             success: function(data) {
                 document.getElementById('load-more').dataset.offset = parseInt(document.getElementById('load-more').dataset.offset) + parseInt(document.getElementById('load-more').dataset.limit);
                 $('#loader').hide();
+                console.log(data);
                 $(data.data).each(function(index, data) {
-                    console.log(data);
-                    renderTrick(data.name, data.slug, 'default_trick.jpg', infos.format);
+                    if (infos.element=="trick") {
+                        renderTrick(data.name, data.slug, 'default_trick.jpg', infos.format);
+                    }
+                    if (infos.element=="comment") {
+                        renderComment(data.content, data.user.username, data.createdAt);
+                    }
                 });
                 if (data.remain!==false) {
                     $('#load-more').show();
@@ -58,4 +63,31 @@ $( document ).ready(function() {
         $('#tricks-list').html($('#tricks-list').html() + html);
     }
 
+
+    function renderComment(content, username, date) {
+        let html = '<div class="mb-3 col-12 col-md-10 offset-md-1">';
+        html += '<div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">';
+        html += '<em class="fas fa-comment text-primary reverse-h me-1"></em><span class="fw-bold text-primary">'+username+'</span>';
+        html += '<span class="ms-auto text-muted">'+convertToReadableDateTime(date)+'<em class="far fa-clock ms-1"></em></span>';
+        html += '<blockquote class="blockquote text-start col-12 m-0 px-0">';
+        html += '<small class="card card-text border-0 text-dark col-12 p-4 mt-2">'+content+'</small>';
+        html += '</blockquote></div></div>';
+        $('#comment-list').html($('#comment-list').html() + html);
+
+    }
+
+    function convertToReadableDateTime(date) {
+        let newDate = new Date(date);
+        let val = addZero(newDate.getDay())+'/'+addZero(newDate.getMonth())+'/'+newDate.getFullYear()+' à ';
+        val += addZero(newDate.getHours())+':'+addZero(newDate.getMinutes());
+        return val;
+    }
+
+    function addZero(val) {
+        if (val < 10) {
+            return '0'+val;
+        } else {
+            return val;
+        }
+    }
 });

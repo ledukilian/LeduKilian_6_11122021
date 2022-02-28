@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Trait\TimestampableEntity;
 
 /**
@@ -15,6 +16,7 @@ class Comment
     use TimestampableEntity;
 
     /**
+     * @Groups("comment")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -22,16 +24,19 @@ class Comment
     private $id;
 
     /**
+     * @Groups("comment")
      * @ORM\Column(type="string", length=2500)
      */
     private $content;
 
     /**
+     * @Groups("comment")
      * @ORM\Column(type="boolean")
      */
     private $status;
 
     /**
+     * @Groups("comment")
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */

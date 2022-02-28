@@ -19,9 +19,11 @@ class TrickController extends AbstractController
      */
     public function showTrick(Trick $trick)
     {
+        // search if comment remains
         return $this->render('@client/pages/trick.html.twig', [
             'trick' => $trick,
-            'remain_comments' => false
+            'comments' => $trick->getFirstComments(),
+            'remain_comments' => true
         ]);
     }
 
@@ -41,7 +43,8 @@ class TrickController extends AbstractController
         return $this->render('@client/pages/tricks.html.twig', [
             'tricks' => $tricks,
             'remain_tricks' => true
-        ]);    }
+        ]);
+    }
 
 
 

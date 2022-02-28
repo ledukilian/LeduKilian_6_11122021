@@ -35,7 +35,7 @@ class AjaxController extends AbstractController
             return $this->json([
                 'success' => true,
                 'data'    => $elements,
-                'remain' => $this->CheckTricksRemain($doctrine, $limit+$offset)
+                'remain' => $this->checkTricksRemain($doctrine, $limit+$offset)
             ], 200, [], ['groups' => ['trick', 'user']]);
         }
         if ($entity=="comment") {
@@ -49,14 +49,14 @@ class AjaxController extends AbstractController
             return $this->json([
                 'success' => true,
                 'data'    => $elements,
-                'remain' =>  $this->CheckCommentsRemain($doctrine, $page, $limit, $offset)
+                'remain' =>  $this->checkCommentsRemain($doctrine, $page, $limit, $offset)
             ], 200, [], ['groups' => ['trick', 'user', 'comment', 'datetime']]);
         }
 
 
     }
 
-    private function CheckCommentsRemain(ManagerRegistry $doctrine, String $slug, int $limit, int $offset): bool
+    private function checkCommentsRemain(ManagerRegistry $doctrine, String $slug, int $limit, int $offset): bool
     {
         $remains = $doctrine
             ->getRepository(Comment::class)
@@ -69,7 +69,7 @@ class AjaxController extends AbstractController
     }
 
 
-    private function CheckTricksRemain(ManagerRegistry $doctrine, int $asked): bool
+    private function checkTricksRemain(ManagerRegistry $doctrine, int $asked): bool
     {
         return count($doctrine->getRepository(Trick::class)->findAll()) >= $asked;
     }

@@ -68,8 +68,8 @@
                 </div>
             </div>
         </section>
-        <section id="trick-comments" class="d-flex flex-column flex-wrap container-fluid justify-content-around align-items-center my-3 pt-5 pb-5 text-center">
-            <div class="container mb-5">
+        <section id="trick-comments" class="d-flex flex-column flex-wrap container justify-content-around align-items-center my-3 pt-5 pb-5 text-center">
+            <div id="comment-list" class="container mb-5">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800 mx-2"><em class="fas fa-comments text-primary me-2"></em>Commentaires</h1>
                 </div>
@@ -88,11 +88,11 @@
                     </div>
                 {% endif %}
                 <hr />
-                {% if trick.comments is empty %}
+                {% if comments is empty %}
                     <div class="small text-muted font-italic">Il n'y a pas encore de commentaire</div>
                 {% else %}
-                    {% for comment in trick.comments %}
-                        <div class="mb-3 col-12">
+                    {% for comment in comments %}
+                        <div class="mb-3 col-12 col-md-10 offset-md-1">
                             <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
                                 <em class="fas fa-comment text-primary reverse-h me-1"></em><span class="fw-bold text-primary">{{ comment.user.username }}</span>
                                 <span class="ms-auto text-muted">{{ comment.createdAt|date('d/m/Y à H:i') }}<em class="far fa-clock ms-1"></em></span>
@@ -105,7 +105,10 @@
                 {% endif %}
             </div>
             {% if remain_comments == true %}
-            <button class="btn btn-primary w-25 mt-5" id="load-more" data-element="comment">
+            <div class="w-100">
+                <img id="loader" class="col-12 rounded mx-auto" src="{{ asset('img/loader.gif') }}" alt="Trick" />
+            </div>
+            <button class="btn btn-primary w-25" id="load-more" data-element="comment" data-id="{{ trick.id }}" data-limit="5" data-offset="5">
                 <em class="fas fa-spinner"></em><br />Charger plus de commentaires
             </button>
             {% endif %}

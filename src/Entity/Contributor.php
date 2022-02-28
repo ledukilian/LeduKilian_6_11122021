@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ContributorRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use App\Trait\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ContributorRepository::class)
@@ -12,11 +12,6 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Contributor
 {
     use TimestampableEntity;
-
-    public function __construct() {
-        $this->setCreatedAt(new \DateTime());
-        $this->setUpdatedAt(new \DateTime());
-    }
 
     /**
      * @ORM\Id
@@ -66,10 +61,4 @@ class Contributor
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedAtValue() {
-        $this->setUpdatedAt(new \DateTime());
-    }
 }

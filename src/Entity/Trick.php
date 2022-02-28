@@ -7,7 +7,10 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+use App\Trait\TimestampableEntity;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
@@ -17,6 +20,7 @@ class Trick
     use TimestampableEntity;
 
     /**
+     * @Groups("trick")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,26 +28,19 @@ class Trick
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $user_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $category_id;
-
-    /**
+     * @Groups("trick")
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @Groups("trick")
      * @ORM\Column(type="string", length=5000)
      */
     private $description;
 
     /**
+     * @Groups("trick")
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
@@ -58,12 +55,30 @@ class Trick
      */
     private $contributors;
 
+    /**
+     * @Groups("user")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
+     */
+    private $comments;
+
     public function __construct()
     {
-        $this->setCreatedAt(new \DateTime());
-        $this->setUpdatedAt(new \DateTime());
         $this->trickMedia = new ArrayCollection();
         $this->contributors = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,26 +86,14 @@ class Trick
         return $this->id;
     }
 
-    public function getUserId(): ?int
+    public function getName(): ?string
     {
-        return $this->user_id;
+        return $this->name;
     }
 
-    public function setUserId(int $user_id): self
+    public function setName(string $name): self
     {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
-
-    public function getCategoryId(): ?int
-    {
-        return $this->category_id;
-    }
-
-    public function setCategoryId(int $category_id): self
-    {
-        $this->category_id = $category_id;
+        $this->name = $name;
 
         return $this;
     }
@@ -179,23 +182,79 @@ class Trick
         return $this;
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedAtValue() {
-        $this->setUpdatedAt(new \DateTime());
+    public function getUser(): ?User
+    {
+        return $this->user;
     }
 
-    public function getName(): ?string
+    public function setUser(?User $user): self
     {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $this->user = $user;
 
         return $this;
     }
+
+    public function setUserId(int $id): self
+    {
+        $this->user = $id;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function setCategoryId(int $id): self
+    {
+        $this->category = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getTrick() === $this) {
+                $comment->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function getFirstComments()
+    {
+        return $this->getComments()->slice(0, 5);
+    }
+
 
 }

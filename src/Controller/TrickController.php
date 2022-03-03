@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Trick;
+use App\Entity\User;
+use App\Form\CommentFormType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,7 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/{slug}", name="show_trick")
      */
-    public function showTrick(Trick $trick, ManagerRegistry $doctrine)
+    public function showTrick(Trick $trick, ManagerRegistry $doctrine, Request $request)
     {
         $comments = $doctrine
             ->getRepository(Comment::class)
@@ -37,10 +39,17 @@ class TrickController extends AbstractController
             ->getRepository(Comment::class)
             ->count($trick->getId());
 
+        $form = $this->createForm(CommentFormType::class);
+
+        $this->handleCommentSubmit($form, $request, $doctrine, [
+            'trick' => $trick
+        ]);
+
         return $this->render('@client/pages/trick.html.twig', [
             'trick' => $trick,
             'comments' => $comments,
-            'remain_comments' => ($count>5)
+            'remain_comments' => ($count>5),
+            'commentForm' => $form->createView()
         ]);
     }
 
@@ -63,25 +72,25 @@ class TrickController extends AbstractController
         ]);
     }
 
-    public function new(Request $request): Response
+    public function handleCommentSubmit($form, $request, ManagerRegistry $doctrine, Array $data)
     {
-        dd('test');
-        $task = new Task();
-        $form = $this->createForm(TaskType::class, $task);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $form->getData();
+            $entityManager = $doctrine->getManager();
 
-        if ($request->isMethod('POST')) {
-            $form->submit($request->request->get($form->getName()));
+            // $request->getUser()
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                // perform some action...
+            $comment->setStatus(true);
+            $comment->setTrick($data['trick']);
+            dd($comment);
 
-                return $this->redirectToRoute('task_success');
-            }
+            //$entityManager->persist($comment);
+            //$entityManager->flush();
+
+
+            // return $this->redirectToRoute('task_success');
         }
-
-        return $this->renderForm('task/new.html.twig', [
-            'form' => $form,
-        ]);
     }
 
 

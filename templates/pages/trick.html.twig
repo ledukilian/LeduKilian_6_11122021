@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-    Trick -
+    {{ trick.name }} -
     {{parent()}}
 {% endblock %}
 
@@ -75,13 +75,27 @@
                 </div>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <div class="text-start mb-3">
-                        <span class="col-12 fw-bold text-primary"><em class="fas fa-user me-1"></em> {{ dump(app.session) }}</span>
-                        <form action="{{ app.request.requesturi }}" method="POST" class="d-flex flex-row justify-content-end flex-wrap px-3">
-                            <textarea class="form-control my-2" id="comment" name="comment">
-                            </textarea>
-                            <input type="number" class="d-none" id="postId" name="postId" readonly value="ID" />
-                            <button class="btn btn-success px-3"><em class="fas fa-paper-plane me-2"></em>Poster</button>
-                        </form>
+                        <span class="col-12 fw-bold text-primary"><em class="fas fa-user me-1"></em> {{ app.user.username }}</span>
+                        {{ form_start(commentForm, {'attr': {'class': 'd-flex flex-row justify-content-end flex-wrap px-3'}}) }}
+                            <div class="w-100 mb-2">
+                                {{ form_widget(commentForm.content) }}
+                                <small>{{ form_help(commentForm.content) }}</small>
+                                <div class="form-error">
+                                    {{ form_errors(commentForm.content) }}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success px-3"><em class="fas fa-paper-plane me-2"></em>Poster</button>
+                        {{ form_end(commentForm) }}
+
+
+
+
+
+
+
+
+
+
                     </div>
                 {% else %}
                     <div class="alert alert-danger" role="alert">

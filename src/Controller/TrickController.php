@@ -53,29 +53,13 @@ class TrickController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tricks", name="show_tricks")
-     */
-    public function showTricks(ManagerRegistry $doctrine)
-    {
-        $tricks = $doctrine
-            ->getRepository(Trick::class)
-            ->findBy(
-                [],
-                ['createdAt' => 'DESC'],
-                9,
-                0
-            );
-        return $this->render('@client/pages/tricks.html.twig', [
-            'tricks' => $tricks,
-            'remain_tricks' => true
-        ]);
-    }
-
     public function handleCommentSubmit($form, $request, ManagerRegistry $doctrine, Array $data)
     {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $comment = new Comment();
+
             $comment = $form->getData();
             $entityManager = $doctrine->getManager();
 

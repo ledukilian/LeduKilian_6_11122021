@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
+use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
 use App\Repository\TrickRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,9 +17,9 @@ use phpDocumentor\Reflection\Types\Integer;
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
  */
-class Trick
+class Trick implements TimestampableInterface
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     /**
      * @Groups("trick")

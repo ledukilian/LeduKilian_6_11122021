@@ -6,47 +6,65 @@
 {% endblock %}
 
 {% block body %}
-    <div id="content">
-        <div class="container-fluid">
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-dark mt-3 mx-2">
-                    <i class="fas fa-comments text-primary me-2"></i>Administration des commentaires</h1>
-            </div>
-            <div class="row">
-                <div class="small text-muted font-italic">Il n'y a pas encore de commentaire</div>
-                <div class="d-flex flex-row flex-wrap col-lg-12 mb-4">
-                    {% for i in 0..2 %}
-                        <div class="mb-3 col-sm-12 col-md-6">
-                            <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
-                                <h5 class="card-title text-dark px-0 m-0"><i class="fas fa-snowboarding text-primary me-2"></i>Titre trick</h5>
-                                <form class="custom-control custom-switch ms-auto" method="POST" action="/admin/commentaire/IDENTIFIANT/changer-statut/">
-                                    <input type="checkbox" class="custom-control-input" name="ID" id="ID" value="1" checked onchange="this.form.submit()" />
-                                    <label class="custom-control-label" for="ID">Afficher</label>
-                                </form>
-                                <span class="small col-12 px-0">Par <span class="text-primary font-weight-bold">Username</span> le 02/02/22 à 22:22 </span>
-                                <blockquote class="blockquote col-12 m-0 px-0">
-                                    <small class="card card-text text-dark col-12 p-3 mt-2">Ceci est commentaire</small>
-                                </blockquote>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    {% for i in 0..3 %}
-                        <div class="mb-3 col-sm-12 col-md-6">
-                            <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm comment-disabled">
-                                <h5 class="card-title text-dark px-0 m-0"><i class="fas fa-snowboarding text-primary me-2"></i>Titre trick</h5>
-                                <form class="custom-control custom-switch ms-auto" method="POST" action="/admin/commentaire/IDENTIFIANT/changer-statut/">
-                                    <input type="checkbox" class="custom-control-input" name="ID" id="ID" value="1" checked onchange="this.form.submit()" />
-                                    <label class="custom-control-label" for="ID">Afficher</label>
-                                </form>
-                                <span class="small col-12 px-0">Par <span class="text-primary font-weight-bold">Username</span> le 02/02/22 à 22:22 </span>
-                                <blockquote class="blockquote col-12 m-0 px-0">
-                                    <small class="card card-text text-dark col-12 p-3 mt-2">Ceci est commentaire</small>
-                                </blockquote>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+    <section id="admin" class="d-flex flex-row flex-wrap justify-content-around container mt-4 pt-3 pb-5 mb-5 text-center">
+        <div class="col-12 d-flex flex-row flex-wrap mb-4 px-3">
+            <h3 class="fw-normal display-5"><em class="fas fa-cogs text-primary me-3"></em>Gestion des commentaires</h3>
+            <button class="btn align-self-center btn-success ms-auto">Ajouter un nouveau</button>
         </div>
-    </div>
+
+        <div class="d-flex flex-row flex-wrap align-items-center justify-content-around container text-center" id="tricks-list">
+            {% for trick in tricks %}
+                <h3><em class="fas fa-chevron-right text-primary me-1"></em>{{ trick.name }}</h3><hr />
+                {% for comment in trick.comments %}
+                    {{ dump(comment) }}
+                    <div class="mb-3 col-12 col-md-10 offset-md-1">
+                        <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm comment-disabled">
+                            <em class="fas fa-comment text-primary reverse-h me-1"></em><span class="fw-bold text-primary">{{ comment.user.username }}</span>
+                            <span class="ms-auto text-muted">{{ comment.createdAt|date('d/m/Y à H:i') }}<em class="far fa-clock ms-1"></em></span>
+                            <blockquote class="blockquote text-start col-12 m-0 px-0">
+                                <small class="card card-text border-0 text-dark col-12 p-4 mt-2">{{ comment.content }}</small>
+                            </blockquote>
+                        </div>
+                    </div>
+                {% endfor %}
+                <br /><br />
+            {% endfor %}
+
+
+            {% for i in 0..2 %}
+                <div class="mb-3 col-sm-12 col-md-5">
+                    <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
+                        <h5 class="card-title text-dark px-0 m-0"><i class="fas fa-snowboarding text-primary me-2"></i>Titre trick</h5>
+                        <form class="custom-control custom-switch ms-auto" method="POST" action="/admin/commentaire/IDENTIFIANT/changer-statut/">
+                            <input type="checkbox" class="custom-control-input bigger" name="ID" id="ID" value="1" checked onchange="alert('this.form.submit()')" />
+                            <label class="custom-control-label d-none" for="ID">Afficher</label>
+                        </form>
+                        <span class="small col-12 px-0">Par <span class="text-primary font-weight-bold">Username</span> le 02/02/22 à 22:22 </span>
+                        <blockquote class="blockquote col-12 m-0 px-0">
+                            <small class="card card-text text-dark col-12 p-3 mt-2">Ceci est commentaire</small>
+                        </blockquote>
+                    </div>
+                </div>
+            {% endfor %}
+            {% for i in 0..2 %}
+                <div class="mb-3 col-sm-12 col-md-5">
+                    <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm comment-disabled">
+                        <h5 class="card-title text-dark px-0 m-0"><i class="fas fa-snowboarding text-primary me-2"></i>Titre trick</h5>
+                        <form class="custom-control custom-switch ms-auto" method="POST" action="/admin/commentaire/IDENTIFIANT/changer-statut/">
+                            <input type="checkbox" class="custom-control-input bigger" name="ID" id="ID" value="1" onchange="alert('this.form.submit()')" />
+                            <label class="custom-control-label d-none" for="ID">Afficher</label>
+                        </form>
+                        <span class="small col-12 px-0">Par <span class="text-primary font-weight-bold">Username</span> le 02/02/22 à 22:22 </span>
+                        <blockquote class="blockquote col-12 m-0 px-0">
+                            <small class="card card-text text-dark col-12 p-3 mt-2">Ceci est commentaire</small>
+                        </blockquote>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+        <div class="w-100">
+            <img id="loader" class="col-12 rounded mx-auto" src="{{ asset('img/loader.gif') }}" alt="Trick" />
+        </div>
+    </section>
 {% endblock %}

@@ -42,6 +42,7 @@ $( document ).ready(function() {
                         renderTrick(data.name, data.slug, 'default_trick.jpg', infos.format);
                     }
                     if (infos.method=="load-comments") {
+                        console.log(data);
                         renderComment(data.content, data.user.username, data.createdAt);
                     }
                 });

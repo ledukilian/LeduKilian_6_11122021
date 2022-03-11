@@ -20,6 +20,23 @@ use Symfony\Component\Serializer\SerializerInterface;
 class AjaxController extends AbstractController
 {
     /**
+     * @Route("/change-comment-status/{$comment_id}/", name="_change_commentStatus_ajax")
+     */
+    public function changeCommentStatus(ManagerRegistry $doctrine, int $comment_id): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $repository = $doctrine->getRepository(Comment::class);
+        $repository->toggleCommentStatus($comment_id);
+
+        return $this->json([
+            'success' => true,
+            'comment' => $comment_id
+        ], 200, [], ['groups' => ['trick', 'user', 'comment', 'datetime']]);
+    }
+
+
+    /**
      * @Route("/load-comments/{id}/{limit}/{offset}", name="_loadMore_comments_ajax")
      */
     public function loadMoreComments(ManagerRegistry $doctrine, int $id, int $limit = 8, int $offset = 8): JsonResponse

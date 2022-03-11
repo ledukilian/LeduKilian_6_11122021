@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Comment;
@@ -15,7 +16,6 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 
-
 class TrickController extends AbstractController
 {
     /**
@@ -23,11 +23,17 @@ class TrickController extends AbstractController
      */
     public function showTrick(Trick $trick, ManagerRegistry $doctrine, Request $request)
     {
+        $form = $this->createForm(CommentFormType::class);
+        $this->handleCommentSubmit($form, $request, $doctrine, [
+            'trick' => $trick
+        ]);
+
         $comments = $doctrine
             ->getRepository(Comment::class)
             ->findBy(
                 [
-                    'trick' => $trick->getId()
+                    'trick' => $trick->getId(),
+                    'status' => true
                 ],
                 [
                     'createdAt' => 'DESC'
@@ -39,45 +45,31 @@ class TrickController extends AbstractController
             ->getRepository(Comment::class)
             ->count($trick->getId());
 
-        $form = $this->createForm(CommentFormType::class);
-
-        $this->handleCommentSubmit($form, $request, $doctrine, [
-            'trick' => $trick
-        ]);
-
         return $this->render('@client/pages/trick.html.twig', [
             'trick' => $trick,
             'comments' => $comments,
-            'remain_comments' => ($count>5),
+            'remain_comments' => ($count > 5),
             'commentForm' => $form->createView()
         ]);
     }
 
-    public function handleCommentSubmit($form, $request, ManagerRegistry $doctrine, Array $data)
+    public function handleCommentSubmit($form, $request, ManagerRegistry $doctrine, array $data)
     {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             $comment = new Comment();
-
-            $comment = $form->getData();
-            $entityManager = $doctrine->getManager();
-
-            // $request->getUser()
-
-            $comment->setStatus(true);
+            $comment->setContent($form->getData()['content']);
+            $comment->setStatus(false);
             $comment->setTrick($data['trick']);
-            dd($comment);
-
-            //$entityManager->persist($comment);
-            //$entityManager->flush();
-
-
+            $comment->setUser($this->getUser());
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre commentaire a été pris en compte, il sera traité et mis en ligne dans les plus brefs délais');
             // return $this->redirectToRoute('task_success');
         }
     }
-
-
 
 
 }

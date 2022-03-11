@@ -11,10 +11,23 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="show_admin")
      */
-    public function showAdmin()
+    public function showAdmin(ManagerRegistry $doctrine)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        return $this->render('@client/pages/admin.html.twig', []);
+
+        $tricks = $doctrine
+            ->getRepository(Trick::class)
+            ->findBy(
+                [],
+                ['createdAt' => 'DESC'],
+                3,
+                0
+            );
+
+
+        return $this->render('@client/pages/admin.html.twig', [
+            'tricks' => $tricks
+        ]);
     }
 
 

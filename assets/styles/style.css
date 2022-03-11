@@ -222,3 +222,10 @@ footer, header, #mobile-navbar {
     padding: 14px;
     border-radius: 50%;
 }
+.bigger {
+    transform: scale(1.8);
+}
+.admin-trick-header {
+    font-size: 1.8em;
+    border-bottom: 1px solid #999999;
+}

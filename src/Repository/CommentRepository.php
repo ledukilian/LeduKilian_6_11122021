@@ -26,6 +26,7 @@ class CommentRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.trick = :id')
+            ->andWhere('c.status = true')
             ->setParameter('id', $id)
             ->orderBy('c.createdAt', 'DESC')
             ->setFirstResult($offset)
@@ -46,6 +47,14 @@ class CommentRepository extends ServiceEntityRepository
             ;
     }
 
+    public function toggleCommentStatus(int $comment_id) {
+        $entityManager = $this->getEntityManager();
+        return $entityManager->createQuery(
+            'UPDATE comment
+            SET status = !status
+            WHERE id = :id'
+        )->setParameter('id', $comment_id);
+    }
     /*
     public function findOneBySomeField($value): ?Comment
     {

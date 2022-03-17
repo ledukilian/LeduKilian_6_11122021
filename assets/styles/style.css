@@ -31,10 +31,10 @@ footer img {
     filter: drop-shadow(3px 3px 5px #222);
 }
 footer, header, #mobile-navbar {
-    background: #1c3b91;
+    background: var(--bs-primary);
 }
 .navbar-dark .navbar-nav .nav-link.active {
-    background-color: #182c63;
+    background-color: var(--bs-primary);
 }
 .navbar-toggler {
     font-size: 1.9rem;

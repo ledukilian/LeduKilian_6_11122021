@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -19,23 +20,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class AjaxController extends AbstractController
 {
-    /**
-     * @Route("/change-comment-status/{$comment_id}/", name="_change_commentStatus_ajax")
-     */
-    public function changeCommentStatus(ManagerRegistry $doctrine, int $comment_id): JsonResponse
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
-        $repository = $doctrine->getRepository(Comment::class);
-        $repository->toggleCommentStatus($comment_id);
-
-        return $this->json([
-            'success' => true,
-            'comment' => $comment_id
-        ], 200, [], ['groups' => ['trick', 'user', 'comment', 'datetime']]);
-    }
-
-
     /**
      * @Route("/load-comments/{id}/{limit}/{offset}", name="_loadMore_comments_ajax")
      */
@@ -48,14 +32,40 @@ class AjaxController extends AbstractController
                 $limit,
                 $offset
             );
+
         $count = $doctrine
             ->getRepository(Comment::class)
             ->count($id);
-        return $this->json([
-            'success' => true,
-            'data' => $elements,
-            'remain' => ($count > ($limit + $offset))
-        ], 200, [], ['groups' => ['trick', 'user', 'comment', 'datetime']]);
+
+
+
+        $encoder = new JsonEncoder();
+        $defaultContext = [
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
+                return $object->getId();
+            },
+        ];
+        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+
+        $serializer = new Serializer([$normalizer], [$encoder]);
+
+        dd($serializer->serialize($elements, 'json'));
+
+
+
+
+
+        $jsonContent = $serializer->serialize(
+            [
+                'success' => true,
+                'data' => $elements,
+                'remain' => ($count > ($limit + $offset))
+            ],
+            'json'
+        );
+
+        return new JsonResponse($jsonContent, 200, [], true);
+
     }
 
 

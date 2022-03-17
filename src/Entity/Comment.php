@@ -39,13 +39,13 @@ class Comment implements TimestampableInterface
 
     /**
      * @Groups("comment")
-     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\ManyToOne(targetEntity=User::class, fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $trick;

@@ -49,30 +49,35 @@ class Trick implements TimestampableInterface
 
     /**
      * @ORM\OneToMany(targetEntity=TrickMedia::class, mappedBy="trick", orphanRemoval=true)
+     * @MaxDepth(1)
      */
     private $trickMedia;
 
     /**
      * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true)
+     * @MaxDepth(1)
      */
     private $contributors;
 
     /**
      * @Groups("user")
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
+     * @MaxDepth(1)
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
+     * @MaxDepth(1)
      */
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER")
      * @ORM\OrderBy({"createdAt" = "DESC"})
+     * @MaxDepth(1)
      */
     private $comments;
 

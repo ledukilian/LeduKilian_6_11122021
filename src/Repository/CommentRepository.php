@@ -48,12 +48,12 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     public function toggleCommentStatus(int $comment_id) {
-        $entityManager = $this->getEntityManager();
-        return $entityManager->createQuery(
-            'UPDATE comment
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'UPDATE comment
             SET status = !status
-            WHERE id = :id'
-        )->setParameter('id', $comment_id);
+            WHERE id = :id';
+        $stmt = $conn->prepare($sql);
+        return $stmt->executeQuery(['id' => $comment_id]);
     }
     /*
     public function findOneBySomeField($value): ?Comment

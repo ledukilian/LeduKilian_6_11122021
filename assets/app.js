@@ -43,7 +43,7 @@ $( document ).ready(function() {
                     }
                     if (infos.method=="load-comments") {
                         console.log(data);
-                        renderComment(data.content, data.user.username, data.createdAt);
+                        renderComment(data.content, data.user.username, data.createdAt.timestamp);
                     }
                 });
                 if (data.remain!==false) {
@@ -85,7 +85,7 @@ $( document ).ready(function() {
     }
 
     function convertToReadableDateTime(date) {
-        let newDate = new Date(date);
+        let newDate = new Date(date*1000);
         let val = addZero(newDate.getDay())+'/'+addZero(newDate.getMonth())+'/'+newDate.getFullYear()+' à ';
         val += addZero(newDate.getHours())+':'+addZero(newDate.getMinutes());
         return val;

@@ -21,6 +21,23 @@ use Symfony\Component\Serializer\SerializerInterface;
 class AjaxController extends AbstractController
 {
     /**
+     * @Route("/change-comment-status/{$comment_id}/", name="_change_commentStatus_ajax")
+     */
+    public function changeCommentStatus(ManagerRegistry $doctrine, int $comment_id): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $repository = $doctrine->getRepository(Comment::class);
+        $repository->toggleCommentStatus($comment_id);
+
+        return $this->json([
+            'success' => true,
+            'comment' => $comment_id
+        ], 200, [], ['groups' => ['trick', 'user', 'comment', 'datetime']]);
+    }
+
+
+    /**
      * @Route("/load-comments/{id}/{limit}/{offset}", name="_loadMore_comments_ajax")
      */
     public function loadMoreComments(ManagerRegistry $doctrine, int $id, int $limit = 8, int $offset = 8): JsonResponse
@@ -37,28 +54,19 @@ class AjaxController extends AbstractController
             ->getRepository(Comment::class)
             ->count($id);
 
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
 
+        $serializer = new Serializer($normalizers, $encoders);
 
-        $encoder = new JsonEncoder();
-        $defaultContext = [
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
-                return $object->getId();
-            },
-        ];
-        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
-
-        $serializer = new Serializer([$normalizer], [$encoder]);
-
-        dd($serializer->serialize($elements, 'json'));
-
-
-
-
+        $jsonContent = $serializer->normalize($elements, null, [
+            AbstractNormalizer::ATTRIBUTES => ['id', 'content', 'status', 'createdAt', 'user' => ['username']]
+        ]);
 
         $jsonContent = $serializer->serialize(
             [
                 'success' => true,
-                'data' => $elements,
+                'data' => $jsonContent,
                 'remain' => ($count > ($limit + $offset))
             ],
             'json'

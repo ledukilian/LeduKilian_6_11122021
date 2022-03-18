@@ -65,7 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Timesta
     private $isVerified = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="user", fetch="EAGER")
      */
     private $tricks;
 

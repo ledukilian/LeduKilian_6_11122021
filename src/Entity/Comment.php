@@ -7,7 +7,7 @@ use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Trait\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -39,14 +39,16 @@ class Comment implements TimestampableInterface
 
     /**
      * @Groups("comment")
-     * @ORM\ManyToOne(targetEntity=User::class, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity=User::class, fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
+     * @Ignore()
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
+     * @Ignore()
      */
     private $trick;
 

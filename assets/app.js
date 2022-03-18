@@ -32,17 +32,18 @@ $( document ).ready(function() {
         let infos = this.dataset;
         $.ajax({
             type: "POST",
-            url: "/ajax/"+infos.id+"/"+infos.element+"/"+infos.limit+"/"+infos.offset,
+            url: "/"+infos.method+"/"+infos.id+"/"+infos.limit+"/"+infos.offset,
             dataType: "json",
             success: function(data) {
                 document.getElementById('load-more').dataset.offset = parseInt(document.getElementById('load-more').dataset.offset) + parseInt(document.getElementById('load-more').dataset.limit);
                 $('#loader').hide();
                 $(data.data).each(function(index, data) {
-                    if (infos.element=="trick") {
+                    if (infos.method=="load-tricks") {
                         renderTrick(data.name, data.slug, 'default_trick.jpg', infos.format);
                     }
-                    if (infos.element=="comment") {
-                        renderComment(data.content, data.user.username, data.createdAt);
+                    if (infos.method=="load-comments") {
+                        console.log(data);
+                        renderComment(data.content, data.user.username, data.createdAt.timestamp);
                     }
                 });
                 if (data.remain!==false) {
@@ -84,7 +85,7 @@ $( document ).ready(function() {
     }
 
     function convertToReadableDateTime(date) {
-        let newDate = new Date(date);
+        let newDate = new Date(date*1000);
         let val = addZero(newDate.getDay())+'/'+addZero(newDate.getMonth())+'/'+newDate.getFullYear()+' à ';
         val += addZero(newDate.getHours())+':'+addZero(newDate.getMinutes());
         return val;

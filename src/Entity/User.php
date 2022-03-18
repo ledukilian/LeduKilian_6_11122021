@@ -12,7 +12,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use App\Trait\TimestampableEntity;
+use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
+use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -21,9 +22,9 @@ use App\Trait\TimestampableEntity;
  * @UniqueEntity(fields={"email"}, message="Il y a déjà un compte utilisant cette adresse mail")
  * @UniqueEntity(fields={"username"}, message="Il y a déjà un compte utilisant ce nom d'utilisateur")
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TimestampableInterface
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     /**
      * @Groups("user")
@@ -64,7 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="user", fetch="EAGER")
      */
     private $tricks;
 

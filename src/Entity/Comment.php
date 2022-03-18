@@ -2,18 +2,20 @@
 
 namespace App\Entity;
 
+use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
+use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Trait\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class Comment
+class Comment implements TimestampableInterface
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     /**
      * @Groups("comment")
@@ -37,14 +39,16 @@ class Comment
 
     /**
      * @Groups("comment")
-     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\ManyToOne(targetEntity=User::class, fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
+     * @Ignore()
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
+     * @Ignore()
      */
     private $trick;
 

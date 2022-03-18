@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
+use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
 use App\Repository\TrickRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,9 +17,9 @@ use phpDocumentor\Reflection\Types\Integer;
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
  */
-class Trick
+class Trick implements TimestampableInterface
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     /**
      * @Groups("trick")
@@ -46,18 +48,18 @@ class Trick
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity=TrickMedia::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=TrickMedia::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER")
      */
     private $trickMedia;
 
     /**
-     * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER")
      */
     private $contributors;
 
     /**
      * @Groups("user")
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -69,7 +71,7 @@ class Trick
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER")
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comments;
@@ -248,12 +250,6 @@ class Trick
         }
 
         return $this;
-    }
-
-
-    public function getFirstComments()
-    {
-        return $this->getComments()->slice(0, 5);
     }
 
 

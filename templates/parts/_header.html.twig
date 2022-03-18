@@ -13,14 +13,19 @@
                     <a class="nav-link {% if app.request.attributes.get('_route') == 'show_index' %}active{% endif %}" href="/"><em class="fas fa-home me-2"></em>Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if app.request.attributes.get('_route') == 'show_tricks' or app.request.attributes.get('_route') == 'show_trick' %}active{% endif %}" href="/tricks"><em class="fas fa-snowboarding me-2"></em>Tricks</a>
+                    <a class="nav-link {% if app.request.attributes.get('_route') == 'show_trick' %}active{% endif %}" href="#tricks"><em class="fas fa-snowboarding me-2"></em>Tricks</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <li class="nav-item">
-                        <a class="nav-link bg-danger" href="/deconnexion">Déconnexion</a>
-                    </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Administration<em class="fas fa-cog ms-2"></em></a>
+                        </li>
+                    {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link bg-danger" href="/deconnexion">Déconnexion</a>
+                        </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link {% if app.request.attributes.get('_route') == 'login' %}active{% endif %}" href="/connexion">Se connecter</a>
@@ -38,10 +43,11 @@
         <a aria-label="Accueil" class="col-4 text-center" href="/">
             <em class="fas fa-home {% if app.request.attributes.get('_route') == 'show_index' %}circled-icon{% endif %}"></em>
         </a>
-        <a aria-label="Tricks" class="col-4 text-center" href="/tricks">
-            <em class="fas fa-snowboarding {% if app.request.attributes.get('_route') == 'show_trick' %}circled-icon{% endif %} {% if app.request.attributes.get('_route') == 'show_tricks' %}circled-icon{% endif %}"></em>
+        <a aria-label="Tricks" class="col-4 text-center" href="#tricks">
+            <em class="fas fa-snowboarding {% if app.request.attributes.get('_route') == 'show_trick' %}circled-icon{% endif %}"></em>
         </a>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
             <a aria-label="Déconnexion" class="col-4 text-center" href="/deconnexion">
                 <em class="fas fa-door-open text-danger"></em>
             </a>

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
+use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
 use App\Repository\ContributorRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Trait\TimestampableEntity;
@@ -9,9 +11,9 @@ use App\Trait\TimestampableEntity;
 /**
  * @ORM\Entity(repositoryClass=ContributorRepository::class)
  */
-class Contributor
+class Contributor implements TimestampableInterface
 {
-    use TimestampableEntity;
+    use TimestampableTrait;
 
     /**
      * @ORM\Id

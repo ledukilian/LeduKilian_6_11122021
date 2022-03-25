@@ -41,19 +41,32 @@
                 </div>
                 <div class="w-100 mb-2">
                     <em class="fas fa-chevron-right text-primary me-1"></em>Média<br />
-                    <div class="d-flex align-items-center justify-content-center p-3">
-                        <button class="btn btn-primary"><em class="fas fa-image me-2"></em>Ajouter une photo</button>
-                            <span class="mx-3">ou</span>
-                        <button class="btn btn-primary"><em class="fas fa-film me-2"></em>Ajouter une vidéo</button>
-                    </div>
-                    {{ form_row(addTrickForm.trickMedia) }}
+                    <ul id="email-fields-list" class="list-unstyled"
+                        data-prototype="{{ form_widget(addTrickForm.trickMedia.vars.prototype)|e }}"
+                        data-widget-tags="{{ '<li></li>'|e }}"
+                        data-widget-counter="{{ addTrickForm.trickMedia|length }}">
+                        {% for mediaField in addTrickForm.trickMedia %}
+                            <li>
+                                {{ form_errors(mediaField) }}
+                                {{ form_widget(mediaField) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <button type="button"
+                            class="add-another-collection-widget"
+                            id="add-another-collection-widget"
+                            data-list-selector="#email-fields-list">Ajouter un média</button>
 
                 </div>
                 <button type="submit" class="btn btn-success px-3 ms-auto"><em class="fas fa-plus me-2"></em>Ajouter</button>
                 {{ form_end(addTrickForm) }}
-
-
             </div>
         </div>
     </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('collection-widget') }}
 {% endblock %}

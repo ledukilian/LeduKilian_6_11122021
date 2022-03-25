@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Trick;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -57,7 +58,7 @@ class TrickType extends AbstractType
                 'choice_label' => 'name',
                 'required' => true,
                 'label' => 'Catégorie',
-                'attr' => ['class' => 'w-100'],
+                'attr' => ['class' => 'w-100 fw-bold'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir une catégorie valide',
@@ -67,8 +68,10 @@ class TrickType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Ajouter'
+            ->add('trickMedia', CollectionType::class, [
+                'entry_type' => TrickMediaType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
             ])
         ;
     }

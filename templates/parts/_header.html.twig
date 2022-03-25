@@ -12,9 +12,11 @@
                 <li class="nav-item">
                     <a class="nav-link {% if app.request.attributes.get('_route') == 'show_index' %}active{% endif %}" href="/"><em class="fas fa-home me-2"></em>Accueil</a>
                 </li>
+                {% if app.request.attributes.get('_route') == 'show_index' %}
                 <li class="nav-item">
                     <a class="nav-link {% if app.request.attributes.get('_route') == 'show_trick' %}active{% endif %}" href="#tricks"><em class="fas fa-snowboarding me-2"></em>Tricks</a>
                 </li>
+                {% endif %}
             </ul>
             <ul class="navbar-nav ms-auto">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}

@@ -20,7 +20,7 @@ class MediaRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Media[] Returns an array of Media objects
+    //  * @return TrickMedia[] Returns an array of TrickMedia objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class MediaRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Media
+    public function findOneBySomeField($value): ?TrickMedia
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.exampleField = :val')

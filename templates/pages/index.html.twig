@@ -14,7 +14,10 @@
         <a href="#tricks" class="scroll-btn scroll-down"><em class="fas fa-arrow-circle-down"></em></a>
     </section>
     <section id="tricks" class="d-flex flex-row flex-wrap justify-content-around container mt-4 pt-3 pb-5 text-center">
-        <h3 class="display-5 col-12 fw-normal mb-4"><em class="fas fa-snowboarding text-primary me-3"></em>Derniers tricks</h3>
+        <h3 class="display-5 fw-normal mb-4"><em class="fas fa-snowboarding text-primary me-3"></em>Derniers tricks</h3>
+        <div class="ms-auto align-self-center mb-2" href="{{ path('add_trick') }}">
+            <button class="btn btn-success"><em class="fas fa-plus-circle me-2"></em>Proposer un nouveau Trick</button>
+        </div>
         <div class="d-flex flex-row flex-wrap container text-center" id="tricks-list">
         {% for trick in tricks %}
                 <a href="/trick/{{ trick.slug }}" class="mb-3 col-sm-12 col-md-3 px-2 trick">

@@ -71,7 +71,7 @@ class Trick implements TimestampableInterface
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comments;

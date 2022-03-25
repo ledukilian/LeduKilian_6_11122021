@@ -40,7 +40,7 @@ class AjaxController extends AbstractController
     /**
      * @Route("/load-comments/{id}/{limit}/{offset}", name="_loadMore_comments_ajax")
      */
-    public function loadMoreComments(ManagerRegistry $doctrine, int $id, int $limit = 8, int $offset = 8): JsonResponse
+    public function loadMoreComments(ManagerRegistry $doctrine, int $id, int $limit = 10, int $offset = 10): JsonResponse
     {
         $elements = $doctrine
             ->getRepository(Comment::class)

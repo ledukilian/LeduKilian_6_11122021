@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Ajouter un trick -
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <section class="container min-h-80">
+        <div class="card border-0 col-12 col-md-10 col-lg-8 px-0 mx-auto bg-primary mt-5">
+            <div class="card-header h5 text-white"><em class="fas fa-plus-circle me-3"></em>Ajouter un nouveau Trick</div>
+            <div class="card-body d-flex flex-column justify-content-center bg-white text-black">
+
+                {{ form_start(addTrickForm, {'attr': {'class': 'd-flex flex-row flex-wrap'}}) }}
+                <div class="w-100 mb-2">
+                    <em class="fas fa-chevron-right text-primary me-1"></em>
+                    {{ form_label(addTrickForm.name) }}
+                    {{ form_widget(addTrickForm.name) }}
+                    <small>{{ form_help(addTrickForm.name) }}</small>
+                    <div class="form-error">
+                        {{ form_errors(addTrickForm.name) }}
+                    </div>
+                </div>
+                <div class="w-100 mb-2">
+                    <em class="fas fa-chevron-right text-primary me-1"></em>
+                    {{ form_label(addTrickForm.category) }}
+                    {{ form_widget(addTrickForm.category) }}
+                    <small>{{ form_help(addTrickForm.category) }}</small>
+                    <div class="form-error">
+                        {{ form_errors(addTrickForm.category) }}
+                    </div>
+                </div>
+                <div class="w-100 mb-2">
+                    <em class="fas fa-chevron-right text-primary me-1"></em>
+                    {{ form_label(addTrickForm.description) }}
+                    {{ form_widget(addTrickForm.description) }}
+                    <small>{{ form_help(addTrickForm.description) }}</small>
+                    <div class="form-error">
+                        {{ form_errors(addTrickForm.description) }}
+                    </div>
+                </div>
+                <div class="w-100 mb-2">
+                    <em class="fas fa-chevron-right text-primary me-1"></em>Média<br />
+                    <div class="d-flex align-items-center justify-content-center p-3">
+                        <button class="btn btn-primary"><em class="fas fa-image me-2"></em>Ajouter une photo</button>
+                            <span class="mx-3">ou</span>
+                        <button class="btn btn-primary"><em class="fas fa-film me-2"></em>Ajouter une vidéo</button>
+                    </div>
+                    {{ form_row(addTrickForm.trickMedia) }}
+
+                </div>
+                <button type="submit" class="btn btn-success px-3 ms-auto"><em class="fas fa-plus me-2"></em>Ajouter</button>
+                {{ form_end(addTrickForm) }}
+
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

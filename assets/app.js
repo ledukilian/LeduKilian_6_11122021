@@ -53,7 +53,6 @@ $( document ).ready(function() {
         });
     });
 
-
     function renderComment(content, username, date) {
         let html = '<div class="mb-3 col-12 col-md-10 offset-md-1">';
         html += '<div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">';
@@ -90,4 +89,5 @@ $( document ).ready(function() {
         val += addZero(newDate.getHours())+':'+addZero(newDate.getMinutes());
         return val;
     }
+
 });

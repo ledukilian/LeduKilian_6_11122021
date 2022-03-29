@@ -229,3 +229,22 @@ footer, header, #mobile-navbar {
     font-size: 1.8em;
     border-bottom: 1px solid #999999;
 }
+.field-image-video {
+    display: none;
+}
+.field-image {
+    display: none;
+}
+.field-video {
+    display: none;
+}
+#media-fields-list li {
+
+}
+#media-fields-list li legend:before {
+    font-family: "Font Awesome 5 Free";
+    color: var(--bs-primary);
+    font-weight: 900;
+    content: "\f87c";
+    margin-right: 6px;
+}

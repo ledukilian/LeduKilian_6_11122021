@@ -218,7 +218,7 @@ footer, header, #mobile-navbar {
     cursor: progress;
 }
 .circled-icon {
-    background: #325cd5;
+    background: #698aea;
     padding: 14px;
     border-radius: 50%;
 }
@@ -247,4 +247,10 @@ footer, header, #mobile-navbar {
     font-weight: 900;
     content: "\f87c";
     margin-right: 6px;
+}
+.rounded-none {
+    border-radius: 0;
+}
+.mb-6 {
+    margin-bottom: 4rem !important;
 }

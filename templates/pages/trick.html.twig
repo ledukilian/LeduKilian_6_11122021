@@ -11,10 +11,12 @@
             <div class="card col-md-8 p-lg-8 mx-auto catchphrase-background p-2 container position-absolute">
                 <h1 class="display-4 fw-normal text-white">{{ trick.name }}</h1>
             </div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div class="trick-action px-3 py-2 ms-auto me-3">
                 <a href="#"><em class="mx-2 fas fa-pen text-warning"></em></a>
                 <a href="#"><em class="mx-2 fas fa-trash-alt text-danger"></em></a>
             </div>
+            {% endif %}
         </section>
         <section id="trick-media" class="d-flex flex-row flex-wrap justify-content-around container-fluid px-0 py-3 text-center">
             <div id="carouselExampleControls" class="carousel container slide w-100" data-bs-ride="carousel">

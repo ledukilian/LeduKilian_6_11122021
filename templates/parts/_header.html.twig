@@ -1,5 +1,5 @@
 <header class="container-fluid shadow-navbar">
-<nav id="main-navbar" class="navbar navbar-expand-lg navbar-dark container sticky-top d-none d-lg-block">
+<nav id="main-navbar" class="navbar navbar-expand-lg navbar-dark container sticky-top d-none d-md-block">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
             <img src="{{ asset('img/logo.png') }}" alt="SnowTricks Logo" />
@@ -40,13 +40,13 @@
         </div>
     </div>
 </nav>
-<nav id="mobile-navbar"  class="navbar navbar-expand-lg navbar-dark shadow-navbar fixed-bottom d-block d-lg-none">
+<nav id="mobile-navbar"  class="navbar navbar-expand-lg navbar-dark shadow-navbar fixed-bottom d-block d-md-none">
     <div class="d-flex flex-row flex-wrap justify-content-center align-items-center text-white py-1">
         <a aria-label="Accueil" class="col-4 text-center" href="/">
             <em class="fas fa-home {% if app.request.attributes.get('_route') == 'show_index' %}circled-icon{% endif %}"></em>
         </a>
         <a aria-label="Tricks" class="col-4 text-center" href="#tricks">
-            <em class="fas fa-snowboarding {% if app.request.attributes.get('_route') == 'show_trick' %}circled-icon{% endif %}"></em>
+            <em class="fas fa-snowboarding {% if app.request.attributes.get('_route') == 'show_trick' %}circled-icon{% endif %} {% if app.request.attributes.get('_route') == 'add_trick' %}circled-icon{% endif %}"></em>
         </a>
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 

@@ -26,7 +26,7 @@ class TrickMediaType extends AbstractType
                 'required' => true,
                 'multiple' => false,
                 'expanded' => true,
-                'label' => 'Type de média',
+                'label' => 'Type de média :',
                 'choices' => [
                     'Image' => Media::MEDIA_TYPE_IMAGE,
                     'Vidéo' => Media::MEDIA_TYPE_VIDEO
@@ -38,12 +38,36 @@ class TrickMediaType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('url', UrlType::class, [
+                'mapped' => false,
+                'required' => true,
+                'label' => 'Lien',
+                'label_attr' => ['class' => 'field-video'],
+                'attr' => ['class' => 'w-100 field-video'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir une URL valide',
+                    ]),
+                    new NotNull([
+                        'message' => 'Veuillez saisir une URL valide',
+                    ]),
+                    new Url([
+                        'message' => 'Veuillez saisir une URL valide',
+                    ]),
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Votre URL doit contenir au moins {{ limit }} caractères',
+                        'max' => 1024,
+                        'maxMessage' => 'Votre URL ne doit pas contenir plus de {{ limit }} caractères',
+                    ]),
+                ],
+            ])
             ->add('image', FileType::class, [
                 'mapped' => false,
                 'required' => true,
                 'label' => 'Fichier',
-                'label_attr' => ['class' => 'd-none'],
-                'attr' => ['class' => 'w-100 d-none'],
+                'label_attr' => ['class' => 'field-image'],
+                'attr' => ['class' => 'w-100 field-image'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez ajouter une image',
@@ -60,8 +84,8 @@ class TrickMediaType extends AbstractType
             ->add('alt', TextType::class, [
                 'required' => true,
                 'label' => 'Texte alternatif',
-                'label_attr' => ['class' => 'd-none'],
-                'attr' => ['class' => 'w-100 d-none'],
+                'label_attr' => ['class' => 'field-image-video'],
+                'attr' => ['class' => 'w-100 field-image-video'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un texte alternatif valide',
@@ -74,30 +98,6 @@ class TrickMediaType extends AbstractType
                         'minMessage' => 'Votre texte alternatif doit contenir au moins {{ limit }} caractères',
                         'max' => 1024,
                         'maxMessage' => 'Votre texte alternatif ne doit pas contenir plus de {{ limit }} caractères',
-                    ]),
-                ],
-            ])
-            ->add('url', UrlType::class, [
-                'mapped' => false,
-                'required' => true,
-                'label' => 'Lien',
-                'label_attr' => ['class' => 'd-none'],
-                'attr' => ['class' => 'w-100 d-none'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir une URL valide',
-                    ]),
-                    new NotNull([
-                        'message' => 'Veuillez saisir une URL valide',
-                    ]),
-                    new Url([
-                        'message' => 'Veuillez saisir une URL valide',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Votre URL doit contenir au moins {{ limit }} caractères',
-                        'max' => 1024,
-                        'maxMessage' => 'Votre URL ne doit pas contenir plus de {{ limit }} caractères',
                     ]),
                 ],
             ])

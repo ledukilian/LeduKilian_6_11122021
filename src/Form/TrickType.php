@@ -69,6 +69,7 @@ class TrickType extends AbstractType
                 ],
             ])
             ->add('trickMedia', CollectionType::class, [
+                'label' => false,
                 'entry_type' => TrickMediaType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,

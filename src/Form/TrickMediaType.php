@@ -7,6 +7,7 @@ use App\Entity\Media;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,10 +39,10 @@ class TrickMediaType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('url', UrlType::class, [
+            ->add('embed', TextareaType::class, [
                 'mapped' => false,
                 'required' => true,
-                'label' => 'Lien',
+                'label' => 'Embed de la vidéo',
                 'label_attr' => ['class' => 'field-video'],
                 'attr' => ['class' => 'w-100 field-video'],
                 'constraints' => [
@@ -51,14 +52,11 @@ class TrickMediaType extends AbstractType
                     new NotNull([
                         'message' => 'Veuillez saisir une URL valide',
                     ]),
-                    new Url([
-                        'message' => 'Veuillez saisir une URL valide',
-                    ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Votre URL doit contenir au moins {{ limit }} caractères',
+                        'minMessage' => 'Votre embed doit contenir au moins {{ limit }} caractères',
                         'max' => 1024,
-                        'maxMessage' => 'Votre URL ne doit pas contenir plus de {{ limit }} caractères',
+                        'maxMessage' => 'Votre embed ne doit pas contenir plus de {{ limit }} caractères',
                     ]),
                 ],
             ])
@@ -84,8 +82,8 @@ class TrickMediaType extends AbstractType
             ->add('alt', TextType::class, [
                 'required' => true,
                 'label' => 'Texte alternatif',
-                'label_attr' => ['class' => 'field-image-video'],
-                'attr' => ['class' => 'w-100 field-image-video'],
+                'label_attr' => ['class' => 'field-image'],
+                'attr' => ['class' => 'w-100 field-image'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un texte alternatif valide',

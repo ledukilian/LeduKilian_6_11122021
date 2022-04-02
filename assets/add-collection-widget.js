@@ -30,7 +30,6 @@ jQuery('#add-another-collection-widget').click(function (e) {
 });
 
 function toggleMediaForm(id, type) {
-    $('#trick_trickMedia_'+id+' .field-image-video').show();
     if (type === 'image') {
         $('#trick_trickMedia_'+id+' .field-image').show();
         $('#trick_trickMedia_'+id+' .field-video').hide();

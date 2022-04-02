@@ -81,6 +81,7 @@ class TrickType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Trick::class,
+            'validation_groups' => ['image', 'video'],
         ]);
     }
 }

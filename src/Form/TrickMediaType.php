@@ -41,7 +41,7 @@ class TrickMediaType extends AbstractType
             ])
             ->add('embed', TextareaType::class, [
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'label' => 'Embed de la vidéo',
                 'label_attr' => ['class' => 'field-video'],
                 'attr' => ['class' => 'w-100 field-video'],
@@ -62,7 +62,7 @@ class TrickMediaType extends AbstractType
             ])
             ->add('image', FileType::class, [
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'label' => 'Fichier',
                 'label_attr' => ['class' => 'field-image'],
                 'attr' => ['class' => 'w-100 field-image'],
@@ -80,7 +80,7 @@ class TrickMediaType extends AbstractType
                 ],
             ])
             ->add('alt', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'label' => 'Texte alternatif',
                 'label_attr' => ['class' => 'field-image'],
                 'attr' => ['class' => 'w-100 field-image'],

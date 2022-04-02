@@ -23,10 +23,26 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/ajouter/", name="add_trick")
      */
-    public function createTrick() {
+    public function createTrick(ManagerRegistry $doctrine, Request $request) {
         $trick = new Trick();
 
         $trickForm = $this->createForm(TrickType::class, $trick);
+
+        $trickForm->handleRequest($request);
+        if ($trickForm->isSubmitted() && $trickForm->isValid()) {
+            $trick = $trickForm->getData();
+            $trick->setUser($this->getUser());
+
+            $trickRepository = $doctrine->getRepository(Trick::class);
+            $trick->setSlug($trickRepository->generateSlug($trick->getName()));
+            dd($trick);
+
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('home');
+        }
 
         return $this->renderForm('@client/pages/addTrick.html.twig', [
             'addTrickForm' => $trickForm

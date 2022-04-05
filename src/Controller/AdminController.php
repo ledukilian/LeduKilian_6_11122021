@@ -38,6 +38,8 @@ class AdminController extends AbstractController
      */
     public function changeCommentStatus(ManagerRegistry $doctrine, int $comment_id)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $repository = $doctrine->getRepository(Comment::class);
         $repository->toggleCommentStatus($comment_id);
 

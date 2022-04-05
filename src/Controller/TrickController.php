@@ -35,7 +35,24 @@ class TrickController extends AbstractController
 
             $trickRepository = $doctrine->getRepository(Trick::class);
             $trick->setSlug($trickRepository->generateSlug($trick->getName()));
-            dd($trick);
+
+
+
+
+            $medias = $trickForm->get('trickMedia')->getData();
+
+            dd($medias);
+            //dd($_FILES['trick']);
+
+            foreach ($medias as $media) {
+                $errors = $validator->validate($media, null, [$media['type']]);
+                dump($media);
+            }
+
+            // Ensuite : Définir le premier média comme cover media
+
+
+
 
             $entityManager = $doctrine->getManager();
             $entityManager->persist($trick);

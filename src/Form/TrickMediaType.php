@@ -23,7 +23,7 @@ class TrickMediaType extends AbstractType
     {
         $builder
             ->add('type', ChoiceType::class, [
-                'mapped' => false,
+                'mapped' => true,
                 'required' => true,
                 'multiple' => false,
                 'expanded' => true,
@@ -45,6 +45,7 @@ class TrickMediaType extends AbstractType
                 'label' => 'Embed de la vidéo',
                 'label_attr' => ['class' => 'field-video'],
                 'attr' => ['class' => 'w-100 field-video'],
+                'validation_groups' => ['video'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir une URL valide',
@@ -66,6 +67,7 @@ class TrickMediaType extends AbstractType
                 'label' => 'Fichier',
                 'label_attr' => ['class' => 'field-image'],
                 'attr' => ['class' => 'w-100 field-image'],
+                'validation_groups' => ['image'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez ajouter une image',
@@ -84,6 +86,7 @@ class TrickMediaType extends AbstractType
                 'label' => 'Texte alternatif',
                 'label_attr' => ['class' => 'field-image'],
                 'attr' => ['class' => 'w-100 field-image'],
+                'validation_groups' => ['image'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un texte alternatif valide',

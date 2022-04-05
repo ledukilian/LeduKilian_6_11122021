@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\CommentFormType;
 use App\Form\TrickMediaType;
 use App\Form\TrickType;
+use App\Services\Slug;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,10 +35,10 @@ class TrickController extends AbstractController
             $trick->setUser($this->getUser());
 
             $trickRepository = $doctrine->getRepository(Trick::class);
-            $trick->setSlug($trickRepository->generateSlug($trick->getName()));
+            $trick->setSlug(Slug::generate($trick->getName()));
+            dd($trick);
 
-
-
+            //->generateSlug($trick->getName())
 
             $medias = $trickForm->get('trickMedia')->getData();
 

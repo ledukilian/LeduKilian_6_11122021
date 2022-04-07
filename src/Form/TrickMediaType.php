@@ -10,12 +10,15 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Test\FormInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Url;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TrickMediaType extends AbstractType
 {
@@ -76,6 +79,16 @@ class TrickMediaType extends AbstractType
                         'allowPortrait' => false,
                         'allowPortraitMessage' => 'Vous ne pouvez pas ajouter une image en portrait',
                     ]),
+                    new File([
+                        'maxSize' => '1024k',
+                        'maxSizeMessage' => 'Votre image ne doit pas dépasser {{ limit }} Ko',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'Votre image doit être au format jpeg, png ou gif',
+                    ]),
                     new NotNull([
                         'message' => 'Veuillez ajouter une image',
                     ]),
@@ -98,10 +111,53 @@ class TrickMediaType extends AbstractType
                         'min' => 3,
                         'minMessage' => 'Votre texte alternatif doit contenir au moins {{ limit }} caractères',
                         'max' => 1024,
+                        'groups' => ['image'],
                         'maxMessage' => 'Votre texte alternatif ne doit pas contenir plus de {{ limit }} caractères',
                     ]),
                 ],
             ])
         ;
     }
+
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Media::class,
+            'new' => false,
+            'coverImage' => false,
+            'validation_groups' => function (Form $form) {
+
+                $media = $form->getData();
+                $config = $form->getConfig();
+
+                if (is_null($media->getId())) {
+                    $groups = ['image', 'video'];
+
+                    if (!$config->getOption("coverImage")) {
+                        switch ($form->get("type")->getData()) {
+                            case Media::MEDIA_TYPE_IMAGE:
+                                $groups = ['image'];
+                                break;
+                            case Media::MEDIA_TYPE_VIDEO:
+                                $groups = ['video'];
+                                break;
+                            default:
+                                $groups = [];
+                                break;
+                        }
+                    }
+                } else {
+                    $groups = ['video'];
+                }
+
+                $groups[] = "Default";
+
+                dump($groups);
+                return array_unique($groups);
+            }
+        ]);
+
+    }
+
 }

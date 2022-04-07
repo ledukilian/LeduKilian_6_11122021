@@ -24,7 +24,7 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/ajouter/", name="add_trick")
      */
-    public function createTrick(ManagerRegistry $doctrine, Request $request) {
+    public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request) {
         $trick = new Trick();
 
         $trickForm = $this->createForm(TrickType::class, $trick);
@@ -35,7 +35,11 @@ class TrickController extends AbstractController
             $trick->setUser($this->getUser());
 
             $trickRepository = $doctrine->getRepository(Trick::class);
-            $trick->setSlug(Slug::generate($trick->getName()));
+
+            $slug = $slug->generate($trick->getName());
+
+            $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
+
             dd($trick);
 
             //->generateSlug($trick->getName())
@@ -51,9 +55,6 @@ class TrickController extends AbstractController
             }
 
             // Ensuite : Définir le premier média comme cover media
-
-
-
 
             $entityManager = $doctrine->getManager();
             $entityManager->persist($trick);

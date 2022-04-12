@@ -32,8 +32,8 @@ class TrickMediaType extends AbstractType
                 'expanded' => true,
                 'label' => 'Type de média :',
                 'choices' => [
-                    'Image' => Media::MEDIA_TYPE_IMAGE,
-                    'Vidéo' => Media::MEDIA_TYPE_VIDEO
+                    'Image' => Media::TYPE_IMAGE,
+                    'Vidéo' => Media::TYPE_VIDEO
                 ],
                 'attr' => ['class' => 'w-100'],
                 'constraints' => [
@@ -48,13 +48,13 @@ class TrickMediaType extends AbstractType
                 'label' => 'Embed de la vidéo',
                 'label_attr' => ['class' => 'field-video'],
                 'attr' => ['class' => 'w-100 field-video'],
-                'validation_groups' => ['video'],
+                'validation_groups' => [Media::TYPE_VIDEO],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir une URL valide',
+                        'message' => 'Veuillez saisir un embed valide',
                     ]),
                     new NotNull([
-                        'message' => 'Veuillez saisir une URL valide',
+                        'message' => 'Veuillez saisir un embed valide',
                     ]),
                     new Length([
                         'min' => 6,
@@ -70,7 +70,7 @@ class TrickMediaType extends AbstractType
                 'label' => 'Fichier',
                 'label_attr' => ['class' => 'field-image'],
                 'attr' => ['class' => 'w-100 field-image'],
-                'validation_groups' => ['image'],
+                'validation_groups' => [Media::TYPE_IMAGE],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez ajouter une image',
@@ -78,10 +78,11 @@ class TrickMediaType extends AbstractType
                     new Image([
                         'allowPortrait' => false,
                         'allowPortraitMessage' => 'Vous ne pouvez pas ajouter une image en portrait',
+
                     ]),
                     new File([
-                        'maxSize' => '1024k',
-                        'maxSizeMessage' => 'Votre image ne doit pas dépasser {{ limit }} Ko',
+                        'maxSize' => '2M',
+                        'maxSizeMessage' => 'Votre image ne doit pas dépasser {{ limit }} {{ suffix }}',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -99,7 +100,7 @@ class TrickMediaType extends AbstractType
                 'label' => 'Texte alternatif',
                 'label_attr' => ['class' => 'field-image'],
                 'attr' => ['class' => 'w-100 field-image'],
-                'validation_groups' => ['image'],
+                'validation_groups' => [Media::TYPE_IMAGE],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un texte alternatif valide',
@@ -111,7 +112,6 @@ class TrickMediaType extends AbstractType
                         'min' => 3,
                         'minMessage' => 'Votre texte alternatif doit contenir au moins {{ limit }} caractères',
                         'max' => 1024,
-                        'groups' => ['image'],
                         'maxMessage' => 'Votre texte alternatif ne doit pas contenir plus de {{ limit }} caractères',
                     ]),
                 ],
@@ -127,37 +127,13 @@ class TrickMediaType extends AbstractType
             'new' => false,
             'coverImage' => false,
             'validation_groups' => function (Form $form) {
-
                 $media = $form->getData();
-                $config = $form->getConfig();
-
-                if (is_null($media->getId())) {
-                    $groups = ['image', 'video'];
-
-                    if (!$config->getOption("coverImage")) {
-                        switch ($form->get("type")->getData()) {
-                            case Media::MEDIA_TYPE_IMAGE:
-                                $groups = ['image'];
-                                break;
-                            case Media::MEDIA_TYPE_VIDEO:
-                                $groups = ['video'];
-                                break;
-                            default:
-                                $groups = [];
-                                break;
-                        }
-                    }
-                } else {
-                    $groups = ['video'];
+                if (!empty($media)) {
+                    return array($media->getType());
                 }
-
-                $groups[] = "Default";
-
-                dump($groups);
-                return array_unique($groups);
+                return ['Default'];
             }
         ]);
-
     }
 
 }

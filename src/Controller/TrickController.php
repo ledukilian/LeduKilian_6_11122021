@@ -41,12 +41,9 @@ class TrickController extends AbstractController
             $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
 
             dd($trick);
-
             //->generateSlug($trick->getName())
-
-            $medias = $trickForm->get('trickMedia')->getData();
-
-            dd($medias);
+            // $medias = $trickForm->get('trickMedia')->getData();
+            // dd($medias);
             //dd($_FILES['trick']);
 
             foreach ($medias as $media) {

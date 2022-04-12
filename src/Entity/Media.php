@@ -16,8 +16,8 @@ class Media implements TimestampableInterface
 {
     use TimestampableTrait;
 
-    public const MEDIA_TYPE_IMAGE = 'image';
-    public const MEDIA_TYPE_VIDEO = 'video';
+    public const TYPE_IMAGE = 'image';
+    public const TYPE_VIDEO = 'video';
 
     /**
      * @ORM\Id

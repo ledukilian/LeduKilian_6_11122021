@@ -1,4 +1,22 @@
 
+let fieldNbr = $('#media-fields-list').data('widgetCounter');
+for (let i = 0; i < fieldNbr; i++) {
+    console.log('#trick_trickMedia_'+i);
+
+    $('#trick_trickMedia_'+i+'_type_0').click(function() {
+        toggleMediaForm(i, 'image');
+    });
+    $('#trick_trickMedia_'+i+'_type_1').click(function() {
+        toggleMediaForm(i, 'video');
+    });
+
+    if ($('#trick_trickMedia_'+i+'_type_0').is(':checked')) {
+        toggleMediaForm(i, 'image');
+    } else if ($('#trick_trickMedia_'+i+'_type_1').is(':checked')) {
+        toggleMediaForm(i, 'video');
+    }
+}
+
 jQuery('#add-another-collection-widget').click(function (e) {
     var list = jQuery(jQuery(this).attr('data-list-selector'));
     // Try to find the counter of the list or use the length of the list

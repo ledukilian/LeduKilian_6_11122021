@@ -38,7 +38,7 @@ class TrickMediaType extends AbstractType
                 'attr' => ['class' => 'w-100'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir un texte alternatif valide',
+                        'message' => 'Veuillez saisir un type valide',
                     ]),
                 ],
             ])
@@ -48,19 +48,17 @@ class TrickMediaType extends AbstractType
                 'label' => 'Embed de la vidéo',
                 'label_attr' => ['class' => 'field-video'],
                 'attr' => ['class' => 'w-100 field-video'],
-                'validation_groups' => [Media::TYPE_VIDEO],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un embed valide',
-                    ]),
-                    new NotNull([
-                        'message' => 'Veuillez saisir un embed valide',
+                        'groups' => [Media::TYPE_VIDEO]
                     ]),
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Votre embed doit contenir au moins {{ limit }} caractères',
                         'max' => 1024,
                         'maxMessage' => 'Votre embed ne doit pas contenir plus de {{ limit }} caractères',
+                        'groups' => [Media::TYPE_VIDEO]
                     ]),
                 ],
             ])
@@ -70,14 +68,15 @@ class TrickMediaType extends AbstractType
                 'label' => 'Fichier',
                 'label_attr' => ['class' => 'field-image'],
                 'attr' => ['class' => 'w-100 field-image'],
-                'validation_groups' => [Media::TYPE_IMAGE],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez ajouter une image',
+                        'groups' => [Media::TYPE_IMAGE]
                     ]),
                     new Image([
                         'allowPortrait' => false,
                         'allowPortraitMessage' => 'Vous ne pouvez pas ajouter une image en portrait',
+                        'groups' => [Media::TYPE_IMAGE]
 
                     ]),
                     new File([
@@ -89,9 +88,7 @@ class TrickMediaType extends AbstractType
                             'image/gif',
                         ],
                         'mimeTypesMessage' => 'Votre image doit être au format jpeg, png ou gif',
-                    ]),
-                    new NotNull([
-                        'message' => 'Veuillez ajouter une image',
+                        'groups' => [Media::TYPE_IMAGE]
                     ]),
                 ],
             ])
@@ -100,19 +97,17 @@ class TrickMediaType extends AbstractType
                 'label' => 'Texte alternatif',
                 'label_attr' => ['class' => 'field-image'],
                 'attr' => ['class' => 'w-100 field-image'],
-                'validation_groups' => [Media::TYPE_IMAGE],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un texte alternatif valide',
-                    ]),
-                    new NotNull([
-                        'message' => 'Veuillez saisir un texte alternatif valide',
+                        'groups' => [Media::TYPE_IMAGE]
                     ]),
                     new Length([
                         'min' => 3,
                         'minMessage' => 'Votre texte alternatif doit contenir au moins {{ limit }} caractères',
                         'max' => 1024,
                         'maxMessage' => 'Votre texte alternatif ne doit pas contenir plus de {{ limit }} caractères',
+                        'groups' => [Media::TYPE_IMAGE]
                     ]),
                 ],
             ])
@@ -128,7 +123,8 @@ class TrickMediaType extends AbstractType
             'coverImage' => false,
             'validation_groups' => function (Form $form) {
                 $media = $form->getData();
-                if (!empty($media)) {
+                dump($media->getType());
+                if (is_null($media->getId())) {
                     return array($media->getType());
                 }
                 return ['Default'];

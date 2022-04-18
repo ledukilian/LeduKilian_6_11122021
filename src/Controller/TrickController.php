@@ -47,7 +47,7 @@ class TrickController extends AbstractController
             //dd($_FILES['trick']);
 
             foreach ($medias as $media) {
-                $errors = $validator->validate($media, null, [$media['type']]);
+                // Créer le média et l'ajouter
                 dump($media);
             }
 

@@ -73,15 +73,9 @@ class TrickMediaType extends AbstractType
                         'message' => 'Veuillez ajouter une image',
                         'groups' => [Media::TYPE_IMAGE]
                     ]),
-                    new Image([
-                        'allowPortrait' => false,
-                        'allowPortraitMessage' => 'Vous ne pouvez pas ajouter une image en portrait',
-                        'groups' => [Media::TYPE_IMAGE]
-
-                    ]),
                     new File([
-                        'maxSize' => '2M',
-                        'maxSizeMessage' => 'Votre image ne doit pas dépasser {{ limit }} {{ suffix }}',
+                        'maxSize' => '1M',
+                        'maxSizeMessage' => 'Votre image est trop grosse : ({{ size }} {{ suffix }}). La taille limite autorisée est de {{ limit }} {{ suffix }}',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -89,6 +83,12 @@ class TrickMediaType extends AbstractType
                         ],
                         'mimeTypesMessage' => 'Votre image doit être au format jpeg, png ou gif',
                         'groups' => [Media::TYPE_IMAGE]
+                    ]),
+                    new Image([
+                        'allowPortrait' => false,
+                        'allowPortraitMessage' => 'Vous ne pouvez pas ajouter une image en portrait',
+                        'groups' => [Media::TYPE_IMAGE]
+
                     ]),
                 ],
             ])

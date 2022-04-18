@@ -1,7 +1,7 @@
 
 let fieldNbr = $('#media-fields-list').data('widgetCounter');
 for (let i = 0; i < fieldNbr; i++) {
-    console.log('#trick_trickMedia_'+i);
+    //console.log('#trick_trickMedia_'+i);
 
     $('#trick_trickMedia_'+i+'_type_0').click(function() {
         toggleMediaForm(i, 'image');
@@ -33,10 +33,10 @@ jQuery('#add-another-collection-widget').click(function (e) {
     // And store it, the length cannot be used if deleting widgets is allowed
     list.data('widget-counter', counter);
 
+    deleteBtn = '<button onclick="$(this).parent().addClass(\'d-none\');return false;" class="btn btn-danger btn-sm float-end mt-3"><i class="fas fa-trash-alt"></i></button>';
     // create a new list element and add it to the list
-    var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+    var newElem = jQuery(list.attr('data-widget-tags')).html(deleteBtn+newWidget);
 
-    newWidget += '<hr />';
     newElem.appendTo(list);
 
     $('#trick_trickMedia_'+(counter-1)+'_type_0').click(function() {
@@ -46,6 +46,7 @@ jQuery('#add-another-collection-widget').click(function (e) {
         toggleMediaForm(counter-1, 'video');
     });
 });
+
 
 function toggleMediaForm(id, type) {
     if (type === 'image') {

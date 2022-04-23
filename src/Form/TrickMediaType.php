@@ -42,6 +42,23 @@ class TrickMediaType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('isCoverMedia', ChoiceType::class, [
+                'mapped' => false,
+                'required' => true,
+                'multiple' => false,
+                'expanded' => true,
+                'label' => 'Définir en image de couverture :',
+                'choices' => [
+                    'Oui' => '1',
+                    'Non' => '0'
+                ],
+                'attr' => ['class' => 'w-100'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Vous devez choisir si le média est en couverture ou non',
+                    ]),
+                ],
+            ])
             ->add('embed', TextareaType::class, [
                 'mapped' => false,
                 'required' => false,

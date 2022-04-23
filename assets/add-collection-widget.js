@@ -1,5 +1,6 @@
 
 let fieldNbr = $('#media-fields-list').data('widgetCounter');
+
 for (let i = 0; i < fieldNbr; i++) {
     //console.log('#trick_trickMedia_'+i);
 
@@ -33,7 +34,7 @@ jQuery('#add-another-collection-widget').click(function (e) {
     // And store it, the length cannot be used if deleting widgets is allowed
     list.data('widget-counter', counter);
 
-    deleteBtn = '<button onclick="$(this).parent().addClass(\'d-none\');return false;" class="btn btn-danger btn-sm float-end mt-3"><i class="fas fa-trash-alt"></i></button>';
+    deleteBtn = '<button onclick="deleteMediaWidget(this)" class="btn btn-danger btn-sm float-end mt-3"><i class="fas fa-trash-alt"></i></button>';
     // create a new list element and add it to the list
     var newElem = jQuery(list.attr('data-widget-tags')).html(deleteBtn+newWidget);
 
@@ -47,6 +48,13 @@ jQuery('#add-another-collection-widget').click(function (e) {
     });
 });
 
+function deleteMediaWidget(widget) {
+    console.log('On est là');
+    $(widget).parent().addClass('d-none');
+    console.log('On avait '+$('#media-fields-list').data('widgetCounter')+' maintenant on a '+($('#media-fields-list').data('widgetCounter')-1));
+    $(widget).parent().parent().data('widget-counter', $(widget).parent().parent().data('widget-counter')-1);
+    return false;
+}
 
 function toggleMediaForm(id, type) {
     if (type === 'image') {

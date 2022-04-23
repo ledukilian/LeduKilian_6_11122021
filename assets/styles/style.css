@@ -238,10 +238,7 @@ footer, header, #mobile-navbar {
 .field-video {
     display: none;
 }
-#media-fields-list li {
-
-}
-#media-fields-list li legend:before {
+#media-fields-list li fieldset:first-child legend:before {
     font-family: "Font Awesome 5 Free";
     color: var(--bs-primary);
     font-weight: 900;

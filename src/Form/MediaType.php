@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TrickMediaType extends AbstractType
+class MediaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -39,23 +39,6 @@ class TrickMediaType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un type valide',
-                    ]),
-                ],
-            ])
-            ->add('isCoverMedia', ChoiceType::class, [
-                'mapped' => false,
-                'required' => true,
-                'multiple' => false,
-                'expanded' => true,
-                'label' => 'Définir en image de couverture :',
-                'choices' => [
-                    'Oui' => '1',
-                    'Non' => '0'
-                ],
-                'attr' => ['class' => 'w-100'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Vous devez choisir si le média est en couverture ou non',
                     ]),
                 ],
             ])

@@ -3,14 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Media;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\CommentFormType;
-use App\Form\TrickMediaType;
 use App\Form\TrickType;
+use App\Services\FileUploader;
 use App\Services\Slug;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -24,7 +26,7 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/ajouter/", name="add_trick")
      */
-    public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request) {
+    public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
         $trick = new Trick();
 
         $trickForm = $this->createForm(TrickType::class, $trick);
@@ -40,18 +42,23 @@ class TrickController extends AbstractController
 
             $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
 
-            dd($trick);
-            //->generateSlug($trick->getName())
-            // $medias = $trickForm->get('trickMedia')->getData();
-            // dd($medias);
-            //dd($_FILES['trick']);
+            $medias = $trickForm->get('trickMedia')->getData();
 
-            foreach ($medias as $media) {
-                // Créer le média et l'ajouter
-                dump($media);
+            foreach ($trickForm->get('trickMedia') as $media) {
+                if ($media->getData()->getType()==Media::TYPE_IMAGE) {
+                    $fileName = $fileUploader->upload($media->get('image')->getData());
+                    $media->getData()->setLink($fileName);
+                }
+                if ($media->getData()->getType()==Media::TYPE_VIDEO) {
+                    $media->getData()->setLink($media->get('embed')->getData());
+                }
+
+                $trick->addMedium($media->getData());
             }
+            dd($trick);
 
             // Ensuite : Définir le premier média comme cover media
+
 
             $entityManager = $doctrine->getManager();
             $entityManager->persist($trick);

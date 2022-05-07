@@ -41,6 +41,12 @@ class Media implements TimestampableInterface
      */
     private $alt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="media")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $trick;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,6 +84,18 @@ class Media implements TimestampableInterface
     public function setAlt(string $alt): self
     {
         $this->alt = $alt;
+
+        return $this;
+    }
+
+    public function getTrick(): ?Trick
+    {
+        return $this->trick;
+    }
+
+    public function setTrick(?Trick $trick): self
+    {
+        $this->trick = $trick;
 
         return $this;
     }

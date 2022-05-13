@@ -65,7 +65,7 @@ class TrickController extends AbstractController
 
                 $trick->addMedium($media->getData());
             }
-            dump($trick);
+            dd($trick);
 
             $entityManager->persist($trick);
             $entityManager->flush();

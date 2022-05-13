@@ -33,6 +33,7 @@ class TrickController extends AbstractController
 
         $trickForm->handleRequest($request);
         if ($trickForm->isSubmitted() && $trickForm->isValid()) {
+            $entityManager = $doctrine->getManager();
             $trick = $trickForm->getData();
             $trick->setUser($this->getUser());
 
@@ -42,9 +43,10 @@ class TrickController extends AbstractController
 
             $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
 
-            $medias = $trickForm->get('trickMedia')->getData();
+            $medias = $trickForm->get('media');
 
-            foreach ($trickForm->get('trickMedia') as $media) {
+            $firstMedia = 1;
+            foreach ($medias as $media) {
                 if ($media->getData()->getType()==Media::TYPE_IMAGE) {
                     $fileName = $fileUploader->upload($media->get('image')->getData());
                     $media->getData()->setLink($fileName);
@@ -52,18 +54,23 @@ class TrickController extends AbstractController
                 if ($media->getData()->getType()==Media::TYPE_VIDEO) {
                     $media->getData()->setLink($media->get('embed')->getData());
                 }
+                if ($firstMedia) {
+                    $trick->setCoverImg($media->getData());
+                    $firstMedia = 0;
+                }
+
+                // TODO : Régler la persistence du média
+                $media->getData()->setTrick($trick);
+                //$entityManager->persist($media->getData());
 
                 $trick->addMedium($media->getData());
             }
-            dd($trick);
+            dump($trick);
 
-            // Ensuite : Définir le premier média comme cover media
-
-
-            $entityManager = $doctrine->getManager();
             $entityManager->persist($trick);
             $entityManager->flush();
-
+            dd('Là il se passe un truc');
+            die();
             return $this->redirectToRoute('home');
         }
 

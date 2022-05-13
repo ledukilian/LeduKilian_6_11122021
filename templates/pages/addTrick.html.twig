@@ -42,10 +42,10 @@
                 <div class="w-100 mb-2">
                     <em class="fas fa-chevron-right text-primary me-1"></em>Média<br />
                     <ul id="media-fields-list" class="list-unstyled"
-                        data-prototype="{{ form_widget(addTrickForm.trickMedia.vars.prototype)|e }}"
+                        data-prototype="{{ form_widget(addTrickForm.media.vars.prototype)|e }}"
                         data-widget-tags="{{ '<li></li>'|e }}"
-                        data-widget-counter="{{ addTrickForm.trickMedia|length }}">
-                        {% for mediaField in addTrickForm.trickMedia %}
+                        data-widget-counter="{{ addTrickForm.media|length }}">
+                        {% for mediaField in addTrickForm.media %}
                             <li>
                                 {{ form_errors(mediaField) }}
                                 {{ form_widget(mediaField) }}

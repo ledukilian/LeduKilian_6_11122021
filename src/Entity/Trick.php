@@ -72,12 +72,12 @@ class Trick implements TimestampableInterface
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="trick", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $media;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Media::class)
+     * @ORM\ManyToOne(targetEntity=Media::class, cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $coverImg;

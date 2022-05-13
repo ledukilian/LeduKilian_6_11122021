@@ -123,7 +123,6 @@ class MediaType extends AbstractType
             'coverImage' => false,
             'validation_groups' => function (Form $form) {
                 $media = $form->getData();
-                dump($media->getType());
                 if (is_null($media->getId())) {
                     return array($media->getType());
                 }

@@ -95,8 +95,8 @@ class MediaType extends AbstractType
             ->add('alt', TextType::class, [
                 'required' => false,
                 'label' => 'Texte alternatif',
-                'label_attr' => ['class' => 'field-image'],
-                'attr' => ['class' => 'w-100 field-image'],
+                'label_attr' => ['class' => 'field-image-video'],
+                'attr' => ['class' => 'w-100 field-image-video'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un texte alternatif valide',

@@ -18,6 +18,7 @@ class Media implements TimestampableInterface
 
     public const TYPE_IMAGE = 'image';
     public const TYPE_VIDEO = 'video';
+    public const DEFAULT = 'default.jpg';
 
     /**
      * @ORM\Id
@@ -40,12 +41,6 @@ class Media implements TimestampableInterface
      * @ORM\Column(type="string", length=255)
      */
     private $alt;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="media")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $trick;
 
     public function getId(): ?int
     {

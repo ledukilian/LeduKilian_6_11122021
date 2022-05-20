@@ -72,21 +72,23 @@ class Trick implements TimestampableInterface
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="trick", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity=Media::class, cascade={"persist"})
      */
-    private $media;
+    private $Medias;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Media::class, cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Media::class)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $coverImg;
+
 
     public function __construct()
     {
         $this->contributors = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->media = new ArrayCollection();
+        $this->Medias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -231,29 +233,23 @@ class Trick implements TimestampableInterface
     /**
      * @return Collection<int, Media>
      */
-    public function getMedia(): Collection
+    public function getMedias(): Collection
     {
-        return $this->media;
+        return $this->Medias;
     }
 
-    public function addMedium(Media $medium): self
+    public function addMedia(Media $media): self
     {
-        if (!$this->media->contains($medium)) {
-            $this->media[] = $medium;
-            $medium->setTrick($this);
+        if (!$this->Medias->contains($media)) {
+            $this->Medias[] = $media;
         }
 
         return $this;
     }
 
-    public function removeMedium(Media $medium): self
+    public function removeMedia(Media $media): self
     {
-        if ($this->media->removeElement($medium)) {
-            // set the owning side to null (unless already changed)
-            if ($medium->getTrick() === $this) {
-                $medium->setTrick(null);
-            }
-        }
+        $this->Medias->removeElement($media);
 
         return $this;
     }
@@ -269,6 +265,10 @@ class Trick implements TimestampableInterface
 
         return $this;
     }
+
+
+
+
 
 
 }

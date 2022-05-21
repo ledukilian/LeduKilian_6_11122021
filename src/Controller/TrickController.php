@@ -45,36 +45,34 @@ class TrickController extends AbstractController
 
             $medias = $trickForm->get('media');
 
-            $firstMedia = 1;
+            $cover = false;
             foreach ($medias as $media) {
+
                 $newMedia = $media->getData();
                 if ($newMedia->getType()==Media::TYPE_IMAGE) {
                     $fileName = $fileUploader->upload($media->get('image')->getData());
                     $newMedia->setLink($fileName);
+                    if(!$cover){
+                        $trick->setCoverImg($newMedia);
+                        $cover = true;
+                    }
                 }
                 if ($newMedia->getType()==Media::TYPE_VIDEO) {
                     $newMedia->setLink($media->get('embed')->getData());
                 }
-                if ($firstMedia) {
-                    // TODO : Que une image !
-                    // TODO : Gérer la default image
-                    $trick->setCoverImg($newMedia);
-                    $firstMedia = 0;
-                }
 
                 // TODO : Régler la persistence du média
                 $media->getData()->setTrick($trick);
-                //$entityManager->persist($newMedia);
+                //$entityManager->persist($media->getData());
 
-                $trick->addMedium($newMedia);
+                $trick->addMedia($media->getData());
             }
-            dump($trick);
 
             $entityManager->persist($trick);
+
             $entityManager->flush();
 
-
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('show_index');
         }
 
         return $this->renderForm('@client/pages/addTrick.html.twig', [

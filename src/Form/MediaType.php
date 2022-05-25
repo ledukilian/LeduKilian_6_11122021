@@ -74,7 +74,7 @@ class MediaType extends AbstractType
                         'groups' => [Media::TYPE_IMAGE]
                     ]),
                     new File([
-                        'maxSize' => '1M',
+                        'maxSize' => '8M',
                         'maxSizeMessage' => 'Votre image est trop grosse : ({{ size }} {{ suffix }}). La taille limite autorisée est de {{ limit }} {{ suffix }}',
                         'mimeTypes' => [
                             'image/jpeg',

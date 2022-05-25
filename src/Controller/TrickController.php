@@ -24,6 +24,53 @@ use Symfony\Component\Serializer\SerializerInterface;
 class TrickController extends AbstractController
 {
     /**
+     * @Route("/trick/editer/{slug}/", name="edit_trick")
+     */
+    public function editTrick(Trick $trick, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
+
+        $editTrickForm = $this->createForm(TrickType::class, $trick);
+
+        $editTrickForm->handleRequest($request);
+        if ($editTrickForm->isSubmitted() && $editTrickForm->isValid()) {
+            $entityManager = $doctrine->getManager();
+            $trick = $editTrickForm->getData();
+            $trick->setUser($this->getUser());
+            $trickRepository = $doctrine->getRepository(Trick::class);
+            $slug = $slug->generate($trick->getName());
+            $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
+            $medias = $editTrickForm->get('media');
+            $cover = false;
+            foreach ($medias as $media) {
+
+                $newMedia = $media->getData();
+                if ($newMedia->getType()==Media::TYPE_IMAGE) {
+                    $fileName = $fileUploader->upload($media->get('image')->getData());
+                    $newMedia->setLink($fileName);
+                    if(!$cover){
+                        $trick->setCoverImg($newMedia);
+                        $cover = true;
+                    }
+                }
+                if ($newMedia->getType()==Media::TYPE_VIDEO) {
+                    $newMedia->setAlt('Intégration vidéo externe');
+                    $newMedia->setLink($media->get('embed')->getData());
+                }
+                $media->getData()->setTrick($trick);
+                $trick->addMedia($media->getData());
+            }
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été modifié !');
+            return $this->redirectToRoute('show_index');
+        }
+
+        return $this->renderForm('@client/pages/editTrick.html.twig', [
+            'addTrickForm' => $editTrickForm
+        ]);
+    }
+
+    /**
      * @Route("/trick/ajouter/", name="add_trick")
      */
     public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {

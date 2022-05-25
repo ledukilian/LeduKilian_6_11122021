@@ -23,11 +23,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class TrickController extends AbstractController
 {
+
     /**
-     * @Route("/trick/ajouter/", name="add_trick")
+     * @Route("/trick/editer/{slug}/", name="edit_trick")
      */
-    public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
-        $trick = new Trick();
+    public function editTrick(Trick $trick, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
 
         $trickForm = $this->createForm(TrickType::class, $trick);
 
@@ -36,15 +36,10 @@ class TrickController extends AbstractController
             $entityManager = $doctrine->getManager();
             $trick = $trickForm->getData();
             $trick->setUser($this->getUser());
-
             $trickRepository = $doctrine->getRepository(Trick::class);
-
             $slug = $slug->generate($trick->getName());
-
             $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
-
             $medias = $trickForm->get('media');
-
             $cover = false;
             foreach ($medias as $media) {
 
@@ -61,16 +56,60 @@ class TrickController extends AbstractController
                     $newMedia->setAlt('Intégration vidéo externe');
                     $newMedia->setLink($media->get('embed')->getData());
                 }
-
-                // TODO : Régler la persistence du média
                 $media->getData()->setTrick($trick);
-                //$entityManager->persist($media->getData());
+                $trick->addMedia($media->getData());
+            }
+            $entityManager->persist($trick);
+            $entityManager->flush();
 
+            $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été modifié !');
+            return $this->redirectToRoute('show_index');
+        }
+
+        return $this->renderForm('@client/pages/editTrick.html.twig', [
+            'addTrickForm' => $trickForm
+        ]);
+    }
+
+    /**
+     * @Route("/trick/ajouter/", name="add_trick")
+     */
+    public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
+        $trick = new Trick();
+
+        $trickForm = $this->createForm(TrickType::class, $trick);
+
+        $trickForm->handleRequest($request);
+        if ($trickForm->isSubmitted() && $trickForm->isValid()) {
+            $entityManager = $doctrine->getManager();
+            $trick = $trickForm->getData();
+            $trick->setUser($this->getUser());
+            $trickRepository = $doctrine->getRepository(Trick::class);
+
+            $slug = $slug->generate($trick->getName());
+            $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
+            $medias = $trickForm->get('media');
+            $cover = false;
+
+            foreach ($medias as $media) {
+                $newMedia = $media->getData();
+                if ($newMedia->getType()==Media::TYPE_IMAGE) {
+                    $fileName = $fileUploader->upload($media->get('image')->getData());
+                    $newMedia->setLink($fileName);
+                    if(!$cover){
+                        $trick->setCoverImg($newMedia);
+                        $cover = true;
+                    }
+                }
+                if ($newMedia->getType()==Media::TYPE_VIDEO) {
+                    $newMedia->setAlt('Intégration vidéo externe');
+                    $newMedia->setLink($media->get('embed')->getData());
+                }
+                $media->getData()->setTrick($trick);
                 $trick->addMedia($media->getData());
             }
 
             $entityManager->persist($trick);
-
             $entityManager->flush();
 
             $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été créé !');

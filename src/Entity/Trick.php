@@ -72,12 +72,12 @@ class Trick implements TimestampableInterface
     private $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Media::class, cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity=Media::class, fetch="EAGER", cascade={"persist"})
      */
     private $Medias;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Media::class)
+     * @ORM\ManyToOne(targetEntity=Media::class, fetch="EAGER")
      * @ORM\JoinColumn(nullable=true)
      */
     private $coverImg;

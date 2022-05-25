@@ -20,9 +20,6 @@ final class Version20220211011221 extends AbstractMigration
     {
         $this->generateUser();
         $this->generateCategory();
-        //$this->generateTrick();
-        //$this->generateComment();
-        //$this->generateContributor();
     }
 
     public function down(Schema $schema): void

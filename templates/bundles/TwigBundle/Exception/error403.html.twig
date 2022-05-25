@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Erreur 403 -
+    {{parent()}}
+{% endblock %}
+
+{% block body %}
+    <section class="container min-h-80 my-0 mb-6 my-md-5 px-0 mx-0 mx-md-auto">
+        <div class="card rounded-none border-0 col-12 col-md-10 col-lg-8 px-0 mx-0 bg-primary mb-5 mx-auto">
+            <h1 class="card-header h5 text-white"><em class="fas fa-bug me-3"></em>Erreur 403</h1>
+            <div class="card-body d-flex flex-column justify-content-center bg-white text-black">
+                <p>Accès non autorisé : vous n'avez pas l'autorisation d'accéder à cette page.</p>
+                <a class="btn btn-primary ms-auto mt-2" href="{{ path('show_index') }}">
+                    <em class="fas fa-arrow-alt-circle-right me-2"></em>Revenir à l'accueil
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

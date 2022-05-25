@@ -16,6 +16,10 @@ class Media implements TimestampableInterface
 {
     use TimestampableTrait;
 
+    public const TYPE_IMAGE = 'image';
+    public const TYPE_VIDEO = 'video';
+    public const DEFAULT = 'default.jpg';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -75,6 +79,18 @@ class Media implements TimestampableInterface
     public function setAlt(string $alt): self
     {
         $this->alt = $alt;
+
+        return $this;
+    }
+
+    public function getTrick(): ?Trick
+    {
+        return $this->trick;
+    }
+
+    public function setTrick(?Trick $trick): self
+    {
+        $this->trick = $trick;
 
         return $this;
     }

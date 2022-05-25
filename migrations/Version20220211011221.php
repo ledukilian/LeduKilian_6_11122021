@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace DoctrineMigrations;
@@ -21,9 +20,6 @@ final class Version20220211011221 extends AbstractMigration
     {
         $this->generateUser();
         $this->generateCategory();
-        $this->generateTrick();
-        $this->generateComment();
-        $this->generateContributor();
     }
 
     public function down(Schema $schema): void
@@ -34,6 +30,14 @@ final class Version20220211011221 extends AbstractMigration
         $this->addSql('ALTER TABLE reset_password_request CHANGE selector selector VARCHAR(20) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE hashed_token hashed_token VARCHAR(100) NOT NULL COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('ALTER TABLE trick CHANGE name name VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE description description VARCHAR(5000) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE slug slug VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('ALTER TABLE `user` CHANGE username username VARCHAR(180) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE email email VARCHAR(180) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE password password VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`');
+    }
+
+    /**
+     * Generate initial dataset for the User entity
+     */
+    private function generateMedia()
+    {
+
     }
 
     /**
@@ -60,16 +64,16 @@ final class Version20220211011221 extends AbstractMigration
      */
     private function generateTrick()
     {
-        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 1, "Stalefish", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "stalefish", NOW(), NOW())');
-        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 1, "Tail grab", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "tail-grab", NOW(), NOW())');
-        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 1, "Nose grab", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "nose-grab", NOW(), NOW())');
-        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 2, "90", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "90", NOW(), NOW())');
-        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 2, "180", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "180", NOW(), NOW())');
-        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 2, "360", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "360", NOW(), NOW())');
-        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 2, "540", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "540", NOW(), NOW())');
-        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 3, "Simple flip", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "simple-flip", NOW(), NOW())');
-        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 3, "Double flip", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "double-flip", NOW(), NOW())');
-        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 3, "Hakon Flip", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "hakon-flip", NOW(), NOW())');
+        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 1, 0, "Stalefish", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "stalefish", NOW(), NOW())');
+        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 1, 0, "Tail grab", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "tail-grab", NOW(), NOW())');
+        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 1, 0, "Nose grab", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "nose-grab", NOW(), NOW())');
+        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 2, 0, "90", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "90", NOW(), NOW())');
+        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 2, 0, "180", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "180", NOW(), NOW())');
+        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 2, 0, "360", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "360", NOW(), NOW())');
+        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 2, 0, "540", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "540", NOW(), NOW())');
+        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 3, 0, "Simple flip", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "simple-flip", NOW(), NOW())');
+        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 3, 0, "Double flip", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "double-flip", NOW(), NOW())');
+        $this->addSql('INSERT INTO trick VALUES (DEFAULT, 1, 3, 0, "Hakon Flip", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum libero ac lectus aliquet, suscipit ultricies neque viverra. Cras ut elit ante. Proin volutpat euismod pretium. Nam porttitor erat mi, eget eleifend leo volutpat sit amet. Pellentesque enim libero, finibus eget dolor at, tincidunt bibendum dolor. Integer pretium non nisi id accumsan.", "hakon-flip", NOW(), NOW())');
 
     }
 
@@ -139,3 +143,5 @@ final class Version20220211011221 extends AbstractMigration
 
 
 }
+
+

@@ -15,14 +15,14 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
     </head>
     <body>
     <div class="snowflakes" aria-hidden="true">
-        {% for i in 0..9 %}
+        {% for i in 0..3 %}
             <div class="snowflake">❅</div>
+        {% endfor %}
+        {% for i in 0..3 %}
+            <div class="snowflake d-none d-md-block">❅</div>
         {% endfor %}
     </div>
         {% include "parts/_header.html.twig" %}
@@ -31,5 +31,8 @@
             {% block body %}{% endblock %}
         </main>
         {% include "parts/_footer.html.twig" %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </body>
 </html>

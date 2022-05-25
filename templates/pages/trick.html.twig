@@ -11,12 +11,14 @@
             <div class="card col-md-8 p-lg-8 mx-auto catchphrase-background p-2 container position-absolute">
                 <h1 class="display-4 fw-normal text-white">{{ trick.name }}</h1>
             </div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div class="trick-action px-3 py-2 ms-auto me-3">
                 <a href="#"><em class="mx-2 fas fa-pen text-warning"></em></a>
                 <a href="#"><em class="mx-2 fas fa-trash-alt text-danger"></em></a>
             </div>
+            {% endif %}
         </section>
-        <section id="trick-media" class="d-flex flex-row flex-wrap justify-content-around container-fluid px-0 py-3 text-center">
+        <div id="trick-media" class="d-flex flex-row flex-wrap justify-content-around container-fluid px-0 py-3 text-center">
             <div id="carouselExampleControls" class="carousel container slide w-100" data-bs-ride="carousel">
                 <div class="carousel-inner py-2">
                     <div class="carousel-item active">
@@ -49,7 +51,7 @@
                     <em class="fas fa-chevron-right text-primary"></em>
                 </button>
             </div>
-        </section>
+        </div>
     <div class="container-fluid">
         <section id="trick-info" class="d-flex flex-row flex-wrap container justify-content-around my-3 py-2 text-center">
             <div class="d-flex flex-row flex-wrap justify-content-center col-12 col-md-7 mb-2">
@@ -113,7 +115,7 @@
             <div class="w-100">
                 <img id="loader" class="col-12 rounded mx-auto" src="{{ asset('img/loader.gif') }}" alt="Trick" />
             </div>
-            <button class="btn btn-primary w-25" id="load-more" data-method="load-comments" data-id="{{ trick.id }}" data-limit="5" data-offset="5">
+            <button class="btn btn-primary w-25" id="load-more" data-method="load-comments" data-id="{{ trick.id }}" data-limit="10" data-offset="10">
                 <em class="fas fa-spinner"></em><br />Charger plus de commentaires
             </button>
             {% endif %}

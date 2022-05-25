@@ -19,7 +19,8 @@
                 {% if trick.comments|length > 0 %}
                     <h3 class="me-auto mb-3">
                         <em class="fas fa-snowboarding text-primary"></em>
-                        <span class="alert alert-primary trick-category small mx-2"> {{ trick.category.name }}</span>{{ trick.name }}
+                        <span class="alert alert-primary trick-category small mx-2"> {{ trick.category.name }}</span>
+                        <a href="/trick/{{ trick.slug }}">{{ trick.name }}</a>
                     </h3>
                     <table class="table table-striped table-sm mb-5">
                         <thead class="">
@@ -33,16 +34,16 @@
                         <tbody>
                         {% for comment in trick.comments %}
                         <tr class="bg-white">
-                            <th scope="row"><span class="text-primary fw-bold">{{ comment.user.username }} {{ comment.status }}</span></th>
+                            <th scope="row"><span class="text-primary fw-bold">{{ comment.user.username }}</span></th>
                             <td>{{ comment.content }} </td>
                             <td>Le {{ comment.createdAt|date('d/m/Y à H:i') }}</td>
                             <td>
                                 <form class="custom-control custom-switch ms-auto" method="POST"
                                       action="/admin/commentaire/{{ comment.id }}/changer-statut/">
                                     <input type="checkbox" {% if comment.status == 1 %}checked{% endif %}
-                                           class="custom-control-input bigger" name="ID" id="ID" value="1"
+                                           class="custom-control-input bigger" name="comment_{{ comment.id }}" id="{{ comment.id }}" value="1"
                                            onchange="this.form.submit()"/>
-                                    <label class="custom-control-label d-none" for="ID">Afficher</label>
+                                    <label class="custom-control-label d-none" for="{{ comment.id }}">Afficher</label>
                                 </form>
                             </td>
                         </tr>

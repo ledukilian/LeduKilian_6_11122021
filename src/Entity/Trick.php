@@ -48,11 +48,6 @@ class Trick implements TimestampableInterface
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity=TrickMedia::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER")
-     */
-    private $trickMedia;
-
-    /**
      * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER")
      */
     private $contributors;
@@ -71,16 +66,29 @@ class Trick implements TimestampableInterface
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Media::class, cascade={"persist"})
+     */
+    private $Medias;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Media::class)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $coverImg;
+
+
     public function __construct()
     {
-        $this->trickMedia = new ArrayCollection();
         $this->contributors = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->media = new ArrayCollection();
+        $this->Medias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,36 +128,6 @@ class Trick implements TimestampableInterface
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|TrickMedia[]
-     */
-    public function getTrickMedia(): Collection
-    {
-        return $this->trickMedia;
-    }
-
-    public function addTrickMedium(TrickMedia $trickMedium): self
-    {
-        if (!$this->trickMedia->contains($trickMedium)) {
-            $this->trickMedia[] = $trickMedium;
-            $trickMedium->setTrick($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTrickMedium(TrickMedia $trickMedium): self
-    {
-        if ($this->trickMedia->removeElement($trickMedium)) {
-            // set the owning side to null (unless already changed)
-            if ($trickMedium->getTrick() === $this) {
-                $trickMedium->setTrick(null);
-            }
-        }
 
         return $this;
     }
@@ -251,6 +229,46 @@ class Trick implements TimestampableInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Media>
+     */
+    public function getMedias(): Collection
+    {
+        return $this->Medias;
+    }
+
+    public function addMedia(Media $media): self
+    {
+        if (!$this->Medias->contains($media)) {
+            $this->Medias[] = $media;
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Media $media): self
+    {
+        $this->Medias->removeElement($media);
+
+        return $this;
+    }
+
+    public function getCoverImg(): ?Media
+    {
+        return $this->coverImg;
+    }
+
+    public function setCoverImg(?Media $coverImg): self
+    {
+        $this->coverImg = $coverImg;
+
+        return $this;
+    }
+
+
+
+
 
 
 }

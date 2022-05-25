@@ -72,6 +72,7 @@ class TrickController extends AbstractController
 
             $entityManager->flush();
 
+            $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été créé !');
             return $this->redirectToRoute('show_index');
         }
 

@@ -24,7 +24,9 @@
         {% for trick in tricks %}
                 <a href="/trick/{{ trick.slug }}" class="mb-3 col-sm-12 col-md-3 px-2 trick">
                     <article class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
-                        <img class="col-12 rounded px-0" src="{{ asset('img/default_trick.jpg') }}" alt="Trick" />
+                        <div class="trick-img-container">
+                        <img class="col-12 rounded px-0" src="{{ asset('uploads/medias/' ~ trick.coverImg.link|default('default.jpg')) }}" alt="{{ trick.coverImg.alt|default('Pas de texte alternatif') }}" />
+                        </div>
                         <h5 class="card-title text-dark px-0 mt-1 m-0 fw-bold"><em class="fas fa-chevron-right text-primary me-1"></em>{{ trick.name }}</h5>
                         <div class="ms-auto pt-1">
                             <em class="fas fa-edit text-warning"></em>

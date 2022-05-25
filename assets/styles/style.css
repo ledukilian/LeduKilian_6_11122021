@@ -251,3 +251,11 @@ footer, header, #mobile-navbar {
 .mb-6 {
     margin-bottom: 4rem !important;
 }
+.trick-img-container {
+    width: 100%;
+    max-height: 20vh;
+    overflow: hidden;
+}
+.trick-img-container img {
+    object-fit: cover;
+}

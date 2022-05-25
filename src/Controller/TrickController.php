@@ -29,17 +29,17 @@ class TrickController extends AbstractController
      */
     public function editTrick(Trick $trick, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
 
-        $trickForm = $this->createForm(TrickType::class, $trick);
+        $editTrickForm = $this->createForm(TrickType::class, $trick);
 
-        $trickForm->handleRequest($request);
-        if ($trickForm->isSubmitted() && $trickForm->isValid()) {
+        $editTrickForm->handleRequest($request);
+        if ($editTrickForm->isSubmitted() && $editTrickForm->isValid()) {
             $entityManager = $doctrine->getManager();
-            $trick = $trickForm->getData();
+            $trick = $editTrickForm->getData();
             $trick->setUser($this->getUser());
             $trickRepository = $doctrine->getRepository(Trick::class);
             $slug = $slug->generate($trick->getName());
             $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
-            $medias = $trickForm->get('media');
+            $medias = $editTrickForm->get('media');
             $cover = false;
             foreach ($medias as $media) {
 
@@ -67,7 +67,7 @@ class TrickController extends AbstractController
         }
 
         return $this->renderForm('@client/pages/editTrick.html.twig', [
-            'addTrickForm' => $trickForm
+            'addTrickForm' => $editTrickForm
         ]);
     }
 

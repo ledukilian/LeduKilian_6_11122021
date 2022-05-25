@@ -58,6 +58,7 @@ class TrickController extends AbstractController
                     }
                 }
                 if ($newMedia->getType()==Media::TYPE_VIDEO) {
+                    $newMedia->setAlt('Intégration vidéo externe');
                     $newMedia->setLink($media->get('embed')->getData());
                 }
 

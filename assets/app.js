@@ -10,9 +10,6 @@ import './styles/app.css';
 import './styles/zephyr.css';
 import './styles/style.css';
 
-// start the Stimulus application
-import './bootstrap';
-
 $(document).on('click', 'a[href^="#"]', function(e) {
     let id = $(this).attr('href');
     let $id = $(id);

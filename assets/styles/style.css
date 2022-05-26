@@ -259,3 +259,11 @@ footer, header, #mobile-navbar {
 .trick-img-container img {
     object-fit: cover;
 }
+.no-clickable {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #FF00FFEF;
+    opacity: 0.3;
+    user-select: none;
+}

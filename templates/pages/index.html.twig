@@ -22,18 +22,22 @@
         </a>
         <div class="d-flex flex-row flex-wrap container text-center" id="tricks-list">
         {% for trick in tricks %}
-                <a href="/trick/{{ trick.slug }}" class="mb-3 col-sm-12 col-md-3 px-2 trick">
-                    <article class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
-                        <div class="trick-img-container">
-                        <img class="col-12 rounded px-0" src="{{ asset('uploads/medias/' ~ trick.coverImg.link|default('default.jpg')) }}" alt="{{ trick.coverImg.alt|default('Pas de texte alternatif') }}" />
+            <article class="mb-3 col-sm-12 col-md-3 px-2 trick">
+                <a href="/trick/{{ trick.slug }}" class="h-100 card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
+                    <figure class="d-flex flex-column m-0">
+                        <div class="h-100 trick-img-container">
+                            <img class="h-100 col-12 rounded px-0" src="{{ asset('uploads/medias/' ~ trick.coverImg.link|default('default.jpg')) }}" alt="{{ trick.coverImg.alt|default('Pas de texte alternatif') }}" />
                         </div>
-                        <h5 class="card-title text-dark px-0 mt-1 m-0 fw-bold"><em class="fas fa-chevron-right text-primary me-1"></em>{{ trick.name }}</h5>
-                        <div class="ms-auto pt-1">
-                            <em class="fas fa-edit text-warning"></em>
-                            <em class="fas fa-trash-alt text-danger"></em>
-                        </div>
-                    </article>
+                        <figcaption class="d-flex figcaption-size">
+                            <h5 class="card-title text-dark px-0 mt-1 m-0 fw-bold"><em class="fas fa-chevron-right text-primary me-1"></em>{{ trick.name }}</h5>
+                            <div class="ms-auto pt-1">
+                                <em class="fas fa-edit text-warning"></em>
+                                <em class="fas fa-trash-alt text-danger"></em>
+                            </div>
+                        </figcaption>
+                    </figure>
                 </a>
+            </article>
         {% endfor %}
         </div>
         <div class="w-100">

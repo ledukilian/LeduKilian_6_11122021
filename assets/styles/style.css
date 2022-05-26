@@ -267,3 +267,6 @@ footer, header, #mobile-navbar {
     opacity: 0.3;
     user-select: none;
 }
+.figcaption-size {
+    flex: 0 0 40px;
+}

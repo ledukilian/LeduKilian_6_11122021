@@ -74,7 +74,7 @@ class Trick implements TimestampableInterface
     /**
      * @ORM\ManyToMany(targetEntity=Media::class, fetch="EAGER", cascade={"persist"})
      */
-    private $Medias;
+    private $medias;
 
     /**
      * @ORM\ManyToOne(targetEntity=Media::class, fetch="EAGER")
@@ -88,7 +88,7 @@ class Trick implements TimestampableInterface
         $this->contributors = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->media = new ArrayCollection();
-        $this->Medias = new ArrayCollection();
+        $this->medias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -235,13 +235,13 @@ class Trick implements TimestampableInterface
      */
     public function getMedias(): Collection
     {
-        return $this->Medias;
+        return $this->medias;
     }
 
     public function addMedia(Media $media): self
     {
-        if (!$this->Medias->contains($media)) {
-            $this->Medias[] = $media;
+        if (!$this->medias->contains($media)) {
+            $this->medias[] = $media;
         }
 
         return $this;
@@ -249,7 +249,7 @@ class Trick implements TimestampableInterface
 
     public function removeMedia(Media $media): self
     {
-        $this->Medias->removeElement($media);
+        $this->medias->removeElement($media);
 
         return $this;
     }

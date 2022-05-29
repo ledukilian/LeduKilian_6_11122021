@@ -275,6 +275,7 @@ footer, header, #mobile-navbar {
     min-width: 40%;
 }
 .carousel-element {
+    cursor: zoom-in;
     height: 180px;
     max-height: 180px;
 }

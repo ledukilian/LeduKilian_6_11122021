@@ -27,9 +27,7 @@ class TrickController extends AbstractController
      * @Route("/trick/editer/{slug}/", name="edit_trick")
      */
     public function editTrick(Trick $trick, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
-
         $editTrickForm = $this->createForm(TrickType::class, $trick);
-
         $editTrickForm->handleRequest($request);
         if ($editTrickForm->isSubmitted() && $editTrickForm->isValid()) {
             $entityManager = $doctrine->getManager();
@@ -38,7 +36,7 @@ class TrickController extends AbstractController
             $trickRepository = $doctrine->getRepository(Trick::class);
             $slug = $slug->generate($trick->getName());
             $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
-            $medias = $editTrickForm->get('media');
+            $medias = $editTrickForm->get('medias');
             $cover = false;
             foreach ($medias as $media) {
 
@@ -87,7 +85,7 @@ class TrickController extends AbstractController
 
             $slug = $slug->generate($trick->getName());
             $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
-            $medias = $trickForm->get('media');
+            $medias = $trickForm->get('medias');
             $cover = false;
 
             foreach ($medias as $media) {

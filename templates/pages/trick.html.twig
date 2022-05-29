@@ -27,31 +27,33 @@
                             <div class="d-flex justify-content-center">
                                 {% set mediaIndex = 0 %}
                                 {% for media in trick.medias|slice((i*3-3),(i*3)) %}
-                                    <a href="#" class="col-12 col-md-3 px-2 trick">
-                                        <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
+                                    <figure class="col-12 col-md-3 px-2 trick carousel-element mx-2"  data-type="{{ media.type }}" data-alt="{{ media.alt|default('Pas de texte alternatif') }}" data-link="{{ media.link|default('default.jpg') }}">
+                                        <div class="card h-100 bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
                                             {% if media.type == "image" %}
-                                                <img class="w-100 mw-100" src="{{ asset('uploads/medias/' ~ media.link|default('default.jpg')) }}" alt="{{ media.alt|default('Pas de texte alternatif') }}" />
+                                                <img class="w-100 of-cover h-100" src="{{ asset('uploads/medias/' ~ media.link|default('default.jpg')) }}" alt="{{ media.alt|default('Pas de texte alternatif') }}" />
                                             {% elseif media.type == "video" %}
-                                                <div class="video-container">
-                                                    <div class="no-clickable">
+                                                <div class="video-container w-100 h-100">
+                                                    <div class="no-clickable w-100 h-100">
                                                     </div>
                                                     {{ media.link| raw  }}
                                                 </div>
                                             {% endif %}
                                         </div>
-                                    </a>
+                                    </figure>
                                     {% set mediaIndex = mediaIndex + 1 %}
                                 {% endfor %}
                             </div>
                         </div>
                     {% endfor %}
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                    <em class="fas fa-chevron-left text-primary"></em>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                    <em class="fas fa-chevron-right text-primary"></em>
-                </button>
+                {% if trick.medias|length > 3 %}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <em class="fas fa-chevron-left text-primary"></em>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <em class="fas fa-chevron-right text-primary"></em>
+                    </button>
+                {% endif %}
             </div>
         </div>
     <div class="container-fluid">
@@ -123,4 +125,21 @@
             {% endif %}
         </section>
     </div>
+    <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('media-widget') }}
 {% endblock %}

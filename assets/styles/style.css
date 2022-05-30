@@ -261,9 +261,15 @@ footer, header, #mobile-navbar {
 }
 .no-clickable {
     position: absolute;
-    background: #FF00FFEF;
+    width: 95%;
+    height: 95%;
+    /* background: #FF00FFEF; */
     opacity: 0.3;
     user-select: none;
+}
+.video-container iframe {
+    width: 100%;
+    height: 100%;
 }
 .figcaption-size {
     flex: 0 0 40px;

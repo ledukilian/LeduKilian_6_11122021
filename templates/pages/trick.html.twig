@@ -33,7 +33,7 @@
                                                 <img class="w-100 of-cover h-100" src="{{ asset('uploads/medias/' ~ media.link|default('default.jpg')) }}" alt="{{ media.alt|default('Pas de texte alternatif') }}" />
                                             {% elseif media.type == "video" %}
                                                 <div class="video-container w-100 h-100">
-                                                    <div class="no-clickable w-100 h-100">
+                                                    <div class="no-clickable">
                                                     </div>
                                                     {{ media.link| raw  }}
                                                 </div>

@@ -13,7 +13,7 @@
             </div>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div class="trick-action px-3 py-2 ms-auto me-3">
-                <a href="#"><em class="mx-2 fas fa-pen text-warning"></em></a>
+                <a href="/trick/editer/{{ trick.slug }}/"><em class="mx-2 fas fa-pen text-warning"></em></a>
                 <a href="#"><em class="mx-2 fas fa-trash-alt text-danger"></em></a>
             </div>
             {% endif %}

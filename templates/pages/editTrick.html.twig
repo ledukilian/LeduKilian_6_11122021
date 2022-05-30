@@ -49,7 +49,15 @@
                             <li>
                                 {{ form_errors(mediaField) }}
                                 {{ form_widget(mediaField) }}
+                                {% if mediaField.vars.data.type == "image" %}
+                                    <img class="w-25 of-cover" src="{{ asset('uploads/medias/' ~ mediaField.vars.data.link|default('default.jpg')) }}" alt="{{ mediaField.vars.data.alt|default('Pas de texte alternatif') }}" />
+                                {% elseif mediaField.vars.data.type == "video" %}
+                                    <div class="w-25">
+                                        {{ mediaField.vars.data.link| raw  }}
+                                    </div>
+                                {% endif %}
                             </li>
+                            <hr>
                         {% endfor %}
                     </ul>
                     <button type="button"

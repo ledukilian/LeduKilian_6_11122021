@@ -34,20 +34,16 @@ class TrickController extends AbstractController
             $trick = $editTrickForm->getData();
             $trick->setUser($this->getUser());
             $trickRepository = $doctrine->getRepository(Trick::class);
-            $slug = $slug->generate($trick->getName());
+
             $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
             $medias = $editTrickForm->get('medias');
-            $cover = false;
+
             foreach ($medias as $media) {
 
                 $newMedia = $media->getData();
                 if ($newMedia->getType()==Media::TYPE_IMAGE) {
                     $fileName = $fileUploader->upload($media->get('image')->getData());
                     $newMedia->setLink($fileName);
-                    if(!$cover){
-                        $trick->setCoverImg($newMedia);
-                        $cover = true;
-                    }
                 }
                 if ($newMedia->getType()==Media::TYPE_VIDEO) {
                     $newMedia->setAlt('Intégration vidéo externe');
@@ -56,6 +52,7 @@ class TrickController extends AbstractController
                 $media->getData()->setTrick($trick);
                 $trick->addMedia($media->getData());
             }
+
             $entityManager->persist($trick);
             $entityManager->flush();
 

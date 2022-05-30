@@ -1,4 +1,3 @@
-
 jQuery(document).ready(function () {
     // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
     var $container = $('#media-fields-list');
@@ -17,7 +16,7 @@ jQuery(document).ready(function () {
     // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
     if (index !== 0) {
         // S'il existe déjà des catégories, on ajoute un lien de suppression pour chacune d'entre elles
-        $container.children('fieldset').each(function(loop_index) {
+        $container.children('li').each(function(loop_index) {
             $(this).children('legend').text('Element n°' + (loop_index+1))
             addDeleteLink($(this));
 
@@ -57,7 +56,7 @@ jQuery(document).ready(function () {
     // La fonction qui ajoute un lien de suppression d'une catégorie
     function addDeleteLink($prototype) {
         // Création du lien
-        var $deleteLink = $('<a href="#" class="btn btn-danger"><i class="fas fa-trash-alt me-2"></i>Supprimer ce média</a>');
+        var $deleteLink = $('<a href="#" class="btn btn-danger my-2"><i class="fas fa-trash-alt me-2"></i>Supprimer ce média</a>');
 
         // Ajout du lien
         $prototype.append($deleteLink);

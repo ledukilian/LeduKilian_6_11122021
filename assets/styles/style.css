@@ -126,7 +126,6 @@ footer, header, #mobile-navbar {
     border: none;
     opacity: 1;
     color: #FFFFFF;
-    text-shadow: 1px 1px #333333;
 }
 .alert-secondary {
     border-color: #383d41;
@@ -141,8 +140,9 @@ footer, header, #mobile-navbar {
     background-color: rgb(0,185,7,0.8);
 }
 .alert-warning {
+    color: #2a2a2a;
     border-color: #fda300;
-    background-color: rgb(253,163,0,0.8);
+    background-color: rgb(255,207,119,0.8);
 }
 .alert-danger {
     border-color: #f62035;
@@ -288,4 +288,17 @@ footer, header, #mobile-navbar {
 #mediaModal iframe {
     width: 100%;
     min-height: 450px;
+}
+.media-vignette {
+    border-radius: 5px;
+    top: 1rem !important;
+    right: 1rem !important;
+}
+li image {
+    max-width: 200px;
+    max-height: 120px;
+}
+li iframe {
+    max-width: 175px;
+    max-height: 110px;
 }

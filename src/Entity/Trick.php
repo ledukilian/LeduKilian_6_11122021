@@ -48,7 +48,7 @@ class Trick implements TimestampableInterface
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER", cascade={"persist"})
      */
     private $contributors;
 

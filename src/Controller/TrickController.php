@@ -3,22 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Contributor;
 use App\Entity\Media;
 use App\Entity\Trick;
-use App\Entity\User;
 use App\Form\CommentFormType;
 use App\Form\TrickType;
 use App\Services\FileUploader;
 use App\Services\Slug;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 
 class TrickController extends AbstractController
@@ -35,11 +30,9 @@ class TrickController extends AbstractController
             $trick->setUser($this->getUser());
             $trickRepository = $doctrine->getRepository(Trick::class);
 
-            $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
             $medias = $editTrickForm->get('medias');
 
             foreach ($medias as $media) {
-
                 $newMedia = $media->getData();
                 if ($newMedia->getType()==Media::TYPE_IMAGE) {
                     if ($media->get('image')->getData()!==null) {
@@ -49,11 +42,15 @@ class TrickController extends AbstractController
                 }
                 if ($newMedia->getType()==Media::TYPE_VIDEO) {
                     $newMedia->setAlt('Intégration vidéo externe');
-                    $newMedia->setLink($media->get('embed')->getData());
                 }
                 $media->getData()->setTrick($trick);
                 $trick->addMedia($media->getData());
             }
+            $contributor = new Contributor();
+            $contributor->setTrick($trick);
+            $contributor->setUser($this->getUser());
+
+            $trick->addContributor($contributor);
 
             $entityManager->persist($trick);
             $entityManager->flush();
@@ -86,7 +83,6 @@ class TrickController extends AbstractController
             $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
             $medias = $trickForm->get('medias');
             $cover = false;
-
             foreach ($medias as $media) {
                 $newMedia = $media->getData();
                 if ($newMedia->getType()==Media::TYPE_IMAGE) {
@@ -99,7 +95,6 @@ class TrickController extends AbstractController
                 }
                 if ($newMedia->getType()==Media::TYPE_VIDEO) {
                     $newMedia->setAlt('Intégration vidéo externe');
-                    $newMedia->setLink($media->get('embed')->getData());
                 }
                 $media->getData()->setTrick($trick);
                 $trick->addMedia($media->getData());

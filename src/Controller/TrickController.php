@@ -42,8 +42,10 @@ class TrickController extends AbstractController
 
                 $newMedia = $media->getData();
                 if ($newMedia->getType()==Media::TYPE_IMAGE) {
-                    $fileName = $fileUploader->upload($media->get('image')->getData());
-                    $newMedia->setLink($fileName);
+                    if ($media->get('image')->getData()!==null) {
+                        $fileName = $fileUploader->upload($media->get('image')->getData());
+                        $newMedia->setLink($fileName);
+                    }
                 }
                 if ($newMedia->getType()==Media::TYPE_VIDEO) {
                     $newMedia->setAlt('Intégration vidéo externe');

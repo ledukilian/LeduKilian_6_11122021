@@ -42,8 +42,8 @@ class MediaType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('embed', TextareaType::class, [
-                'mapped' => false,
+            ->add('link', TextareaType::class, [
+                'mapped' => true,
                 'required' => false,
                 'label' => 'Embed de la vidéo',
                 'label_attr' => ['class' => 'field-video'],

@@ -11,6 +11,7 @@ use App\Form\TrickType;
 use App\Services\FileUploader;
 use App\Services\Slug;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -159,6 +160,36 @@ class TrickController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/trick/couverture/{slug}/{image}/", name="setcover_trick")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function changeCover(Trick $trick, Media $image, ManagerRegistry $doctrine) {
 
+        if (true) {
+            $contributor = new Contributor();
+            $contributor->setTrick($trick);
+            $contributor->setUser($this->getUser());
+            $trick->addContributor($contributor);
+
+            $trick->setCoverImg($image);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($trick);
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'image de couverture a bien été mise à jour');
+            return $this->redirectToRoute('show_trick', ['slug' => $trick->getSlug()]);
+        }
+    }
+
+    /**
+     * @Route("/trick/supprimer/{slug}/", name="delete_trick")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function deleteTrick(Trick $trick, ManagerRegistry $doctrine) {
+        if (true) {
+            $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été supprimé');
+            return $this->redirectToRoute('show_index', ['slug' => $trick->getSlug()]);
+        }
+    }
 
 }

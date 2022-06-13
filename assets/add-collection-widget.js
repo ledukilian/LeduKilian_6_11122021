@@ -1,4 +1,3 @@
-
 jQuery(document).ready(function () {
     // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
     var $container = $('#media-fields-list');
@@ -17,7 +16,7 @@ jQuery(document).ready(function () {
     // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
     if (index !== 0) {
         // S'il existe déjà des catégories, on ajoute un lien de suppression pour chacune d'entre elles
-        $container.children('fieldset').each(function(loop_index) {
+        $container.children('li').each(function(loop_index) {
             $(this).children('legend').text('Element n°' + (loop_index+1))
             addDeleteLink($(this));
 
@@ -45,10 +44,10 @@ jQuery(document).ready(function () {
 
         // On ajoute le prototype modifié à la fin de la balise <div>
         $container.append($prototype);
-        $('#trick_media_'+number_field+'_type_0').change(function() {
+        $('#trick_medias_'+number_field+'_type_0').change(function() {
             toggleMediaForm(number_field, 'image');
         });
-        $('#trick_media_'+number_field+'_type_1').click(function() {
+        $('#trick_medias_'+number_field+'_type_1').click(function() {
             toggleMediaForm(number_field, 'video');
         });
 
@@ -57,7 +56,7 @@ jQuery(document).ready(function () {
     // La fonction qui ajoute un lien de suppression d'une catégorie
     function addDeleteLink($prototype) {
         // Création du lien
-        var $deleteLink = $('<a href="#" class="btn btn-danger"><i class="fas fa-trash-alt me-2"></i>Supprimer ce média</a>');
+        var $deleteLink = $('<a href="#" class="btn btn-danger my-2"><i class="fas fa-trash-alt me-2"></i>Supprimer ce média</a>');
 
         // Ajout du lien
         $prototype.append($deleteLink);
@@ -79,28 +78,28 @@ jQuery(document).ready(function () {
 let number_field = $('#media-fields-list').find('fieldset').length;
 
 for (let i = 0; i < number_field; i++) {
-    $('#trick_media_'+i+'_type_0').click(function() {
+    $('#trick_medias_'+i+'_type_0').click(function() {
         toggleMediaForm(i, 'image');
     });
-    $('#trick_media_'+i+'_type_1').click(function() {
+    $('#trick_medias_'+i+'_type_1').click(function() {
         toggleMediaForm(i, 'video');
     });
 
-    if ($('#trick_media_'+i+'_type_0').is(':checked')) {
+    if ($('#trick_medias_'+i+'_type_0').is(':checked')) {
         toggleMediaForm(i, 'image');
-    } else if ($('#trick_media_'+i+'_type_1').is(':checked')) {
+    } else if ($('#trick_medias_'+i+'_type_1').is(':checked')) {
         toggleMediaForm(i, 'video');
     }
 }
 
 function toggleMediaForm(id, type) {
-    $('#trick_media_'+id+' .field-image-video').show();
+    $('#trick_medias_'+id+' .field-image-video').show();
     if (type === 'image') {
-        $('#trick_media_'+id+' .field-image').show();
-        $('#trick_media_'+id+' .field-video').hide();
+        $('#trick_medias_'+id+' .field-image').show();
+        $('#trick_medias_'+id+' .field-video').hide();
     }
     if (type === 'video') {
-        $('#trick_media_'+id+' .field-video').show();
-        $('#trick_media_'+id+' .field-image').hide();
+        $('#trick_medias_'+id+' .field-video').show();
+        $('#trick_medias_'+id+' .field-image').hide();
     }
 }

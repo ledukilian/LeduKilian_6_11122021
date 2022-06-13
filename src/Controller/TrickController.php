@@ -3,26 +3,68 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Contributor;
 use App\Entity\Media;
 use App\Entity\Trick;
-use App\Entity\User;
 use App\Form\CommentFormType;
 use App\Form\TrickType;
 use App\Services\FileUploader;
 use App\Services\Slug;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 
 class TrickController extends AbstractController
 {
+    /**
+     * @Route("/trick/editer/{slug}/", name="edit_trick")
+     */
+    public function editTrick(Trick $trick, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
+        $editTrickForm = $this->createForm(TrickType::class, $trick);
+        $editTrickForm->handleRequest($request);
+        if ($editTrickForm->isSubmitted() && $editTrickForm->isValid()) {
+            $entityManager = $doctrine->getManager();
+            $trick = $editTrickForm->getData();
+            $trick->setUser($this->getUser());
+            $trickRepository = $doctrine->getRepository(Trick::class);
+
+            $medias = $editTrickForm->get('medias');
+
+            foreach ($medias as $media) {
+                $newMedia = $media->getData();
+                if ($newMedia->getType()==Media::TYPE_IMAGE) {
+                    if ($media->get('image')->getData()!==null) {
+                        $fileName = $fileUploader->upload($media->get('image')->getData());
+                        $newMedia->setLink($fileName);
+                    }
+                }
+                if ($newMedia->getType()==Media::TYPE_VIDEO) {
+                    $newMedia->setAlt('Intégration vidéo externe');
+                }
+                $media->getData()->setTrick($trick);
+                $trick->addMedia($media->getData());
+            }
+            $contributor = new Contributor();
+            $contributor->setTrick($trick);
+            $contributor->setUser($this->getUser());
+
+            $trick->addContributor($contributor);
+
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été modifié !');
+            return $this->redirectToRoute('show_index');
+        }
+
+        return $this->renderForm('@client/pages/editTrick.html.twig', [
+            'addTrickForm' => $editTrickForm
+        ]);
+    }
+
     /**
      * @Route("/trick/ajouter/", name="add_trick")
      */
@@ -40,9 +82,8 @@ class TrickController extends AbstractController
 
             $slug = $slug->generate($trick->getName());
             $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
-            $medias = $trickForm->get('media');
+            $medias = $trickForm->get('medias');
             $cover = false;
-
             foreach ($medias as $media) {
                 $newMedia = $media->getData();
                 if ($newMedia->getType()==Media::TYPE_IMAGE) {
@@ -55,7 +96,6 @@ class TrickController extends AbstractController
                 }
                 if ($newMedia->getType()==Media::TYPE_VIDEO) {
                     $newMedia->setAlt('Intégration vidéo externe');
-                    $newMedia->setLink($media->get('embed')->getData());
                 }
                 $media->getData()->setTrick($trick);
                 $trick->addMedia($media->getData());
@@ -120,6 +160,36 @@ class TrickController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/trick/couverture/{slug}/{image}/", name="setcover_trick")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function changeCover(Trick $trick, Media $image, ManagerRegistry $doctrine) {
 
+        if (true) {
+            $contributor = new Contributor();
+            $contributor->setTrick($trick);
+            $contributor->setUser($this->getUser());
+            $trick->addContributor($contributor);
+
+            $trick->setCoverImg($image);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($trick);
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'image de couverture a bien été mise à jour');
+            return $this->redirectToRoute('show_trick', ['slug' => $trick->getSlug()]);
+        }
+    }
+
+    /**
+     * @Route("/trick/supprimer/{slug}/", name="delete_trick")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function deleteTrick(Trick $trick, ManagerRegistry $doctrine) {
+        if (true) {
+            $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été supprimé');
+            return $this->redirectToRoute('show_index', ['slug' => $trick->getSlug()]);
+        }
+    }
 
 }

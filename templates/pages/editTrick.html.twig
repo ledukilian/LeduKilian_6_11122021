@@ -1,14 +1,14 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-    Ajouter un trick -
+    Éditer un trick -
     {{ parent() }}
 {% endblock %}
 
 {% block body %}
     <section class="container min-h-80 my-0 mb-6 my-md-5 px-0 mx-0 mx-md-auto">
         <div class="card rounded-none border-0 col-12 col-md-10 col-lg-8 px-0 mx-0 bg-primary mb-5 mx-auto">
-            <h1 class="card-header rounded-none h5 text-white"><em class="fas fa-plus-circle me-3"></em>Ajouter un nouveau Trick</h1>
+            <h1 class="card-header rounded-none h5 text-white"><em class="fas fa-plus-circle me-3"></em>Éditer un Trick</h1>
             <div class="card-body d-flex flex-column justify-content-center bg-white text-black">
 
                 {{ form_start(addTrickForm, {'attr': {'class': 'd-flex flex-row flex-wrap'}}) }}
@@ -41,14 +41,22 @@
                 </div>
                 <div class="w-100 mb-2">
                     <em class="fas fa-chevron-right text-primary me-1"></em>Média<br />
+                    <div class="alert alert-warning mt-2"><em class="fas fa-exclamation-circle me-2"></em><b>Important : </b>Si vous téléversez un nouveau média sur un champ existant, il remplacera celui-ci.</div>
                     <ul id="media-fields-list" class="list-unstyled"
                         data-prototype="{{ form_widget(addTrickForm.medias.vars.prototype)|e }}"
                         data-widget-tags="{{ '<li></li>'|e }}"
                         data-widget-counter="{{ addTrickForm.medias|length }}">
                         {% for mediaField in addTrickForm.medias %}
-                            <li>
+                            <li class="card mt-2 mb-4 px-3">
                                 {{ form_errors(mediaField) }}
                                 {{ form_widget(mediaField) }}
+                                {% if mediaField.vars.data.type == "image" %}
+                                    <img class="position-absolute media-vignette w-25 of-cover" src="{{ asset('uploads/medias/' ~ mediaField.vars.data.link|default('default.jpg')) }}" alt="{{ mediaField.vars.data.alt|default('Pas de texte alternatif') }}" />
+                                {% elseif mediaField.vars.data.type == "video" %}
+                                    <div class="position-absolute media-vignette w-25">
+                                        {{ mediaField.vars.data.link| raw  }}
+                                    </div>
+                                {% endif %}
                             </li>
                         {% endfor %}
                     </ul>
@@ -57,7 +65,7 @@
                             id="add-another-collection-widget"
                             data-list-selector="#media-fields-list"><em class="fas fa-plus me-2"></em>Ajouter un nouveau média</button>
                 </div>
-                <button type="submit" class="btn btn-primary px-3 ms-auto">Ajouter le trick</button>
+                <button type="submit" class="btn btn-primary px-3 ms-auto">Éditer le trick</button>
                 {{ form_end(addTrickForm) }}
             </div>
         </div>

@@ -42,8 +42,8 @@ class MediaType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('embed', TextareaType::class, [
-                'mapped' => false,
+            ->add('link', TextareaType::class, [
+                'mapped' => true,
                 'required' => false,
                 'label' => 'Embed de la vidéo',
                 'label_attr' => ['class' => 'field-video'],
@@ -74,7 +74,7 @@ class MediaType extends AbstractType
                         'groups' => [Media::TYPE_IMAGE]
                     ]),
                     new File([
-                        'maxSize' => '1M',
+                        'maxSize' => '8M',
                         'maxSizeMessage' => 'Votre image est trop grosse : ({{ size }} {{ suffix }}). La taille limite autorisée est de {{ limit }} {{ suffix }}',
                         'mimeTypes' => [
                             'image/jpeg',

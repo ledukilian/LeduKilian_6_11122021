@@ -20,7 +20,6 @@ class AdminController extends AbstractController
     public function showAdmin(ManagerRegistry $doctrine)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
         $tricks = $doctrine
             ->getRepository(Trick::class)
             ->findBy(

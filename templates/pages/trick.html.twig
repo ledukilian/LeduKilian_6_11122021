@@ -7,13 +7,13 @@
 
 {% block body %}
         <section id="trick-hero" class="d-flex flex-row flex-wrap align-items-center justify-content-center container-fluid px-0 position-relative pb-3 text-center">
-            <img src="{{ asset('img/default_trick.jpg') }}" class="trick-img" alt="...">
+            <img id="trick-cover" class="trick-img" data-link="{{ trick.coverImg.link|default('default.jpg') }}" src="{{ asset('uploads/medias/' ~ trick.coverImg.link|default('default.jpg')) }}" alt="{{ trick.coverImg.alt|default('Pas de texte alternatif') }}">
             <div class="card col-md-8 p-lg-8 mx-auto catchphrase-background p-2 container position-absolute">
                 <h1 class="display-4 fw-normal text-white">{{ trick.name }}</h1>
             </div>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div class="trick-action px-3 py-2 ms-auto me-3">
-                <a href="#"><em class="mx-2 fas fa-pen text-warning"></em></a>
+                <a href="/trick/editer/{{ trick.slug }}/"><em class="mx-2 fas fa-pen text-warning"></em></a>
                 <a href="#"><em class="mx-2 fas fa-trash-alt text-danger"></em></a>
             </div>
             {% endif %}
@@ -21,35 +21,40 @@
         <div id="trick-media" class="d-flex flex-row flex-wrap justify-content-around container-fluid px-0 py-3 text-center">
             <div id="carouselExampleControls" class="carousel container slide w-100" data-bs-ride="carousel">
                 <div class="carousel-inner py-2">
-                    <div class="carousel-item active">
-                        <div class="d-flex justify-content-center">
-                            {% for i in 0..2 %}
-                                <a href="#" class="col-12 col-md-3 px-2 trick">
-                                    <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
-                                        <img class="mw-100" src="{{ asset('img/default_trick.jpg') }}" alt="Trick" />
-                                    </div>
-                                </a>
-                            {% endfor %}
+                    {% set pageNumber = (trick.medias|length / 3)|round(0, 'ceil') %}
+                    {% for i in 1..pageNumber %}
+                        <div class="carousel-item {% if i == 1 %}{{ 'active' }}{% endif %}">
+                            <div class="d-flex justify-content-center">
+                                {% set mediaIndex = 0 %}
+                                {% for media in trick.medias|slice((i*3-3),(i*3)) %}
+
+                                    <figure class="col-12 col-md-3 px-2 trick carousel-element mx-2"  data-trick="{{ trick.slug }}" data-cover="{{ media.id }}" data-type="{{ media.type }}" data-alt="{{ media.alt|default('Pas de texte alternatif') }}" data-link="{{ media.link|default('default.jpg') }}">
+                                        <div class="card h-100 bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
+                                            {% if media.type == "image" %}
+                                                <img class="w-100 of-cover h-100" src="{{ asset('uploads/medias/' ~ media.link|default('default.jpg')) }}" alt="{{ media.alt|default('Pas de texte alternatif') }}" />
+                                            {% elseif media.type == "video" %}
+                                                <div class="video-container w-100 h-100">
+                                                    <div class="no-clickable">
+                                                    </div>
+                                                    {{ media.link| raw  }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </figure>
+                                    {% set mediaIndex = mediaIndex + 1 %}
+                                {% endfor %}
+                            </div>
                         </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="d-flex justify-content-center">
-                            {% for i in 0..2 %}
-                                <a href="#" class="col-12 col-md-3 px-2 trick">
-                                    <div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
-                                        <img class="mw-100" src="{{ asset('img/default_trick.jpg') }}" alt="Trick" />
-                                    </div>
-                                </a>
-                            {% endfor %}
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                    <em class="fas fa-chevron-left text-primary"></em>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                    <em class="fas fa-chevron-right text-primary"></em>
-                </button>
+                {% if trick.medias|length > 3 %}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <em class="fas fa-chevron-left text-primary"></em>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <em class="fas fa-chevron-right text-primary"></em>
+                    </button>
+                {% endif %}
             </div>
         </div>
     <div class="container-fluid">
@@ -121,4 +126,21 @@
             {% endif %}
         </section>
     </div>
+    <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('media-widget') }}
 {% endblock %}

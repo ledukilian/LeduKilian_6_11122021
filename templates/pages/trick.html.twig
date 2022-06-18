@@ -13,8 +13,12 @@
             </div>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div class="trick-action px-3 py-2 ms-auto me-3">
+                {% if is_granted('edit', trick) %}
                 <a href="/trick/editer/{{ trick.slug }}/"><em class="zoom-in mx-2 fas fa-pen text-warning"></em></a>
-                <span onclick="$('#confirmModal').modal('show');"><em class="zoom-in mx-2 fas fa-trash-alt text-danger"></em></span>
+                {% endif %}
+                {% if is_granted('delete', trick) %}
+                    <span onclick="showConfirmModal('{{ trick.name }}', '{{ trick.slug }}');"><em class="zoom-in mx-2 fas fa-trash-alt text-danger"></em></span>
+                {% endif %}
             </div>
             {% endif %}
         </section>
@@ -127,8 +131,6 @@
         </section>
     </div>
 
-    {% set modal_confirm_message = 'Voulez-vous vraiment supprimer le trick ' ~ trick.name ~ ' ?' %}
-    {% set modal_confirm_link = '/trick/supprimer/' ~ trick.slug ~ '/' %}
     {% include "parts/_confirm.html.twig" %}
 
     <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModal" aria-hidden="true">
@@ -138,7 +140,7 @@
                     ...
                 </div>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="#" class="btn btn-primary w-75 mt-2 mx-auto">Définir en tant que image de couverture</a>';
+                    <a href="#" class="btn btn-success w-75 mt-2 mx-auto">Définir en tant que image de couverture</a>';
                 {% endif %}
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>

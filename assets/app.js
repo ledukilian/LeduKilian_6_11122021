@@ -85,3 +85,11 @@ function convertToReadableDateTime(date) {
     val += addZero(newDate.getHours())+':'+addZero(newDate.getMinutes());
     return val;
 }
+
+function showConfirmModal(name, slug) {
+    console.log(name);
+    console.log(slug);
+    $('#confirmModal .modal-body').html('Voulez-vous vraiment supprimer le trick ' + name + ' ?')
+    $('#confirmModal .modal-footer a').attr('href', '/trick/supprimer/' + slug + '/');
+    $('#confirmModal').show();
+}

@@ -23,20 +23,25 @@
         <div class="d-flex flex-row flex-wrap container text-center" id="tricks-list">
         {% for trick in tricks %}
             <article class="mb-3 col-sm-12 col-md-3 px-2 trick">
-                <a href="/trick/{{ trick.slug }}" class="h-100 card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
+
+                <div class="h-100 card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
                     <figure class="d-flex flex-column m-0">
-                        <div class="h-100 trick-img-container">
+                        <a href="/trick/{{ trick.slug }}" class="h-100 trick-img-container">
                             <img class="h-100 of-cover col-12 rounded px-0" src="{{ asset('uploads/medias/' ~ trick.coverImg.link|default('default.jpg')) }}" alt="{{ trick.coverImg.alt|default('Pas de texte alternatif') }}" />
-                        </div>
+                        </a>
                         <figcaption class="d-flex figcaption-size">
                             <h5 class="card-title text-dark px-0 mt-1 m-0 fw-bold"><em class="fas fa-chevron-right text-primary me-1"></em>{{ trick.name }}</h5>
                             <div class="ms-auto pt-1">
-                                <em class="fas fa-edit text-warning"></em>
-                                <em class="fas fa-trash-alt text-danger"></em>
+                                {% if is_granted('edit', trick) %}
+                                <a href="/trick/editer/{{ trick.slug }}/"><em class="zoom-in fas fa-edit text-warning"></em></a>
+                                {% endif %}
+                                {% if is_granted('delete', trick) %}
+                                <span onclick="showConfirmModal('{{ trick.name }}', '{{ trick.slug }}');"><em class="zoom-in fas fa-trash-alt text-danger"></em></span>
+                                {% endif %}
                             </div>
                         </figcaption>
                     </figure>
-                </a>
+                </div>
             </article>
         {% endfor %}
         </div>
@@ -50,6 +55,10 @@
         {% endif %}
     </section>
     <a href="#hero" class="scroll-btn scroll-up text-primary"><em class="fas fa-arrow-circle-up"></em></a>
+    {% include "parts/_confirm.html.twig" %}
+{% endblock %}
 
-
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('media-widget') }}
 {% endblock %}

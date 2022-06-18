@@ -165,7 +165,6 @@ class TrickController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      */
     public function changeCover(Trick $trick, Media $image, ManagerRegistry $doctrine) {
-
         if (true) {
             $contributor = new Contributor();
             $contributor->setTrick($trick);
@@ -186,9 +185,10 @@ class TrickController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      */
     public function deleteTrick(Trick $trick, ManagerRegistry $doctrine) {
-        if (true) {
+        if ($trick->getUser() !== $this->getUser()) {
             $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été supprimé');
             return $this->redirectToRoute('show_index', ['slug' => $trick->getSlug()]);
+            //throw $this->createAccessDeniedException();
         }
     }
 

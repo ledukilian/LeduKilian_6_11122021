@@ -173,12 +173,15 @@ footer, header, #mobile-navbar {
     position: relative;
     top:-8vh;
 }
-.trick-action i {
+.trick-action span {
+    cursor: pointer;
+}
+.zoom-in {
     transition: 0.4s;
 }
-.trick-action i:hover {
+.zoom-in:hover {
     transition: 0.4s;
-    transform: scale(1.2);
+    transform: scale(1.25);
 }
 .carousel-control-next, .carousel-control-prev {
     font-size: 3em;
@@ -284,6 +287,9 @@ footer, header, #mobile-navbar {
     cursor: zoom-in;
     height: 180px;
     max-height: 180px;
+}
+.modal-header {
+    margin: -1px;
 }
 #mediaModal iframe {
     width: 100%;

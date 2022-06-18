@@ -69,48 +69,50 @@ class TrickController extends AbstractController
      * @Route("/trick/ajouter/", name="add_trick")
      */
     public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
-        $trick = new Trick();
+        if ($this->isGranted('create', $trick)) {
 
-        $trickForm = $this->createForm(TrickType::class, $trick);
+            $trick = new Trick();
+            $trickForm = $this->createForm(TrickType::class, $trick);
+            $trickForm->handleRequest($request);
 
-        $trickForm->handleRequest($request);
-        if ($trickForm->isSubmitted() && $trickForm->isValid()) {
-            $entityManager = $doctrine->getManager();
-            $trick = $trickForm->getData();
-            $trick->setUser($this->getUser());
-            $trickRepository = $doctrine->getRepository(Trick::class);
+            if ($trickForm->isSubmitted() && $trickForm->isValid()) {
+                        $entityManager = $doctrine->getManager();
+                    $trick = $trickForm->getData();
+                    $trick->setUser($this->getUser());
+                    $trickRepository = $doctrine->getRepository(Trick::class);
 
-            $slug = $slug->generate($trick->getName());
-            $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
-            $medias = $trickForm->get('medias');
-            $cover = false;
-            foreach ($medias as $media) {
-                $newMedia = $media->getData();
-                if ($newMedia->getType()==Media::TYPE_IMAGE) {
-                    $fileName = $fileUploader->upload($media->get('image')->getData());
-                    $newMedia->setLink($fileName);
-                    if(!$cover){
-                        $trick->setCoverImg($newMedia);
-                        $cover = true;
+                    $slug = $slug->generate($trick->getName());
+                    $trick->setSlug($trickRepository->adaptToExistingSlug($slug));
+                    $medias = $trickForm->get('medias');
+                    $cover = false;
+                    foreach ($medias as $media) {
+                        $newMedia = $media->getData();
+                        if ($newMedia->getType()==Media::TYPE_IMAGE) {
+                            $fileName = $fileUploader->upload($media->get('image')->getData());
+                            $newMedia->setLink($fileName);
+                            if(!$cover){
+                                $trick->setCoverImg($newMedia);
+                                $cover = true;
+                            }
+                        }
+                        if ($newMedia->getType()==Media::TYPE_VIDEO) {
+                            $newMedia->setAlt('Intégration vidéo externe');
+                        }
+                        $media->getData()->setTrick($trick);
+                        $trick->addMedia($media->getData());
                     }
-                }
-                if ($newMedia->getType()==Media::TYPE_VIDEO) {
-                    $newMedia->setAlt('Intégration vidéo externe');
-                }
-                $media->getData()->setTrick($trick);
-                $trick->addMedia($media->getData());
+
+                    $entityManager->persist($trick);
+                    $entityManager->flush();
+
+                    $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été créé !');
+                    return $this->redirectToRoute('show_index');
             }
 
-            $entityManager->persist($trick);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été créé !');
-            return $this->redirectToRoute('show_index');
+            return $this->renderForm('@client/pages/addTrick.html.twig', [
+                'addTrickForm' => $trickForm
+            ]);
         }
-
-        return $this->renderForm('@client/pages/addTrick.html.twig', [
-            'addTrickForm' => $trickForm
-        ]);
     }
 
 
@@ -165,12 +167,11 @@ class TrickController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      */
     public function changeCover(Trick $trick, Media $image, ManagerRegistry $doctrine) {
-        if (true) {
+        if ($this->isGranted('cover', $trick)) {
             $contributor = new Contributor();
             $contributor->setTrick($trick);
             $contributor->setUser($this->getUser());
             $trick->addContributor($contributor);
-
             $trick->setCoverImg($image);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($trick);
@@ -185,10 +186,12 @@ class TrickController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      */
     public function deleteTrick(Trick $trick, ManagerRegistry $doctrine) {
-        if ($trick->getUser() !== $this->getUser()) {
+        if ($this->isGranted('delete', $trick)) {
+            $entityManager = $doctrine->getManager();
+            $entityManager->remove($trick);
+            $entityManager->flush();
             $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été supprimé');
             return $this->redirectToRoute('show_index', ['slug' => $trick->getSlug()]);
-            //throw $this->createAccessDeniedException();
         }
     }
 

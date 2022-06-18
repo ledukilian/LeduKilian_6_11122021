@@ -20,6 +20,7 @@ function refreshMediaModal(data) {
         return true;
     }
     if (data.type==="video") {
+        $('#mediaModal a').hide();
         $modal.html(data.link + $modal.html());
         return true;
     }

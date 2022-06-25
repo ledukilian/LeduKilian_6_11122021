@@ -162,7 +162,6 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/trick/couverture/{slug}/{image}/", name="setcover_trick")
-     * @IsGranted("ROLE_ADMIN")
      */
     public function changeCover(Trick $trick, Media $image, ManagerRegistry $doctrine) {
         if ($this->isGranted('cover', $trick)) {
@@ -181,7 +180,6 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/trick/supprimer/{slug}/", name="delete_trick")
-     * @IsGranted("ROLE_ADMIN")
      */
     public function deleteTrick(Trick $trick, ManagerRegistry $doctrine) {
         if ($this->isGranted('delete', $trick)) {
@@ -189,7 +187,7 @@ class TrickController extends AbstractController
             $entityManager->remove($trick);
             $entityManager->flush();
             $this->addFlash('success', 'Le trick '.$trick->getName().' a bien été supprimé');
-            return $this->redirectToRoute('show_index', ['slug' => $trick->getSlug()]);
+            return $this->redirectToRoute('show_index');
         }
     }
 

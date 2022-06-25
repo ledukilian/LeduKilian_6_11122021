@@ -48,7 +48,7 @@ class Trick implements TimestampableInterface
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER", cascade={"persist", "remove"})
      */
     private $contributors;
 
@@ -72,12 +72,12 @@ class Trick implements TimestampableInterface
     private $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Media::class, fetch="EAGER", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity=Media::class, fetch="EAGER", cascade={"persist", "remove"})
      */
     private $medias;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Media::class, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity=Media::class, fetch="EAGER", cascade={"remove"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $coverImg;

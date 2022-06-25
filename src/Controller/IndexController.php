@@ -21,9 +21,19 @@ class IndexController extends AbstractController
             8,
             0
         );
+
+        $count = $doctrine
+            ->getRepository(Trick::class)
+            ->findBy(
+                [],
+                ['createdAt' => 'DESC'],
+                8,
+                8
+            );
+
         return $this->render('@client/pages/index.html.twig', [
             'tricks' => $tricks,
-            'remain_tricks' => true
+            'remain_tricks' => sizeof($count)>0
         ]);
     }
 

@@ -69,7 +69,6 @@ class TrickController extends AbstractController
      * @Route("/trick/ajouter/", name="add_trick")
      */
     public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
-        if ($this->isGranted('create', $trick)) {
 
             $trick = new Trick();
             $trickForm = $this->createForm(TrickType::class, $trick);
@@ -112,7 +111,6 @@ class TrickController extends AbstractController
             return $this->renderForm('@client/pages/addTrick.html.twig', [
                 'addTrickForm' => $trickForm
             ]);
-        }
     }
 
 

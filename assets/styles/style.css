@@ -308,3 +308,6 @@ li iframe {
     max-width: 175px;
     max-height: 110px;
 }
+main {
+    min-height: 80vh;
+}

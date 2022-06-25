@@ -5,136 +5,157 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\Trick;
 use App\Entity\User;
-use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
-    public function load(ObjectManager $manager): void
-    {
-        $this->generateUser($manager);
-        $this->generateCategory($manager);
-        $this->generateTrick($manager);
-        $this->generateComment($manager);
-        //$this->generateContributor($manager);
-        $manager->flush();
-    }
+    const USERS = [
+        [
+            'username' => 'Admin',
+            'email' => 'Admin@Snowtricks.fr',
+            'roles' => ["ROLE_ADMIN"],
+            'password' => '$2y$13$pnXVA1WXxikRzYkc41FYPuyhVA4Dcv57uOjP9bAgQuRr8aXVHY17q'
+        ],
+        [
+            'username' => 'Guimauve',
+            'email' => 'guy.mauve@Snowtricks.fr',
+            'roles' => [],
+            'password' => '$2y$13$pnXVA1WXxikRzYkc41FYPuyhVA4Dcv57uOjP9bAgQuRr8aXVHY17q'
+        ],
+        [
+            'username' => 'Judabrico',
+            'email' => 'judas.bricot@Snowtricks.fr',
+            'roles' => [],
+            'password' => '$2y$13$pnXVA1WXxikRzYkc41FYPuyhVA4Dcv57uOjP9bAgQuRr8aXVHY17q'
+        ]
+    ];
+    const CATEGORIES = [
+        [
+            'name' => 'Grab',
+            'desc' => 'Un grab consiste à attraper la planche avec la main pendant le saut. Le verbe anglais to grab signifie « attraper »'
+        ],
+        [
+            'name' => 'Rotate',
+            'desc' => 'On désigne par le mot « rotate » uniquement des rotations horizontales'
+        ],
+        [
+            'name' => 'Flip',
+            'desc' => 'Un flip est une rotation verticale. On distingue les front flips, rotations en avant, et les back flips, rotations en arrière.'
+        ]
+    ];
+    const TRICKS = [
+        [
+            'name' => 'Stalefish',
+            'desc' => 'Stalefish',
+            'slug' => 'stalefish',
+            'cat' => 1
+        ],
+        [
+            'name' => 'Tail grab',
+            'desc' => 'Tail grab',
+            'slug' => 'tail-grab',
+            'cat' => 1
+        ],
+        [
+            'name' => 'Nose grab',
+            'desc' => 'Nose grab',
+            'slug' => 'nose-grab',
+            'cat' => 1
+        ],
+        [
+            'name' => '90',
+            'desc' => 'Ceci est un 90',
+            'slug' => '90',
+            'cat' => 2
+        ],
+        [
+            'name' => '180',
+            'desc' => 'Ceci est un 180',
+            'slug' => '180',
+            'cat' => 2
+        ],
+        [
+            'name' => '360',
+            'desc' => 'Ceci est un 360',
+            'slug' => '360',
+            'cat' => 2
+        ],
+        [
+            'name' => '540',
+            'desc' => 'Ceci est un 540',
+            'slug' => '540',
+            'cat' => 2
+        ],
+        [
+            'name' => 'Simple flip',
+            'desc' => 'Ceci est un Simple flip',
+            'slug' => 'simple-flip',
+            'cat' => 3
+        ],
+        [
+            'name' => 'Double flip',
+            'desc' => 'Ceci est un Double flip',
+            'slug' => 'double-flip',
+            'cat' => 3
+        ],
+        [
+            'name' => 'Hakon flip',
+            'desc' => 'Ceci est un Hakon flip',
+            'slug' => 'hakon-flip',
+            'cat' => 3
+        ]
+    ];
+
 
     private function persistEntity(ObjectManager $manager, $entity): void {
-        $entity->setCreatedAt(new DateTime());
-        $entity->setUpdatedAt(new DateTime());
+        $entity->setCreatedAt(new \DateTimeImmutable());
+        $entity->setUpdatedAt(new \DateTimeImmutable());
         $manager->persist($entity);
-
     }
 
-    private function generateUser(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        // Creating first user : admin
-        $user = new User();
-        $user->setUsername('Admin');
-        $user->setEmail('Admin@Snowtricks.fr');
-        $user->setRoles(["ROLE_ADMIN"]);
-        $user->setPassword('$2y$13$pnXVA1WXxikRzYkc41FYPuyhVA4Dcv57uOjP9bAgQuRr8aXVHY17q');
-        $user->setIsVerified(true);
-        $this->persistEntity($manager, $user);
+        $users = [''];
+        $categories = [''];
 
-        // Creating second user : member
-        $user = new User();
-        $user->setUsername('Guimauve');
-        $user->setEmail('guy.mauve@Snowtricks.fr');
-        $user->setRoles([]);
-        $user->setPassword('$2y$13$pnXVA1WXxikRzYkc41FYPuyhVA4Dcv57uOjP9bAgQuRr8aXVHY17q');
-        $user->setIsVerified(true);
-        $this->persistEntity($manager, $user);
+        /* Generating Users */
+        foreach ($this::USERS as $data) {
+            $user = new User();
+            $user->setIsVerified(true);
+            $user->setUsername($data['username']);
+            $user->setEmail($data['email']);
+            $user->setRoles($data['roles']);
+            $user->setPassword($data['password']);
+            $this->persistEntity($manager, $user);
+            $users[] = $user;
+        }
+        /* Generating Categories */
+        foreach ($this::CATEGORIES as $data) {
+            $category = new Category();
+            $category->setName($data['name']);
+            $category->setDescription($data['desc']);
+            $this->persistEntity($manager, $category);
+            $categories[] = $category;
+        }
+        /* Generating Tricks */
+        die;
+        foreach ($this::TRICKS as $data) {
+            $trick = new Trick();
+            $trick->setUser($users[1]);
+            $trick->setName($data['name']);
+            $trick->setDescription($data['desc']);
+            $trick->setCategory($categories[$data['cat']]);
+            $trick->setSlug($data['slug']);
+            $this->persistEntity($manager, $category);
+            var_dump($trick);
+            die;
+        }
+        $manager->flush();
+
+
+
     }
 
-    private function generateCategory(ObjectManager $manager)
-    {
-        // Creating first category
-        $category = new Category();
-        $category->setName('Grab');
-        $category->setDescription('Un grab consiste à attraper la planche avec la main pendant le saut. Le verbe anglais to grab signifie « attraper »');
-        $this->persistEntity($manager, $category);
-
-        // Creating category
-        $category = new Category();
-        $category->setName('Rotate');
-        $category->setDescription('On désigne par le mot « rotate » uniquement des rotations horizontales');
-        $this->persistEntity($manager, $category);
-
-        // Creating category
-        $category = new Category();
-        $category->setName('Flip');
-        $category->setDescription('Un flip est une rotation verticale. On distingue les front flips, rotations en avant, et les back flips, rotations en arrière.');
-        $this->persistEntity($manager, $category);
-    }
-
-    private function generateTrick(ObjectManager $manager)
-    {
-        // 1
-        $trick = new Trick();
-        $trick->setUser($manager->find(User::class, 1));
-        $trick->setName('Stalefish');
-        $trick->setDescription('Stalefish');
-        $trick->setCategory($manager->find(Category::class, 1));
-        $trick->setSlug('stalefish');
-        $this->persistEntity($manager, $trick);
-        // 2
-        $trick->setName('Tail grab');
-        $trick->setDescription('Tail grab');
-        $trick->setSlug('tail-grab');
-        $this->persistEntity($manager, $trick);
-        // 3
-        $trick->setName('Nose grab');
-        $trick->setDescription('Nose grab');
-        $trick->setSlug('nose-grab');
-        $this->persistEntity($manager, $trick);
-        // 4
-        $trick->setName('90');
-        $trick->setDescription('Ceci est un 90');
-        $trick->setSlug('90');
-        $trick->setCategory($manager->find(Category::class, 2));
-        $this->persistEntity($manager, $trick);
-        // 5
-        $trick->setName('180');
-        $trick->setDescription('Ceci est un 180');
-        $trick->setSlug('180');
-        $this->persistEntity($manager, $trick);
-        // 6
-        $trick->setName('360');
-        $trick->setDescription('Ceci est un 360');
-        $trick->setSlug('360');
-        $this->persistEntity($manager, $trick);
-        // 7
-        $trick->setName('540');
-        $trick->setDescription('Ceci est un 540');
-        $trick->setSlug('540');
-        $this->persistEntity($manager, $trick);
-        // 8
-        $trick->setName('Simple flip');
-        $trick->setDescription('Simple flip');
-        $trick->setSlug('simple-flip');
-        $trick->setCategory($manager->find(Category::class, 3));
-        $this->persistEntity($manager, $trick);
-        // 9
-        $trick->setName('Double flip');
-        $trick->setDescription('Double flip');
-        $trick->setSlug('double-flip');
-        $this->persistEntity($manager, $trick);
-        // 10
-        $trick->setName('Hakon flip');
-        $trick->setDescription('Hakon flip');
-        $trick->setSlug('hakon-flip');
-        $this->persistEntity($manager, $trick);
-    }
-
-    private function generateComment(ObjectManager $manager)
-    {
-        // 1
-        $comment = new Comment();
-        $comment->setContent();
-        $this->persistEntity($manager, $trick);
-    }
 
 }

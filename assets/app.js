@@ -86,10 +86,17 @@ function convertToReadableDateTime(date) {
     return val;
 }
 
-function showConfirmModal(name, slug) {
+function refreshConfirmModal(name, slug) {
     console.log(name);
     console.log(slug);
     $('#confirmModal .modal-body').html('Voulez-vous vraiment supprimer le trick ' + name + ' ?')
     $('#confirmModal .modal-footer a').attr('href', '/trick/supprimer/' + slug + '/');
-    $('#confirmModal').show();
 }
+
+$( ".delete-action" ).each(function( index, element ) {
+    console.log('on parcours les .delete-action');
+    element.onclick = function() {
+        console.log('On rafraichi la modal');
+        refreshConfirmModal(element.dataset.name, element.dataset.slug);
+    };
+});

@@ -17,7 +17,7 @@
                 <a href="/trick/editer/{{ trick.slug }}/"><em class="zoom-in mx-2 fas fa-pen text-warning"></em></a>
                 {% endif %}
                 {% if is_granted('delete', trick) %}
-                    <span onclick="showConfirmModal('{{ trick.name }}', '{{ trick.slug }}');"><em class="zoom-in mx-2 fas fa-trash-alt text-danger"></em></span>
+                    <span class="delete-action" data-bs-toggle="modal" data-bs-target="#confirmModal" data-name="{{ trick.name }}" data-slug="{{ trick.slug }}"><em class="zoom-in mx-2 fas fa-trash-alt text-danger"></em></span>
                 {% endif %}
             </div>
             {% endif %}

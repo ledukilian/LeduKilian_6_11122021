@@ -89,8 +89,7 @@ class TrickVoter extends Voter
     {
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return true;
-        }
-        if ($user === $trick->getUser()) {
+        } elseif ($user === $trick->getUser()) {
             return true;
         }
         return false;

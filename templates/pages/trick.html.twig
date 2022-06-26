@@ -13,9 +13,7 @@
             </div>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <div class="trick-action px-3 py-2 ms-auto me-3">
-                {% if is_granted('edit', trick) %}
                 <a href="/trick/editer/{{ trick.slug }}/"><em class="zoom-in mx-2 fas fa-pen text-warning"></em></a>
-                {% endif %}
                 {% if is_granted('delete', trick) %}
                     <span class="delete-action" data-bs-toggle="modal" data-bs-target="#confirmModal" data-name="{{ trick.name }}" data-slug="{{ trick.slug }}"><em class="zoom-in mx-2 fas fa-trash-alt text-danger"></em></span>
                 {% endif %}

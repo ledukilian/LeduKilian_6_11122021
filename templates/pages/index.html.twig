@@ -35,7 +35,7 @@
                                 <figcaption class="d-flex figcaption-size">
                                     <h5 class="card-title text-dark px-0 mt-1 m-0 fw-bold"><em class="fas fa-chevron-right text-primary me-1"></em>{{ trick.name }}</h5>
                                     <div class="ms-auto pt-1">
-                                        {% if is_granted('edit', trick) %}
+                                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                             <a href="/trick/editer/{{ trick.slug }}/"><em class="zoom-in fas fa-edit text-warning"></em></a>
                                         {% endif %}
                                         {% if is_granted('delete', trick) %}

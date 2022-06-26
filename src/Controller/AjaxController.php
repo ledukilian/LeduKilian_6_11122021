@@ -103,13 +103,26 @@ class AjaxController extends AbstractController
             ->getRepository(Trick::class)
             ->size();
 
-        /* Return JSON response with elements, and 'remain' boolean */
-        return $this->json([
-            'success' => true,
-            'data' => $elements,
-            'remain' => ($count > ($limit + $offset))
-        ], 200, [], ['groups' => ['trick', 'user']]);
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
 
+        $serializer = new Serializer($normalizers, $encoders);
+
+        $jsonContent = $serializer->normalize($elements, null, [
+            AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'description', 'slug', 'coverImg' => ['type', 'link', 'alt'], 'user' => ['username']]
+        ]);
+
+        /* Format JSON content with serializer */
+        $jsonContent = $serializer->serialize(
+            [
+                'success' => true,
+                'data' => $jsonContent,
+                'remain' => ($count > ($limit + $offset))
+            ],
+            'json'
+        );
+
+        return new JsonResponse($jsonContent, 200, [], true);
     }
 
     private function checkTricksRemain(ManagerRegistry $doctrine, int $asked): bool

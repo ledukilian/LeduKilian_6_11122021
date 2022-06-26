@@ -37,6 +37,11 @@ class TrickController extends AbstractController
                 $newMedia = $media->getData();
                 if ($newMedia->getType()==Media::TYPE_IMAGE) {
                     if ($media->get('image')->getData()!==null) {
+
+                        if (sizeof($trick->getMedias())>0 && is_null($trick->getCoverImg())) {
+                            $trick->setCoverImg($newMedia);
+                        }
+
                         $fileName = $fileUploader->upload($media->get('image')->getData());
                         $newMedia->setLink($fileName);
                     }

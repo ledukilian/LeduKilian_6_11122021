@@ -47,42 +47,10 @@ class TrickVoter extends Voter
         $trick = $subject;
 
         switch ($attribute) {
-            case self::VIEW:
-                return $this->canView($trick, $user);
-            case self::CREATE:
-                return $this->canCreate($trick, $user);
-            case self::EDIT:
-                return $this->canEdit($trick, $user);
-            case self::COVER:
-                return $this->canChangeCover($trick, $user);
             case self::DELETE:
                 return $this->canDelete($trick, $user);
         }
         throw new \LogicException('This code should not be reached!');
-    }
-
-    private function canView(Trick $trick, User $user): bool
-    {
-        return true;
-    }
-
-    private function canCreate(Trick $trick, User $user): bool
-    {
-        if ($this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return true;
-        }
-        return false;
-    }
-
-    private function canEdit(Trick $trick, User $user): bool
-    {
-        return $this->canCreate($trick, $user);
-    }
-
-    private function canChangeCover(Trick $trick, User $user): bool
-    {
-        return $this->canEdit($trick, $user);
-
     }
 
     private function canDelete(Trick $trick, User $user): bool

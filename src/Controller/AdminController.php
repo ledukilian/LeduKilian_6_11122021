@@ -19,7 +19,10 @@ class AdminController extends AbstractController
      */
     public function showAdmin(ManagerRegistry $doctrine)
     {
+        /* Deny access unless admin */
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        /* Get all last tricks */
         $tricks = $doctrine
             ->getRepository(Trick::class)
             ->findBy(
@@ -27,6 +30,7 @@ class AdminController extends AbstractController
                 ['createdAt' => 'DESC']
             );
 
+        /* Render the admin panel */
         return $this->render('@client/pages/admin.html.twig', [
             'tricks' => $tricks
         ]);
@@ -37,13 +41,15 @@ class AdminController extends AbstractController
      */
     public function changeCommentStatus(ManagerRegistry $doctrine, int $comment_id)
     {
+        /* Deny access unless admin */
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+        /* Get repository and change comment status with his id */
         $repository = $doctrine->getRepository(Comment::class);
         $repository->toggleCommentStatus($comment_id);
 
+        /* Add flash message and redirect to admin panel */
         $this->addFlash('success', 'Le statut du commentaire a bien été mis à jour !');
-
         return $this->redirectToRoute('show_admin');
     }
 

@@ -35,7 +35,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            /* Encode the plain password */
             $user->setPassword(
             $userPasswordHasher->hashPassword(
                     $user,
@@ -46,7 +46,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
+            /* Generate a signed url and email it to the user */
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('ledu.kilian@gmail.com', 'Kilian LE DU'))
@@ -80,7 +80,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        // validate email confirmation link, sets User::isVerified=true and persists
+        /* Validate email confirmation link, sets User::isVerified=true and persists */
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
@@ -109,7 +109,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RequestVerifyUserEmailFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // generate a signed url and email it to the user
+            /* Generate a signed url and email it to the user */
             $user =  $userRepository->findOneByEmail($form->get('email')->getData());
             if ($user) {
                 $this->emailVerifier->sendEmailConfirmation(
@@ -121,7 +121,6 @@ class RegistrationController extends AbstractController
                         ->subject('SnowTricks : Confirmation de votre adresse mail')
                         ->htmlTemplate('registration/confirmation_email.html.twig')
                 );
-                // do anything else you need here, like flash message
                 $this->addFlash('success', 'Un mail de confirmation a bien été envoyé à l\'adresse mail associée au compte.');
                 return $this->redirectToRoute('show_index');
             } else {

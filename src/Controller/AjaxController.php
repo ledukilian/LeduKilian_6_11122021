@@ -25,11 +25,14 @@ class AjaxController extends AbstractController
      */
     public function changeCommentStatus(ManagerRegistry $doctrine, int $comment_id): JsonResponse
     {
+        /* Deny access unless Admin */
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+        /* Change comment status */
         $repository = $doctrine->getRepository(Comment::class);
         $repository->toggleCommentStatus($comment_id);
 
+        /* Return response with code 200 */
         return $this->json([
             'success' => true,
             'comment' => $comment_id
@@ -42,6 +45,7 @@ class AjaxController extends AbstractController
      */
     public function loadMoreComments(ManagerRegistry $doctrine, int $id, int $limit = 10, int $offset = 10): JsonResponse
     {
+        /* Get next comments */
         $elements = $doctrine
             ->getRepository(Comment::class)
             ->findNextComments(
@@ -50,6 +54,7 @@ class AjaxController extends AbstractController
                 $offset
             );
 
+        /* Get next comments (if remaining we get > 0) */
         $count = $doctrine
             ->getRepository(Comment::class)
             ->count($id);
@@ -63,6 +68,7 @@ class AjaxController extends AbstractController
             AbstractNormalizer::ATTRIBUTES => ['id', 'content', 'status', 'createdAt', 'user' => ['username']]
         ]);
 
+        /* Format JSON content with serializer */
         $jsonContent = $serializer->serialize(
             [
                 'success' => true,
@@ -72,8 +78,8 @@ class AjaxController extends AbstractController
             'json'
         );
 
+        /* Return response with code 200 */
         return new JsonResponse($jsonContent, 200, [], true);
-
     }
 
 
@@ -82,6 +88,7 @@ class AjaxController extends AbstractController
      */
     public function loadMoreTricks(ManagerRegistry $doctrine, int $limit = 8, int $offset = 8): JsonResponse
     {
+        /* Get the next tricks with limit and offset */
         $elements = $doctrine
             ->getRepository(Trick::class)
             ->findBy(
@@ -90,10 +97,13 @@ class AjaxController extends AbstractController
                 $limit,
                 $offset
             );
+
+        /* Count all tricks */
         $count = $doctrine
             ->getRepository(Trick::class)
             ->size();
 
+        /* Return JSON response with elements, and 'remain' boolean */
         return $this->json([
             'success' => true,
             'data' => $elements,
@@ -104,11 +114,14 @@ class AjaxController extends AbstractController
 
     private function checkTricksRemain(ManagerRegistry $doctrine, int $asked): bool
     {
+        /* Return trick count */
         return count($doctrine->getRepository(Trick::class)->findAll()) >= $asked;
     }
 
+
     private function checkCommentsRemain(ManagerRegistry $doctrine, string $slug, int $limit, int $offset): bool
     {
+        /* Get next comments */
         $remains = $doctrine
             ->getRepository(Comment::class)
             ->findNextComments(
@@ -116,6 +129,8 @@ class AjaxController extends AbstractController
                 $limit,
                 $offset + $limit
             );
+
+        /* Return remaining comments, boolean format */
         return !empty($remains);
     }
 

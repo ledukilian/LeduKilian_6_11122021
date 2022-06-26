@@ -13,6 +13,7 @@ class IndexController extends AbstractController
      */
     public function showIndex(ManagerRegistry $doctrine)
     {
+        /* Get the 8 last tricks */
         $tricks = $doctrine
             ->getRepository(Trick::class)
             ->findBy(
@@ -22,6 +23,7 @@ class IndexController extends AbstractController
             0
         );
 
+        /* Get the 8 next tricks */
         $count = $doctrine
             ->getRepository(Trick::class)
             ->findBy(
@@ -31,6 +33,7 @@ class IndexController extends AbstractController
                 8
             );
 
+        /* Return response with 'remain_tricks' as a boolean type */
         return $this->render('@client/pages/index.html.twig', [
             'tricks' => $tricks,
             'remain_tricks' => sizeof($count)>0

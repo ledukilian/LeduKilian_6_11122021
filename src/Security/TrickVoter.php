@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Security;
 
 class TrickVoter extends Voter
 {
+    /* All trick functionnalities */
     const VIEW = 'view';
     const CREATE = 'create';
     const EDIT = 'edit';
@@ -24,14 +25,17 @@ class TrickVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!in_array($attribute, [self::CREATE, self::EDIT, self::DELETE, self::COVER])) {
+        /* If attribute is not supported, return false */
+        if (!in_array($attribute, [self::DELETE])) {
             return false;
         }
 
+        /* If attribute is not a Trick, return false */
         if (!$subject instanceof Trick) {
             return false;
         }
 
+        /* Else, return true, attribute and subject are supported */
         return true;
     }
 
@@ -46,6 +50,7 @@ class TrickVoter extends Voter
         /** @var Trick $trick */
         $trick = $subject;
 
+        /* Switch with only one case supported (DELETE) */
         switch ($attribute) {
             case self::DELETE:
                 return $this->canDelete($trick, $user);
@@ -55,11 +60,16 @@ class TrickVoter extends Voter
 
     private function canDelete(Trick $trick, User $user): bool
     {
+        /* If the user is Admin */
         if ($this->security->isGranted('ROLE_ADMIN')) {
+            /* Then he can delete */
             return true;
+        /* Or the user is owner of the trick */
         } elseif ($user === $trick->getUser()) {
+            /* Then he can delete */
             return true;
         }
+        /* Else he can't delete the trick */
         return false;
     }
 

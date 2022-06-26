@@ -7,14 +7,13 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
-use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class Category implements TimestampableInterface
+class Category
 {
     use TimestampableTrait;
 

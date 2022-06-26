@@ -12,8 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
-use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -22,7 +21,7 @@ use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
  * @UniqueEntity(fields={"email"}, message="Il y a déjà un compte utilisant cette adresse mail")
  * @UniqueEntity(fields={"username"}, message="Il y a déjà un compte utilisant ce nom d'utilisateur")
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface, TimestampableInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableTrait;
 

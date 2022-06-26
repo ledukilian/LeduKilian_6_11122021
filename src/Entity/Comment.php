@@ -2,18 +2,17 @@
 
 namespace App\Entity;
 
-use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
-use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class Comment implements TimestampableInterface
+class Comment
 {
     use TimestampableTrait;
 

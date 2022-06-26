@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
-use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
-use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
+
 use App\Repository\MediaRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use App\Trait\TimestampableEntity;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=MediaRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
-class Media implements TimestampableInterface
+class Media
 {
     use TimestampableTrait;
 

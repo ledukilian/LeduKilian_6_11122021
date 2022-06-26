@@ -11,7 +11,6 @@ use App\Form\TrickType;
 use App\Services\FileUploader;
 use App\Services\Slug;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,6 +22,7 @@ class TrickController extends AbstractController
      * @Route("/trick/editer/{slug}/", name="edit_trick")
      */
     public function editTrick(Trick $trick, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $editTrickForm = $this->createForm(TrickType::class, $trick);
         $editTrickForm->handleRequest($request);
         if ($editTrickForm->isSubmitted() && $editTrickForm->isValid()) {
@@ -44,6 +44,7 @@ class TrickController extends AbstractController
 
                         $fileName = $fileUploader->upload($media->get('image')->getData());
                         $newMedia->setLink($fileName);
+
                     }
                 }
                 if ($newMedia->getType()==Media::TYPE_VIDEO) {
@@ -74,6 +75,7 @@ class TrickController extends AbstractController
      * @Route("/trick/ajouter/", name="add_trick")
      */
     public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
             $trick = new Trick();
             $trickForm = $this->createForm(TrickType::class, $trick);
@@ -169,7 +171,7 @@ class TrickController extends AbstractController
      * @Route("/trick/couverture/{slug}/{image}/", name="setcover_trick")
      */
     public function changeCover(Trick $trick, Media $image, ManagerRegistry $doctrine) {
-        if ($this->isGranted('cover', $trick)) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
             $contributor = new Contributor();
             $contributor->setTrick($trick);
             $contributor->setUser($this->getUser());
@@ -180,7 +182,6 @@ class TrickController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'L\'image de couverture a bien été mise à jour');
             return $this->redirectToRoute('show_trick', ['slug' => $trick->getSlug()]);
-        }
     }
 
     /**

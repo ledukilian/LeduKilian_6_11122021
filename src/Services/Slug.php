@@ -7,9 +7,10 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class Slug
 {
-
     public function generate(String $text)
     {
+        /* Generate a slug from string, example : */
+        /* "Un nouveau Trick" => "un-nouveau-trick" */
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
         $text = preg_replace('~[^-\w]+~', '', $text);

@@ -24,6 +24,7 @@ class CommentRepository extends ServiceEntityRepository
     */
     public function findNextComments(Int $id, Int $limit, Int $offset)
     {
+        /* Get trick next comments */
         return $this->createQueryBuilder('c')
             ->andWhere('c.trick = :id')
             ->andWhere('c.status = true')
@@ -36,8 +37,10 @@ class CommentRepository extends ServiceEntityRepository
         ;
     }
 
+
     public function count($id)
     {
+        /* Count comments on a trick */
         return $this->createQueryBuilder('t')
             ->select('count(t.id)')
             ->where('t.trick = :trick')
@@ -47,23 +50,16 @@ class CommentRepository extends ServiceEntityRepository
             ;
     }
 
-    public function toggleCommentStatus(int $comment_id) {
+    public function toggleCommentStatus(int $comment_id)
+    {
         $conn = $this->getEntityManager()->getConnection();
+
+        /* Toggle the status on a comment */
         $sql = 'UPDATE comment
             SET status = !status
             WHERE id = :id';
         $stmt = $conn->prepare($sql);
         return $stmt->executeQuery(['id' => $comment_id]);
     }
-    /*
-    public function findOneBySomeField($value): ?Comment
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
 }

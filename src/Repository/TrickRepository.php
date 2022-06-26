@@ -45,6 +45,7 @@ class TrickRepository extends ServiceEntityRepository
 
     public function adaptToExistingSlug(String $slug)
     {
+        /* Search if the slug exist */
         $nb = $this->createQueryBuilder('t')
             ->select('count(t.id)')
             ->andWhere('t.slug = :slug')
@@ -52,21 +53,11 @@ class TrickRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
+        /* If he already exists, add 1 to slug number */
         if ($nb > 0) {
             return $slug.'-'.$nb+1;
         }
         return $slug;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Trick
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

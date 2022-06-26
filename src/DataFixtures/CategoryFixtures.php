@@ -32,7 +32,6 @@ class CategoryFixtures extends Fixture
         $manager->persist($cat_flip);
         $manager->flush();
 
-        // other fixtures can get this object using the UserFixtures::ADMIN_USER_REFERENCE constant
         $this->addReference(self::CATEGORY_GRAB_REFERENCE, $cat_grab);
         $this->addReference(self::CATEGORY_ROTATE_REFERENCE, $cat_rotate);
         $this->addReference(self::CATEGORY_FLIP_REFERENCE, $cat_flip);

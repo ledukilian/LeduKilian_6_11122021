@@ -4,7 +4,11 @@ namespace App\Services;
 
 class Slug
 {
-    public function generate(String $text)
+    /**
+     * @param String $text
+     * @return string
+     */
+    public function generate(String $text): string
     {
         /* Generate a slug from string, example : */
         /* "Un nouveau Trick" => "un-nouveau-trick" */

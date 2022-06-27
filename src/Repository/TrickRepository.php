@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,6 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TrickRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Trick::class);
@@ -22,7 +27,7 @@ class TrickRepository extends ServiceEntityRepository
     /**
     * @return Trick[] Returns an array of Trick objects
     */
-    public function findPostWithFiveComments($slug)
+    public function findPostWithFiveComments($slug): array
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.slug = :slug')
@@ -34,6 +39,10 @@ class TrickRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function size()
     {
         return $this->createQueryBuilder('t')
@@ -43,7 +52,13 @@ class TrickRepository extends ServiceEntityRepository
             ;
     }
 
-    public function adaptToExistingSlug(String $slug)
+    /**
+     * @param String $slug
+     * @return string
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function adaptToExistingSlug(String $slug): string
     {
         /* Search if the slug exist */
         $nb = $this->createQueryBuilder('t')

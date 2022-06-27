@@ -22,19 +22,19 @@ class Comment
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @Groups("comment")
      * @ORM\Column(type="string", length=2500)
      */
-    private $content;
+    private ?string $content;
 
     /**
      * @Groups("comment")
      * @ORM\Column(type="boolean")
      */
-    private $status;
+    private ?bool $status;
 
     /**
      * @Groups("comment")
@@ -42,25 +42,35 @@ class Comment
      * @ORM\JoinColumn(nullable=false)
      * @Ignore()
      */
-    private $user;
+    private ?User $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      * @Ignore()
      */
-    private $trick;
+    private ?Trick $trick;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @param string $content
+     * @return $this
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
@@ -68,11 +78,18 @@ class Comment
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getStatus(): ?bool
     {
         return $this->status;
     }
 
+    /**
+     * @param bool $status
+     * @return $this
+     */
     public function setStatus(bool $status): self
     {
         $this->status = $status;
@@ -80,11 +97,18 @@ class Comment
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -92,11 +116,18 @@ class Comment
         return $this;
     }
 
+    /**
+     * @return Trick|null
+     */
     public function getTrick(): ?Trick
     {
         return $this->trick;
     }
 
+    /**
+     * @param Trick|null $trick
+     * @return $this
+     */
     public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;

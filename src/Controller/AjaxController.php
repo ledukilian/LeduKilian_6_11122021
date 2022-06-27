@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Trick;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -18,6 +22,10 @@ class AjaxController extends AbstractController
 {
     /**
      * @Route("/change-comment-status/{$comment_id}/", name="_change_commentStatus_ajax")
+     * @param ManagerRegistry $doctrine
+     * @param int             $comment_id
+     * @return JsonResponse
+     * @throws Exception
      */
     public function changeCommentStatus(ManagerRegistry $doctrine, int $comment_id): JsonResponse
     {
@@ -38,6 +46,14 @@ class AjaxController extends AbstractController
 
     /**
      * @Route("/load-comments/{id}/{limit}/{offset}", name="_loadMore_comments_ajax")
+     * @param ManagerRegistry $doctrine
+     * @param int             $id
+     * @param int             $limit
+     * @param int             $offset
+     * @return JsonResponse
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     * @throws ExceptionInterface
      */
     public function loadMoreComments(ManagerRegistry $doctrine, int $id, int $limit = 10, int $offset = 10): JsonResponse
     {
@@ -81,6 +97,13 @@ class AjaxController extends AbstractController
 
     /**
      * @Route("/load-tricks/{id}/{limit}/{offset}", name="_loadMore_tricks_ajax")
+     * @param ManagerRegistry $doctrine
+     * @param int             $limit
+     * @param int             $offset
+     * @return JsonResponse
+     * @throws ExceptionInterface
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function loadMoreTricks(ManagerRegistry $doctrine, int $limit = 8, int $offset = 8): JsonResponse
     {
@@ -121,6 +144,11 @@ class AjaxController extends AbstractController
         return new JsonResponse($jsonContent, 200, [], true);
     }
 
+    /**
+     * @param ManagerRegistry $doctrine
+     * @param int             $asked
+     * @return bool
+     */
     private function checkTricksRemain(ManagerRegistry $doctrine, int $asked): bool
     {
         /* Return trick count */
@@ -128,6 +156,13 @@ class AjaxController extends AbstractController
     }
 
 
+    /**
+     * @param ManagerRegistry $doctrine
+     * @param string          $slug
+     * @param int             $limit
+     * @param int             $offset
+     * @return bool
+     */
     private function checkCommentsRemain(ManagerRegistry $doctrine, string $slug, int $limit, int $offset): bool
     {
         /* Get next comments */

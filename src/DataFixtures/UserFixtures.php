@@ -11,6 +11,9 @@ class UserFixtures extends Fixture
     public const ADMIN_USER_REFERENCE = 'admin-user';
     public const SIMPLE_USER_REFERENCE = 'simple-user';
 
+    /**
+     * Load data fixtures with the passed EntityManager
+     */
     public function load(ObjectManager $manager)
     {
         /*  Creating admin user */

@@ -17,11 +17,19 @@ class TrickVoter extends Voter
     const DELETE = 'delete';
     private Security $security;
 
+    /**
+     * @param Security $security
+     */
     public function __construct(Security $security)
     {
         $this->security = $security;
     }
 
+    /**
+     * Determines if the attribute and subject are supported by this voter.
+     *
+     * @param mixed $subject The subject to secure, e.g. an object the user wants to access or any other PHP type
+     */
     protected function supports(string $attribute, mixed $subject): bool
     {
         /* If attribute is not supported, return false */
@@ -38,6 +46,11 @@ class TrickVoter extends Voter
         return true;
     }
 
+
+    /**
+     * Perform a single access check operation on a given attribute, subject and token.
+     * It is safe to assume that $attribute and $subject already passed the "supports()" method check.
+     */
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -57,6 +70,11 @@ class TrickVoter extends Voter
         throw new \LogicException('This code should not be reached!');
     }
 
+    /**
+     * @param Trick $trick
+     * @param User  $user
+     * @return bool
+     */
     private function canDelete(Trick $trick, User $user): bool
     {
         /* If the user is Admin */

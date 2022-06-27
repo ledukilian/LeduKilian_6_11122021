@@ -13,6 +13,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,11 +23,21 @@ class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
 
+    /**
+     * @param EmailVerifier $emailVerifier
+     */
     public function __construct(EmailVerifier $emailVerifier)
     {
         $this->emailVerifier = $emailVerifier;
     }
 
+    /**
+     * @param Request                     $request
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param EntityManagerInterface      $entityManager
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
     #[Route('/inscription', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -65,6 +76,11 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request        $request
+     * @param UserRepository $userRepository
+     * @return Response
+     */
     #[Route('/verifier/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
@@ -95,7 +111,12 @@ class RegistrationController extends AbstractController
     }
 
 
-
+    /**
+     * @param Request        $request
+     * @param UserRepository $userRepository
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
     #[Route('/renvoyer-confirmation', name: 'app_request_verify_email')]
     public function requestVerifyUserEmail(
         Request $request,

@@ -11,6 +11,9 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class CommentFormType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         $builder

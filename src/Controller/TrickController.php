@@ -10,9 +10,13 @@ use App\Form\CommentFormType;
 use App\Form\TrickType;
 use App\Services\FileUploader;
 use App\Services\Slug;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -20,8 +24,13 @@ class TrickController extends AbstractController
 {
     /**
      * @Route("/trick/editer/{slug}/", name="edit_trick")
+     * @param Trick           $trick
+     * @param ManagerRegistry $doctrine
+     * @param Request         $request
+     * @param FileUploader    $fileUploader
+     * @return RedirectResponse|Response
      */
-    public function editTrick(Trick $trick, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader)
+    public function editTrick(Trick $trick, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader): RedirectResponse|Response
     {
         /* Deny access unless authentified */
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -89,8 +98,15 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/trick/ajouter/", name="add_trick")
+     * @param Slug            $slug
+     * @param ManagerRegistry $doctrine
+     * @param Request         $request
+     * @param FileUploader    $fileUploader
+     * @return RedirectResponse|Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader)
+    public function createTrick(Slug $slug, ManagerRegistry $doctrine, Request $request, FileUploader $fileUploader): RedirectResponse|Response
     {
         /* Deny access unless authentified */
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -159,8 +175,14 @@ class TrickController extends AbstractController
 
     /**
      * @Route("/trick/{slug}", name="show_trick")
+     * @param Trick           $trick
+     * @param ManagerRegistry $doctrine
+     * @param Request         $request
+     * @return RedirectResponse|Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function showTrick(Trick $trick, ManagerRegistry $doctrine, Request $request)
+    public function showTrick(Trick $trick, ManagerRegistry $doctrine, Request $request): RedirectResponse|Response
     {
         /* Create the comment form */
         $comment = new Comment();
@@ -210,10 +232,15 @@ class TrickController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/trick/couverture/{slug}/{image}/", name="setcover_trick")
+     * @param Trick           $trick
+     * @param Media           $image
+     * @param ManagerRegistry $doctrine
+     * @return RedirectResponse
      */
-    public function changeCover(Trick $trick, Media $image, ManagerRegistry $doctrine)
+    public function changeCover(Trick $trick, Media $image, ManagerRegistry $doctrine): RedirectResponse
     {
             /* Deny access unless authentified */
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -236,8 +263,12 @@ class TrickController extends AbstractController
             return $this->redirectToRoute('show_trick', ['slug' => $trick->getSlug()]);
     }
 
+
     /**
      * @Route("/trick/supprimer/{slug}/", name="delete_trick")
+     * @param Trick           $trick
+     * @param ManagerRegistry $doctrine
+     * @return RedirectResponse|void
      */
     public function deleteTrick(Trick $trick, ManagerRegistry $doctrine) {
         /* Check permission for this route */

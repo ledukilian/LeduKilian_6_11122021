@@ -24,60 +24,60 @@ class Trick
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @Groups("trick")
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @Groups("trick")
      * @ORM\Column(type="string", length=5000)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @Groups("trick")
      * @ORM\Column(type="string", length=255)
      */
-    private $slug;
+    private ?string $slug;
 
     /**
      * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER", cascade={"persist", "remove"})
      */
-    private $contributors;
+    private ArrayCollection $contributors;
 
     /**
      * @Groups("user")
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private ?User $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $category;
+    private ?Category $category;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
-    private $comments;
+    private ArrayCollection $comments;
 
     /**
      * @ORM\ManyToMany(targetEntity=Media::class, fetch="EAGER", cascade={"persist", "remove"})
      */
-    private $medias;
+    private ArrayCollection $medias;
 
     /**
      * @ORM\ManyToOne(targetEntity=Media::class, fetch="EAGER", cascade={"remove"})
      * @ORM\JoinColumn(nullable=true)
      */
-    private $coverImg;
+    private ?Media $coverImg;
 
 
     public function __construct()
@@ -88,16 +88,26 @@ class Trick
         $this->medias = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -105,11 +115,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return $this
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -117,11 +134,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
+    /**
+     * @param string $slug
+     * @return $this
+     */
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
@@ -130,13 +154,17 @@ class Trick
     }
 
     /**
-     * @return Collection|Contributor[]
+     * @return Collection
      */
     public function getContributors(): Collection
     {
         return $this->contributors;
     }
 
+    /**
+     * @param Contributor $contributor
+     * @return $this
+     */
     public function addContributor(Contributor $contributor): self
     {
         if (!$this->contributors->contains($contributor)) {
@@ -147,6 +175,10 @@ class Trick
         return $this;
     }
 
+    /**
+     * @param Contributor $contributor
+     * @return $this
+     */
     public function removeContributor(Contributor $contributor): self
     {
         if ($this->contributors->removeElement($contributor)) {
@@ -159,11 +191,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -171,6 +210,10 @@ class Trick
         return $this;
     }
 
+    /**
+     * @param int $id
+     * @return $this
+     */
     public function setUserId(int $id): self
     {
         $this->user = $id;
@@ -178,11 +221,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return Category|null
+     */
     public function getCategory(): ?Category
     {
         return $this->category;
     }
 
+    /**
+     * @param Category|null $category
+     * @return $this
+     */
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
@@ -190,6 +240,10 @@ class Trick
         return $this;
     }
 
+    /**
+     * @param int $id
+     * @return $this
+     */
     public function setCategoryId(int $id): self
     {
         $this->category = $id;
@@ -198,13 +252,17 @@ class Trick
     }
 
     /**
-     * @return Collection|Comment[]
+     * @return Collection
      */
     public function getComments(): Collection
     {
         return $this->comments;
     }
 
+    /**
+     * @param Comment $comment
+     * @return $this
+     */
     public function addComment(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -215,6 +273,10 @@ class Trick
         return $this;
     }
 
+    /**
+     * @param Comment $comment
+     * @return $this
+     */
     public function removeComment(Comment $comment): self
     {
         if ($this->comments->removeElement($comment)) {
@@ -235,6 +297,10 @@ class Trick
         return $this->medias;
     }
 
+    /**
+     * @param Media $media
+     * @return $this
+     */
     public function addMedia(Media $media): self
     {
         if (!$this->medias->contains($media)) {
@@ -244,6 +310,10 @@ class Trick
         return $this;
     }
 
+    /**
+     * @param Media $media
+     * @return $this
+     */
     public function removeMedia(Media $media): self
     {
         $this->medias->removeElement($media);
@@ -251,11 +321,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return Media|null
+     */
     public function getCoverImg(): ?Media
     {
         return $this->coverImg;
     }
 
+    /**
+     * @param Media|null $coverImg
+     * @return $this
+     */
     public function setCoverImg(?Media $coverImg): self
     {
         $this->coverImg = $coverImg;

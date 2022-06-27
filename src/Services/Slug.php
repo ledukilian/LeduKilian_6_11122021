@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use App\Entity\Trick;
-use Doctrine\Persistence\ManagerRegistry;
-
 class Slug
 {
     public function generate(String $text)

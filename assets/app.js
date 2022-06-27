@@ -98,9 +98,7 @@ function refreshConfirmModal(name, slug) {
 }
 
 $( ".delete-action" ).each(function( index, element ) {
-    console.log('on parcours les .delete-action');
     element.onclick = function() {
-        console.log('On rafraichi la modal');
         refreshConfirmModal(element.dataset.name, element.dataset.slug);
     };
 });

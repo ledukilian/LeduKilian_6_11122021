@@ -22,7 +22,7 @@ The project use the Symfony 6 Framework and HP 8.0 or higher.
 
 You can use intial fixtures dataset with : `php bin/console doctrine:fixtures:load`
 
-
+    
 
 ### 🔐 First login
 If you use the fixtures, you can use the admin account for the first login :
@@ -32,13 +32,6 @@ If you use the fixtures, you can use the admin account for the first login :
 
 Or one of the 3 default user account :
 
-- [ ] **Email** : `judas.bricot@snowtricks.fr`
-- [ ] **Password** : `snowtricks`
-
-
-- [ ] **Email** : `alonzo.ski@snowtricks.fr`
-- [ ] **Password** : `snowtricks`
-
-
-- [ ] **Email** : `max.hymale@snowtricks.fr`
-- [ ] **Password** : `snowtricks`
+- [ ] `judas.bricot@snowtricks.fr` / `snowtricks`
+- [ ] `alonzo.ski@snowtricks.fr` / `snowtricks`
+- [ ] `max.hymale@snowtricks.fr` / `snowtricks`

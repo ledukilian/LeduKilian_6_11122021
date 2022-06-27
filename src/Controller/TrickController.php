@@ -40,12 +40,14 @@ class TrickController extends AbstractController
 
         /* If we have a form validated */
         if ($editTrickForm->isSubmitted() && $editTrickForm->isValid()) {
+
+
             $entityManager = $doctrine->getManager();
             $trick = $editTrickForm->getData();
 
             /* Bind the current authentified user */
             $trick->setUser($this->getUser());
-            $trickRepository = $doctrine->getRepository(Trick::class);
+
             $medias = $editTrickForm->get('medias');
 
             /* Foreach media inside the form submitted */

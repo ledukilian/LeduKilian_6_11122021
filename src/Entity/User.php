@@ -64,7 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="user", fetch="EAGER")
      */
-    private ArrayCollection $tricks;
+    private $tricks;
 
     public function __construct()
     {

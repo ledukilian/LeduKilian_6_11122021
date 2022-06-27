@@ -36,7 +36,7 @@ class Category
     /**
      * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="category")
      */
-    private ArrayCollection $tricks;
+    private $tricks;
 
     public function __construct()
     {

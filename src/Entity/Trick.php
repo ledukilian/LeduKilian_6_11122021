@@ -47,7 +47,7 @@ class Trick
     /**
      * @ORM\OneToMany(targetEntity=Contributor::class, mappedBy="trick", orphanRemoval=true, fetch="EAGER", cascade={"persist", "remove"})
      */
-    private ArrayCollection $contributors;
+    private $contributors;
 
     /**
      * @Groups("user")
@@ -66,12 +66,12 @@ class Trick
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
-    private ArrayCollection $comments;
+    private $comments;
 
     /**
      * @ORM\ManyToMany(targetEntity=Media::class, fetch="EAGER", cascade={"persist", "remove"})
      */
-    private ArrayCollection $medias;
+    private $medias;
 
     /**
      * @ORM\ManyToOne(targetEntity=Media::class, fetch="EAGER", cascade={"remove"})
@@ -290,7 +290,7 @@ class Trick
     }
 
     /**
-     * @return Collection<int, Media>
+     * @return Collection
      */
     public function getMedias(): Collection
     {

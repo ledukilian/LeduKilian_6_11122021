@@ -38,3 +38,4 @@ Or one of the 3 default user account :
 - [ ] `judas.bricot@snowtricks.fr` | `snowtricks`
 - [ ] `alonzo.ski@snowtricks.fr` | `snowtricks`
 - [ ] `max.hymale@snowtricks.fr` | `snowtricks`
+

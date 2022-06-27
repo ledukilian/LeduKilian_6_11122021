@@ -11,9 +11,11 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
 {
     public const COMMENTS = [
         'Très bon trick !',
-        'Excellent !',
-        'Formidable !',
-        'Parfait en altitude !'
+        'Vous êtes top !! Continuez c\'est super :D',
+        'Tu proposerais quoi comme planche pour ce genre de sortie pour quelqu\'un d\'1m83 92kgs...  Merci s\'avance',
+        'Parfait en altitude !',
+        'Ha ha sympas!!!',
+        'A cause de toi je commence mes premiers cours de snow ce week end ...'
     ];
 
     public function load(ObjectManager $manager)
@@ -30,11 +32,17 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
             $this->getReference(TrickFixtures::TRICK_9_REFERENCE),
             $this->getReference(TrickFixtures::TRICK_10_REFERENCE)
         ];
-        foreach ($tricks as $trick) {
+        $users = [
+            $this->getReference(UserFixtures::ADMIN_USER_REFERENCE),
+            $this->getReference(UserFixtures::SIMPLE_USER_REFERENCE),
+            $this->getReference(UserFixtures::SIMPLE_USER2_REFERENCE),
+            $this->getReference(UserFixtures::SIMPLE_USER3_REFERENCE)
+        ];
 
+        foreach ($tricks as $trick) {
             foreach ($this::COMMENTS as $text) {
                 $comment = new Comment();
-                $comment->setUser($this->getReference(UserFixtures::SIMPLE_USER_REFERENCE));
+                $comment->setUser($users[array_rand($users)]);
                 $comment->setContent($text);
                 $comment->setTrick($trick);
                 $comment->setStatus(mt_rand(0, 1));

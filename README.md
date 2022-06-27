@@ -23,7 +23,7 @@ The project use the Symfony 6 Framework and PHP 8.0 or higher.
 
 **2.** Update the database schema with `php bin/console doctrine:schema:update --force`
 
-You can use intial fixtures dataset with : `php bin/console doctrine:fixtures:load`
+You can use intial fixtures dataset with `php bin/console doctrine:fixtures:load`
 
     
 

@@ -16,17 +16,14 @@ trait TimestampableTrait
     /**
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
-    private ?DateTimeInterface $createdAt;
+    private $createdAt;
 
     /**
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private ?DateTimeInterface $updatedAt;
 
-    /**
-     * @return DateTimeInterface|null
-     */
-    public function getCreatedAt(): ?DateTimeInterface
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }

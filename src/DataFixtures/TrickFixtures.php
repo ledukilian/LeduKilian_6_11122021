@@ -133,18 +133,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_10->addMedia($this->getReference(MediaFixtures::MEDIA_10_REFERENCE));
         $trick_10->setCoverImg($this->getReference(MediaFixtures::MEDIA_2_REFERENCE));
 
-
-
-
-
-
-
-
-
-
-
-
-
         $manager->persist($trick_1);
         $manager->persist($trick_2);
         $manager->persist($trick_3);

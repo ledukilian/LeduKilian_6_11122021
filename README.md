@@ -4,26 +4,41 @@
 
 ## 🧱 Project install
 ### 🧩 Prerequisites
-First you need to use `composer install` command to install required packages.
 
-The project use the Symfony 6 Framework.
+The project use the Symfony 6 Framework and HP 8.0 or higher.
 
-List of the package used :
-- [ ] Twig
-- [ ] 
 
-TODO
+### 📌️ Install steps
+
+1. First you need to copy the repository by using `git clone https://github.com/ledukilian/LeduKilian_6_11122021`
+2. Use `composer install` command to install required packages
+3. Configure database link in the `.env` file located in the root folder
+3. Start the server with `php bin/console server:start`
 
 ### ⚙️ Database
 
-TODO
+1. Create database with `php bin/console doctrine:database:create`
+2. Update the database schema with `php bin/console doctrine:schema:update --force`
 
-### ✏️ Initial configuration
+You can use intial fixtures dataset with : `php bin/console doctrine:fixtures:load`
 
-TODO
+
 
 ### 🔐 First login
-You can use the default account for the first login :
+If you use the fixtures, you can use the admin account for the first login :
 
-- [ ] **Email** : `Admin@Snowtricks.fr`
+- [ ] **Email** : `admin@snowtricks.fr`
+- [ ] **Password** : `snowtricks`
+
+Or one of the 3 default user account :
+
+- [ ] **Email** : `judas.bricot@snowtricks.fr`
+- [ ] **Password** : `snowtricks`
+
+
+- [ ] **Email** : `alonzo.ski@snowtricks.fr`
+- [ ] **Password** : `snowtricks`
+
+
+- [ ] **Email** : `max.hymale@snowtricks.fr`
 - [ ] **Password** : `snowtricks`

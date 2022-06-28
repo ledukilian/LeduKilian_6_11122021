@@ -13,7 +13,7 @@ The project use the Symfony 6 Framework and PHP 8.0 or higher.
 
 **2.** Use `composer install` command to install required packages
 
-**3.** Configure database link in the `.env` file located in the root folder
+**3.** Copy the `.env` file located in the root folder to `.env.local` and fill `APP_ENV`, `DATABASE_URL` AND `MAIL_DSN` (you can use MailDev)
 
 **4.** Start the server with `php bin/console server:start`
 

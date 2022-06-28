@@ -21,7 +21,10 @@
             {% endif %}
         </section>
         <div id="trick-media" class="d-flex flex-row flex-wrap justify-content-around container-fluid px-0 py-3 text-center">
-            <div id="carouselExampleControls" class="carousel container slide w-100" data-bs-ride="carousel">
+            <div class="col-12">
+                <button onclick="$('#carouselExampleControls').toggleClass('d-none')" type="button" class="btn btn-primary mx-auto d-block d-md-none mt-5">Voir les médias</button>
+            </div>
+            <div id="carouselExampleControls" class="carousel container slide w-100 d-none d-md-block px-0" data-bs-ride="carousel">
                 <div class="carousel-inner py-2">
                     {% set pageNumber = (trick.medias|length / 3)|round(0, 'ceil') %}
                     {% for i in 1..pageNumber %}
@@ -30,7 +33,7 @@
                                 {% set mediaIndex = 0 %}
                                 {% for media in trick.medias|slice((i*3-3),(i*3)) %}
 
-                                    <figure class="col-12 col-md-3 px-2 trick carousel-element mx-2"  data-trick="{{ trick.slug }}" data-cover="{{ media.id }}" data-type="{{ media.type }}" data-alt="{{ media.alt|default('Pas de texte alternatif') }}" data-link="{{ media.link|default('default.jpg') }}">
+                                    <figure class="col-3 px-2 trick carousel-element mx-2"  data-trick="{{ trick.slug }}" data-cover="{{ media.id }}" data-type="{{ media.type }}" data-alt="{{ media.alt|default('Pas de texte alternatif') }}" data-link="{{ media.link|default('default.jpg') }}">
                                         <div class="card h-100 bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
                                             {% if media.type == "image" %}
                                                 <img class="w-100 of-cover h-100" src="{{ asset('uploads/medias/' ~ media.link|default('default.jpg')) }}" alt="{{ media.alt|default('Pas de texte alternatif') }}" />
@@ -50,12 +53,12 @@
                     {% endfor %}
                 </div>
                 {% if trick.medias|length > 3 %}
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                        <em class="fas fa-chevron-left text-primary"></em>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                        <em class="fas fa-chevron-right text-primary"></em>
-                    </button>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <em class="fas fa-chevron-left text-primary"></em>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <em class="fas fa-chevron-right text-primary"></em>
+                </button>
                 {% endif %}
             </div>
         </div>

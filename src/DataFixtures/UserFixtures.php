@@ -24,6 +24,7 @@ class UserFixtures extends Fixture
         $userAdmin->setEmail('admin@snowtricks.fr');
         $userAdmin->setIsVerified(true);
         $userAdmin->setRoles(["ROLE_ADMIN"]);
+        $userAdmin->setImage('admin.png');
         $userAdmin->setPassword('$2y$13$pnXVA1WXxikRzYkc41FYPuyhVA4Dcv57uOjP9bAgQuRr8aXVHY17q');
 
         /*  Creating simple user */
@@ -32,6 +33,7 @@ class UserFixtures extends Fixture
         $simpleUser->setEmail('judas.bricot@snowtricks.fr');
         $simpleUser->setIsVerified(true);
         $simpleUser->setRoles([]);
+        $simpleUser->setImage('user.png');
         $simpleUser->setPassword('$2y$13$pnXVA1WXxikRzYkc41FYPuyhVA4Dcv57uOjP9bAgQuRr8aXVHY17q');
 
         /*  Creating simple user */
@@ -40,6 +42,7 @@ class UserFixtures extends Fixture
         $simpleUser2->setEmail('alonzo.ski@snowtricks.fr');
         $simpleUser2->setIsVerified(true);
         $simpleUser2->setRoles([]);
+        $simpleUser2->setImage('user2.png');
         $simpleUser2->setPassword('$2y$13$pnXVA1WXxikRzYkc41FYPuyhVA4Dcv57uOjP9bAgQuRr8aXVHY17q');
 
         /*  Creating simple user */
@@ -48,6 +51,7 @@ class UserFixtures extends Fixture
         $simpleUser3->setEmail('max.hymale@snowtricks.fr');
         $simpleUser3->setIsVerified(true);
         $simpleUser3->setRoles([]);
+        $simpleUser3->setImage('user3.png');
         $simpleUser3->setPassword('$2y$13$pnXVA1WXxikRzYkc41FYPuyhVA4Dcv57uOjP9bAgQuRr8aXVHY17q');
 
         $manager->persist($userAdmin);

@@ -53,6 +53,8 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $images = ['user.png', 'user2.png', 'user3.png'];
+            $user->setImage($images[array_rand($images)]);
 
             $entityManager->persist($user);
             $entityManager->flush();

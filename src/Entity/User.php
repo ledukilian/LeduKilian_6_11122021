@@ -66,6 +66,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $tricks;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $image;
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
@@ -237,6 +242,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $trick->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

@@ -100,8 +100,6 @@ function convertToReadableDateTime(date) {
 }
 
 function refreshConfirmModal(name, slug) {
-    console.log(name);
-    console.log(slug);
     $('#confirmModal .modal-body').html('Voulez-vous vraiment supprimer le trick ' + name + ' ?')
     $('#confirmModal .modal-footer a').attr('href', '/trick/supprimer/' + slug + '/');
 }

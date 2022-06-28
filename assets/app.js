@@ -31,6 +31,12 @@ $( "#load-more" ).click(function() {
         url: "/"+infos.method+"/"+infos.id+"/"+infos.limit+"/"+infos.offset,
         dataType: "json",
         success: function(data) {
+            console.log(infos.limit);
+            console.log(infos.offset);
+            console.log($('.scroll-up'));
+            if ((infos.limit+infos.offset)>=15) {
+                $('.scroll-up').removeClass('d-none');
+            }
             document.getElementById('load-more').dataset.offset = parseInt(document.getElementById('load-more').dataset.offset) + parseInt(document.getElementById('load-more').dataset.limit);
             $('#loader').hide();
             $(data.data).each(function(index, data) {

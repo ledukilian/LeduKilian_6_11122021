@@ -25,6 +25,7 @@
                         <em class="fas fa-key me-1"></em> <label for="password" class="form-label required">Mot de passe :</label><br />
                         <input type="password" class="w-100 form-control" id="password" name="_password"/>
                     </div>
+                    <a class="small text-muted w-100" href="/inscription"><em class="far fa-question-circle me-1"></em>Je veux m'inscrire</a>
                     <a class="small text-muted w-100" href="/reinitialiser-mot-de-passe"><em class="far fa-question-circle me-1"></em>Mot de passe oublié ?</a>
                     <a class="small text-muted w-100" href="/renvoyer-confirmation"><em class="far fa-question-circle me-1"></em>Renvoyer un mail de confirmation ?</a>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

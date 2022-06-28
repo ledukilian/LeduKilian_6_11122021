@@ -65,11 +65,15 @@
                             id="add-another-collection-widget"
                             data-list-selector="#media-fields-list"><em class="fas fa-plus me-2"></em>Ajouter un nouveau média</button>
                 </div>
-                <button type="submit" class="btn btn-primary px-3 ms-auto">Éditer le trick</button>
+                {% if is_granted('delete', addTrickForm.vars.value) %}
+                    <button type="button" class="delete-action btn btn-danger px-3 ms-auto me-2" data-bs-toggle="modal" data-bs-target="#confirmModal" data-name="{{ addTrickForm.vars.value.name }}" data-slug="{{ addTrickForm.vars.value.slug }}">Supprimer le trick</button>
+                {% endif %}
+                <button type="submit" class="btn btn-primary px-3 ">Éditer le trick</button>
                 {{ form_end(addTrickForm) }}
             </div>
         </div>
     </section>
+    {% include "parts/_confirm.html.twig" %}
 {% endblock %}
 
 {% block javascripts %}

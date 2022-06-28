@@ -33,8 +33,11 @@ $( "#load-more" ).click(function() {
         success: function(data) {
             console.log(infos.limit);
             console.log(infos.offset);
+            console.log(infos.limit+infos.offset);
+            console.log((infos.limit+infos.offset)>=15);
             console.log($('.scroll-up'));
             if ((infos.limit+infos.offset)>=15) {
+                console.log('On affiche le scroller');
                 $('.scroll-up').removeClass('d-none');
             }
             document.getElementById('load-more').dataset.offset = parseInt(document.getElementById('load-more').dataset.offset) + parseInt(document.getElementById('load-more').dataset.limit);

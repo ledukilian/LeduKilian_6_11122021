@@ -11,11 +11,13 @@ The project use the Symfony 6 Framework and PHP 8.0 or higher.
 
 **1.** First you need to copy the repository by using `git clone https://github.com/ledukilian/LeduKilian_6_11122021`
 
-**2.** Use `composer install` command to install required packages
+**2.** Use `composer install` and `npm install` command to install required packages
 
 **3.** Copy the `.env` file located in the root folder to `.env.local` and fill `APP_ENV`, `DATABASE_URL` AND `MAIL_DSN` (you can use MailDev)
 
-**4.** Start the server with `php bin/console server:start`
+**4.** Run `npm run build` to create a build for the app
+
+If needed, you can install *symfony/web-server-bundle* and start the server with `php bin/console server:start`
 
 ## ⚙️ Database
 

@@ -17,6 +17,7 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Security\Core\Security;
 
 class AjaxController extends AbstractController
 {
@@ -98,6 +99,7 @@ class AjaxController extends AbstractController
     /**
      * @Route("/load-tricks/{id}/{limit}/{offset}", name="_loadMore_tricks_ajax")
      * @param ManagerRegistry $doctrine
+     * @param Security        $security
      * @param int             $limit
      * @param int             $offset
      * @return JsonResponse
@@ -105,7 +107,7 @@ class AjaxController extends AbstractController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function loadMoreTricks(ManagerRegistry $doctrine, int $limit = 8, int $offset = 8): JsonResponse
+    public function loadMoreTricks(ManagerRegistry $doctrine, Security $security, int $limit = 8, int $offset = 8): JsonResponse
     {
         /* Get the next tricks with limit and offset */
         $elements = $doctrine
@@ -117,6 +119,17 @@ class AjaxController extends AbstractController
                 $offset
             );
 
+        $tricks = [];
+        foreach ($elements as $trick) {
+            $tricks[] = [
+                'element' => $trick,
+                'permissions' => [
+                    'canEdit' => $security->isGranted('IS_AUTHENTICATED_FULLY'),
+                    'canDelete' => $security->isGranted('delete', $trick)
+                ]
+            ];
+        }
+
         /* Count all tricks */
         $count = $doctrine
             ->getRepository(Trick::class)
@@ -127,7 +140,7 @@ class AjaxController extends AbstractController
 
         $serializer = new Serializer($normalizers, $encoders);
 
-        $jsonContent = $serializer->normalize($elements, null, [
+        $jsonContent = $serializer->normalize($tricks, null, [
             AbstractNormalizer::ATTRIBUTES => ['id', 'name', 'description', 'slug', 'coverImg' => ['type', 'link', 'alt'], 'user' => ['username']]
         ]);
 

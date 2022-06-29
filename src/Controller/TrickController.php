@@ -18,6 +18,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 
 class TrickController extends AbstractController
@@ -75,6 +80,21 @@ class TrickController extends AbstractController
                 }
                 $media->getData()->setTrick($trick);
                 $trick->addMedia($media->getData());
+            }
+            /* To see if cover still exist as media, we need a normalizer and a serializer */
+            $encoders = [new XmlEncoder(), new JsonEncoder()];
+            $normalizers = [new ObjectNormalizer()];
+            $serializer = new Serializer($normalizers, $encoders);
+
+            /* Entity collection to array, in order to arra_search the needle */
+            $mediasToArray = $serializer->normalize($trick->getMedias(), null, [
+                AbstractNormalizer::ATTRIBUTES => ['id', 'type', 'link', 'alt']
+            ]);
+
+            /* Check if the cover still exist */
+            if (!array_search($trick->getCoverImg()->getLink(), $mediasToArray)) {
+                /* Switch cover Media back to 'null' (eg. 'Default.png') */
+                $trick->setCoverImg(null);
             }
 
             /* Add a new contributor to the trick (current user) */

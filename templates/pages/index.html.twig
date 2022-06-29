@@ -21,35 +21,47 @@
             {% endif %}
         </a>
         <div class="d-flex flex-row flex-wrap container text-center" id="tricks-list">
-        {% for trick in tricks %}
-            <article class="mb-3 col-sm-12 col-md-3 px-2 trick">
-                <a href="/trick/{{ trick.slug }}" class="h-100 card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
-                    <figure class="d-flex flex-column m-0">
-                        <div class="h-100 trick-img-container">
-                            <img class="h-100 of-cover col-12 rounded px-0" src="{{ asset('uploads/medias/' ~ trick.coverImg.link|default('default.jpg')) }}" alt="{{ trick.coverImg.alt|default('Pas de texte alternatif') }}" />
+            {% if tricks is empty %}
+                <div class="small text-muted font-italic">Il n'y a pas encore de trick</div>
+            {% else %}
+                {% for trick in tricks %}
+                    <article class="mb-3 col-sm-12 col-md-3 px-2 trick">
+                        <div class="h-100 card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">
+                            <figure class="d-flex flex-column m-0 w-100">
+                                <a href="/trick/{{ trick.slug }}" class="h-100 trick-img-container">
+                                    <img class="h-100 of-cover col-12 rounded px-0" src="{{ asset('uploads/medias/' ~ trick.coverImg.link|default('default.jpg')) }}" alt="{{ trick.coverImg.alt|default('Pas de texte alternatif') }}" />
+                                </a>
+                                <figcaption class="d-flex figcaption-size">
+                                    <h5 class="card-title text-dark px-0 mt-1 m-0 fw-bold"><em class="fas fa-chevron-right text-primary me-1"></em>{{ trick.name }}</h5>
+                                    <div class="ms-auto pt-1">
+                                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                            <a href="/trick/editer/{{ trick.slug }}/"><em class="zoom-in fas fa-edit text-warning"></em></a>
+                                        {% endif %}
+                                        {% if is_granted('delete', trick) %}
+                                            <span class="delete-action" data-bs-toggle="modal" data-bs-target="#confirmModal" data-name="{{ trick.name }}" data-slug="{{ trick.slug }}"><em class="zoom-in fas fa-trash-alt text-danger"></em></span>
+                                        {% endif %}
+                                    </div>
+                                </figcaption>
+                            </figure>
                         </div>
-                        <figcaption class="d-flex figcaption-size">
-                            <h5 class="card-title text-dark px-0 mt-1 m-0 fw-bold"><em class="fas fa-chevron-right text-primary me-1"></em>{{ trick.name }}</h5>
-                            <div class="ms-auto pt-1">
-                                <em class="fas fa-edit text-warning"></em>
-                                <em class="fas fa-trash-alt text-danger"></em>
-                            </div>
-                        </figcaption>
-                    </figure>
-                </a>
-            </article>
-        {% endfor %}
+                    </article>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="w-100">
             <img id="loader" class="col-12 rounded mx-auto" src="{{ asset('img/loader.gif') }}" alt="Trick" />
         </div>
-        {% if remain_tricks == true %}
+        {% if remain_tricks == true and tricks is not empty %}
         <button class="btn btn-primary" id="load-more" data-method="load-tricks" data-id="index" data-format="3" data-limit="4" data-offset="8">
-            <em class="fas fa-spinner"></em><br />Charger plus de tricks
+            Charger plus de tricks
         </button>
         {% endif %}
     </section>
-    <a href="#hero" class="scroll-btn scroll-up text-primary"><em class="fas fa-arrow-circle-up"></em></a>
+    <a href="#hero" class="scroll-btn scroll-up text-primary d-none"><em class="fas fa-arrow-circle-up"></em></a>
+    {% include "parts/_confirm.html.twig" %}
+{% endblock %}
 
-
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('media-widget') }}
 {% endblock %}

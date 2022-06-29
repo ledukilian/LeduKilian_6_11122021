@@ -4,6 +4,10 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Result;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,6 +18,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
@@ -22,8 +29,9 @@ class CommentRepository extends ServiceEntityRepository
     /**
     * @return Comment[] Returns an array of Comment objects
     */
-    public function findNextComments(Int $id, Int $limit, Int $offset)
+    public function findNextComments(Int $id, Int $limit, Int $offset): array
     {
+        /* Get trick next comments */
         return $this->createQueryBuilder('c')
             ->andWhere('c.trick = :id')
             ->andWhere('c.status = true')
@@ -36,8 +44,14 @@ class CommentRepository extends ServiceEntityRepository
         ;
     }
 
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     public function count($id)
     {
+        /* Count comments on a trick */
         return $this->createQueryBuilder('t')
             ->select('count(t.id)')
             ->where('t.trick = :trick')
@@ -47,23 +61,21 @@ class CommentRepository extends ServiceEntityRepository
             ;
     }
 
-    public function toggleCommentStatus(int $comment_id) {
+    /**
+     * @param int $comment_id
+     * @return Result
+     * @throws Exception
+     */
+    public function toggleCommentStatus(int $comment_id): Result
+    {
         $conn = $this->getEntityManager()->getConnection();
+
+        /* Toggle the status on a comment */
         $sql = 'UPDATE comment
             SET status = !status
             WHERE id = :id';
         $stmt = $conn->prepare($sql);
         return $stmt->executeQuery(['id' => $comment_id]);
     }
-    /*
-    public function findOneBySomeField($value): ?Comment
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
 }

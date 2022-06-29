@@ -2,17 +2,16 @@
 
 namespace App\Entity;
 
-use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
-use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
+
 use App\Repository\MediaRepository;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use App\Trait\TimestampableEntity;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=MediaRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
-class Media implements TimestampableInterface
+class Media
 {
     use TimestampableTrait;
 
@@ -30,28 +29,38 @@ class Media implements TimestampableInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type;
+    private ?string $type;
 
     /**
      * @ORM\Column(type="string", length=1024)
      */
-    private $link;
+    private ?string $link;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $alt;
+    private ?string $alt;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
+    /**
+     * @param string $type
+     * @return $this
+     */
     public function setType(string $type): self
     {
         $this->type = $type;
@@ -59,11 +68,18 @@ class Media implements TimestampableInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLink(): ?string
     {
         return $this->link;
     }
 
+    /**
+     * @param string $link
+     * @return $this
+     */
     public function setLink(string $link): self
     {
         $this->link = $link;
@@ -71,11 +87,18 @@ class Media implements TimestampableInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getAlt(): ?string
     {
         return $this->alt;
     }
 
+    /**
+     * @param string $alt
+     * @return $this
+     */
     public function setAlt(string $alt): self
     {
         $this->alt = $alt;
@@ -83,11 +106,18 @@ class Media implements TimestampableInterface
         return $this;
     }
 
+    /**
+     * @return Trick|null
+     */
     public function getTrick(): ?Trick
     {
         return $this->trick;
     }
 
+    /**
+     * @param Trick|null $trick
+     * @return $this
+     */
     public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;

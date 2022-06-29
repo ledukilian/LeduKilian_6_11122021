@@ -39,7 +39,10 @@
                         {{ form_errors(addTrickForm.description) }}
                     </div>
                 </div>
-                <div class="w-100 mb-2">
+                <div class="col-12">
+                    <button onclick="$('#mediaWindows').toggleClass('d-none')" type="button" class="btn btn-primary mx-auto d-block d-md-none mb-3">Voir les médias</button>
+                </div>
+                <div class="w-100 mb-2 d-none d-md-block" id="mediaWindows">
                     <em class="fas fa-chevron-right text-primary me-1"></em>Média<br />
                     <div class="alert alert-warning mt-2"><em class="fas fa-exclamation-circle me-2"></em><b>Important : </b>Si vous téléversez un nouveau média sur un champ existant, il remplacera celui-ci.</div>
                     <ul id="media-fields-list" class="list-unstyled"
@@ -65,11 +68,15 @@
                             id="add-another-collection-widget"
                             data-list-selector="#media-fields-list"><em class="fas fa-plus me-2"></em>Ajouter un nouveau média</button>
                 </div>
-                <button type="submit" class="btn btn-primary px-3 ms-auto">Éditer le trick</button>
+                {% if is_granted('delete', addTrickForm.vars.value) %}
+                    <button type="button" class="delete-action btn btn-danger px-3 ms-auto me-2" data-bs-toggle="modal" data-bs-target="#confirmModal" data-name="{{ addTrickForm.vars.value.name }}" data-slug="{{ addTrickForm.vars.value.slug }}">Supprimer le trick</button>
+                {% endif %}
+                <button type="submit" class="btn btn-primary px-3 ">Éditer le trick</button>
                 {{ form_end(addTrickForm) }}
             </div>
         </div>
     </section>
+    {% include "parts/_confirm.html.twig" %}
 {% endblock %}
 
 {% block javascripts %}

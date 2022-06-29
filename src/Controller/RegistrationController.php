@@ -13,6 +13,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,11 +23,21 @@ class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
 
+    /**
+     * @param EmailVerifier $emailVerifier
+     */
     public function __construct(EmailVerifier $emailVerifier)
     {
         $this->emailVerifier = $emailVerifier;
     }
 
+    /**
+     * @param Request                     $request
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param EntityManagerInterface      $entityManager
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
     #[Route('/inscription', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -35,18 +46,20 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            /* Encode the plain password */
             $user->setPassword(
             $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
+            $images = ['user.png', 'user2.png', 'user3.png'];
+            $user->setImage($images[array_rand($images)]);
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
+            /* Generate a signed url and email it to the user */
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('ledu.kilian@gmail.com', 'Kilian LE DU'))
@@ -65,6 +78,11 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request        $request
+     * @param UserRepository $userRepository
+     * @return Response
+     */
     #[Route('/verifier/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
@@ -80,7 +98,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        // validate email confirmation link, sets User::isVerified=true and persists
+        /* Validate email confirmation link, sets User::isVerified=true and persists */
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
@@ -91,11 +109,16 @@ class RegistrationController extends AbstractController
 
         $this->addFlash('success', 'Votre adresse mail a bien été confirmée.');
 
-        return $this->redirectToRoute('login');
+        return $this->redirectToRoute('show_index');
     }
 
 
-
+    /**
+     * @param Request        $request
+     * @param UserRepository $userRepository
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
     #[Route('/renvoyer-confirmation', name: 'app_request_verify_email')]
     public function requestVerifyUserEmail(
         Request $request,
@@ -109,7 +132,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RequestVerifyUserEmailFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // generate a signed url and email it to the user
+            /* Generate a signed url and email it to the user */
             $user =  $userRepository->findOneByEmail($form->get('email')->getData());
             if ($user) {
                 $this->emailVerifier->sendEmailConfirmation(
@@ -121,7 +144,6 @@ class RegistrationController extends AbstractController
                         ->subject('SnowTricks : Confirmation de votre adresse mail')
                         ->htmlTemplate('registration/confirmation_email.html.twig')
                 );
-                // do anything else you need here, like flash message
                 $this->addFlash('success', 'Un mail de confirmation a bien été envoyé à l\'adresse mail associée au compte.');
                 return $this->redirectToRoute('show_index');
             } else {

@@ -7,16 +7,24 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploader
 {
-    private $targetDirectory;
-    private $slugger;
+    private mixed $targetDirectory;
+    private SluggerInterface $slugger;
 
+    /**
+     * @param                  $targetDirectory
+     * @param SluggerInterface $slugger
+     */
     public function __construct($targetDirectory, SluggerInterface $slugger)
     {
         $this->targetDirectory = $targetDirectory;
         $this->slugger = $slugger;
     }
 
-    public function upload(UploadedFile $file)
+    /**
+     * @param UploadedFile $file
+     * @return string
+     */
+    public function upload(UploadedFile $file): string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
@@ -25,13 +33,16 @@ class FileUploader
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $e) {
-            // ... handle exception if something happens during file upload
+            echo 'Exception reçue : ',  $e->getMessage(), "\n";
         }
 
         return $fileName;
     }
 
-    public function getTargetDirectory()
+    /**
+     * @return mixed
+     */
+    public function getTargetDirectory(): mixed
     {
         return $this->targetDirectory;
     }

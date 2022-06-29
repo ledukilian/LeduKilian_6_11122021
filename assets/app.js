@@ -31,15 +31,19 @@ $( "#load-more" ).click(function() {
         url: "/"+infos.method+"/"+infos.id+"/"+infos.limit+"/"+infos.offset,
         dataType: "json",
         success: function(data) {
+            if ((infos.limit+infos.offset)>=15) {
+                $('.scroll-up').removeClass('d-none');
+            }
             document.getElementById('load-more').dataset.offset = parseInt(document.getElementById('load-more').dataset.offset) + parseInt(document.getElementById('load-more').dataset.limit);
             $('#loader').hide();
             $(data.data).each(function(index, data) {
+                console.log(data);
+                console.log(data.element);
                 if (infos.method=="load-tricks") {
-                    renderTrick(data.name, data.slug, 'default_trick.jpg', infos.format);
+                    renderTrick(data.element.name, data.element.slug, data.element.coverImg.link, data.element.coverImg.alt, data.permissions);
                 }
                 if (infos.method=="load-comments") {
-                    console.log(data);
-                    renderComment(data.content, data.user.username, data.createdAt.timestamp);
+                    renderComment(data.element.content, data.element.user.username, data.element.createdAt.timestamp);
                 }
             });
             if (data.remain!==false) {
@@ -61,13 +65,20 @@ function renderComment(content, username, date) {
 
 }
 
-function renderTrick(name, slug, picture, format) {
-    let html = '<a href="/trick/'+slug+'" class="mb-3 col-sm-12 col-md-'+format+' px-2 trick">';
-    html += '<article class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">';
-    html += '<img class="col-12 rounded px-0" src="/img/'+picture+'" alt="Trick"/><h5 class="card-title text-dark px-0 mt-1 m-0 fw-bold">';
-    html += '<em class="fas fa-chevron-right text-primary me-1"></em>'+name+'</h5>';
-    html += '<div class="ms-auto pt-1"><em class="fas fa-edit text-warning"></em><em class="fas fa-trash-alt text-danger"></em></div>';
-    html += '</article></a>';
+function renderTrick(name, slug, cover, alt, permissions) {
+    let html = '<article class="mb-3 col-sm-12 col-md-3 px-2 trick"><div class="h-100 card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm"><figure class="d-flex flex-column m-0 w-100">';
+    html += '<a href="/trick/'+slug+'" class="h-100 trick-img-container">';
+    html += '<img class="h-100 of-cover col-12 rounded px-0" src="uploads/medias/'+cover+'" alt="'+alt+'" /></a><figcaption class="d-flex figcaption-size">';
+    html += '<h5 class="card-title text-dark px-0 mt-1 m-0 fw-bold"><em class="fas fa-chevron-right text-primary me-1"></em>'+name+'</h5><div class="ms-auto pt-1">';
+    if (permissions.canEdit) {
+        html += '<a href="/trick/editer/'+slug+'/"><em class="zoom-in fas fa-edit text-warning"></em></a>';
+    }
+    if (permissions.canDelete) {
+        html += '<span class="delete-action" data-bs-toggle="modal" data-bs-target="#confirmModal" data-name="'+name+'" data-slug="'+slug+'"><em class="zoom-in fas fa-trash-alt text-danger"></em></span>'
+    }
+    html += '</div></figcaption></figure></div></article>';
+
+
     $('#tricks-list').html($('#tricks-list').html() + html);
 }
 
@@ -85,3 +96,14 @@ function convertToReadableDateTime(date) {
     val += addZero(newDate.getHours())+':'+addZero(newDate.getMinutes());
     return val;
 }
+
+function refreshConfirmModal(name, slug) {
+    $('#confirmModal .modal-body').html('Voulez-vous vraiment supprimer le trick ' + name + ' ?')
+    $('#confirmModal .modal-footer a').attr('href', '/trick/supprimer/' + slug + '/');
+}
+
+$( ".delete-action" ).each(function( index, element ) {
+    element.onclick = function() {
+        refreshConfirmModal(element.dataset.name, element.dataset.slug);
+    };
+});

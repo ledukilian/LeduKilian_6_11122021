@@ -3,18 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Andante\TimestampableBundle\Timestampable\TimestampableTrait;
-use Andante\TimestampableBundle\Timestampable\TimestampableInterface;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class Category implements TimestampableInterface
+class Category
 {
     use TimestampableTrait;
 
@@ -23,17 +21,17 @@ class Category implements TimestampableInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=1000)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\OneToMany(targetEntity=Trick::class, mappedBy="category")
@@ -45,16 +43,26 @@ class Category implements TimestampableInterface
         $this->tricks = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -62,11 +70,18 @@ class Category implements TimestampableInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return $this
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -75,13 +90,17 @@ class Category implements TimestampableInterface
     }
 
     /**
-     * @return Collection|Trick[]
+     * @return Collection
      */
     public function getTricks(): Collection
     {
         return $this->tricks;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function addTrick(Trick $trick): self
     {
         if (!$this->tricks->contains($trick)) {
@@ -92,6 +111,10 @@ class Category implements TimestampableInterface
         return $this;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function removeTrick(Trick $trick): self
     {
         if ($this->tricks->removeElement($trick)) {

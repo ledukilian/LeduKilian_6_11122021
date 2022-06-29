@@ -18,6 +18,8 @@ class MediaFixtures extends Fixture
     public const MEDIA_8_REFERENCE = 'media-8';
     public const MEDIA_9_REFERENCE = 'media-9';
     public const MEDIA_10_REFERENCE = 'media-10';
+    public const MEDIA_11_REFERENCE = 'media-11';
+    public const MEDIA_12_REFERENCE = 'media-12';
 
     public function load(ObjectManager $manager)
     {
@@ -63,14 +65,25 @@ class MediaFixtures extends Fixture
 
 
         $media_9 = new Media();
-        $media_9->setType('video');
-        $media_9->setLink('<iframe width="560" height="315" src="https://www.youtube.com/embed/EMVPpPE_Bx4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
-        $media_9->setAlt('Intégration vidéo externe');
+        $media_9->setType('image');
+        $media_9->setLink('1.png');
+        $media_9->setAlt('Image snowboard avec trainée de neige');
 
         $media_10 = new Media();
-        $media_10->setType('video');
-        $media_10->setLink('<iframe width="560" height="315" src="https://www.youtube.com/embed/_OMar04NRZw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
-        $media_10->setAlt('Intégration vidéo externe');
+        $media_10->setType('image');
+        $media_10->setLink('2.jpg');
+        $media_10->setAlt('Image snowboard avec trainée de neige');
+
+
+        $media_11 = new Media();
+        $media_11->setType('video');
+        $media_11->setLink('<iframe width="560" height="315" src="https://www.youtube.com/embed/EMVPpPE_Bx4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+        $media_11->setAlt('Intégration vidéo externe');
+
+        $media_12 = new Media();
+        $media_12->setType('video');
+        $media_12->setLink('<iframe width="560" height="315" src="https://www.youtube.com/embed/_OMar04NRZw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+        $media_12->setAlt('Intégration vidéo externe');
 
         $manager->persist($media_1);
         $manager->persist($media_2);
@@ -82,6 +95,8 @@ class MediaFixtures extends Fixture
         $manager->persist($media_8);
         $manager->persist($media_9);
         $manager->persist($media_10);
+        $manager->persist($media_11);
+        $manager->persist($media_12);
         $manager->flush();
 
         $this->addReference(self::MEDIA_1_REFERENCE, $media_1);
@@ -94,5 +109,7 @@ class MediaFixtures extends Fixture
         $this->addReference(self::MEDIA_8_REFERENCE, $media_8);
         $this->addReference(self::MEDIA_9_REFERENCE, $media_9);
         $this->addReference(self::MEDIA_10_REFERENCE, $media_10);
+        $this->addReference(self::MEDIA_11_REFERENCE, $media_11);
+        $this->addReference(self::MEDIA_12_REFERENCE, $media_12);
     }
 }

@@ -29,8 +29,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_1->setUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
         $trick_1->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
         $trick_1->addMedia($this->getReference(MediaFixtures::MEDIA_1_REFERENCE));
-        $trick_1->addMedia($this->getReference(MediaFixtures::MEDIA_2_REFERENCE));
-        $trick_1->addMedia($this->getReference(MediaFixtures::MEDIA_9_REFERENCE));
+        $trick_1->addMedia($this->getReference(MediaFixtures::MEDIA_11_REFERENCE));
         $trick_1->setCoverImg($this->getReference(MediaFixtures::MEDIA_1_REFERENCE));
 
         $trick_2 = new Trick();
@@ -40,8 +39,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_2->setUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
         $trick_2->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
         $trick_2->addMedia($this->getReference(MediaFixtures::MEDIA_2_REFERENCE));
-        $trick_2->addMedia($this->getReference(MediaFixtures::MEDIA_3_REFERENCE));
-        $trick_2->addMedia($this->getReference(MediaFixtures::MEDIA_10_REFERENCE));
+        $trick_2->addMedia($this->getReference(MediaFixtures::MEDIA_12_REFERENCE));
         $trick_2->setCoverImg($this->getReference(MediaFixtures::MEDIA_2_REFERENCE));
 
         $trick_3 = new Trick();
@@ -51,8 +49,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_3->setUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
         $trick_3->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
         $trick_3->addMedia($this->getReference(MediaFixtures::MEDIA_3_REFERENCE));
-        $trick_3->addMedia($this->getReference(MediaFixtures::MEDIA_4_REFERENCE));
-        $trick_3->addMedia($this->getReference(MediaFixtures::MEDIA_9_REFERENCE));
         $trick_3->setCoverImg($this->getReference(MediaFixtures::MEDIA_3_REFERENCE));
 
         $trick_4 = new Trick();
@@ -62,8 +58,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_4->setUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
         $trick_4->setCategory($this->getReference(CategoryFixtures::CATEGORY_ROTATE_REFERENCE));
         $trick_4->addMedia($this->getReference(MediaFixtures::MEDIA_4_REFERENCE));
-        $trick_4->addMedia($this->getReference(MediaFixtures::MEDIA_5_REFERENCE));
-        $trick_4->addMedia($this->getReference(MediaFixtures::MEDIA_10_REFERENCE));
         $trick_4->setCoverImg($this->getReference(MediaFixtures::MEDIA_4_REFERENCE));
 
         $trick_5 = new Trick();
@@ -73,8 +67,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_5->setUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
         $trick_5->setCategory($this->getReference(CategoryFixtures::CATEGORY_ROTATE_REFERENCE));
         $trick_5->addMedia($this->getReference(MediaFixtures::MEDIA_5_REFERENCE));
-        $trick_5->addMedia($this->getReference(MediaFixtures::MEDIA_6_REFERENCE));
-        $trick_5->addMedia($this->getReference(MediaFixtures::MEDIA_9_REFERENCE));
         $trick_5->setCoverImg($this->getReference(MediaFixtures::MEDIA_5_REFERENCE));
 
         $trick_6 = new Trick();
@@ -84,8 +76,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_6->setUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
         $trick_6->setCategory($this->getReference(CategoryFixtures::CATEGORY_ROTATE_REFERENCE));
         $trick_6->addMedia($this->getReference(MediaFixtures::MEDIA_6_REFERENCE));
-        $trick_6->addMedia($this->getReference(MediaFixtures::MEDIA_7_REFERENCE));
-        $trick_6->addMedia($this->getReference(MediaFixtures::MEDIA_10_REFERENCE));
         $trick_6->setCoverImg($this->getReference(MediaFixtures::MEDIA_6_REFERENCE));
 
         $trick_7 = new Trick();
@@ -95,8 +85,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_7->setUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
         $trick_7->setCategory($this->getReference(CategoryFixtures::CATEGORY_ROTATE_REFERENCE));
         $trick_7->addMedia($this->getReference(MediaFixtures::MEDIA_7_REFERENCE));
-        $trick_7->addMedia($this->getReference(MediaFixtures::MEDIA_8_REFERENCE));
-        $trick_7->addMedia($this->getReference(MediaFixtures::MEDIA_9_REFERENCE));
         $trick_7->setCoverImg($this->getReference(MediaFixtures::MEDIA_7_REFERENCE));
 
         $trick_8 = new Trick();
@@ -106,8 +94,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_8->setUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
         $trick_8->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
         $trick_8->addMedia($this->getReference(MediaFixtures::MEDIA_8_REFERENCE));
-        $trick_8->addMedia($this->getReference(MediaFixtures::MEDIA_1_REFERENCE));
-        $trick_8->addMedia($this->getReference(MediaFixtures::MEDIA_10_REFERENCE));
         $trick_8->setCoverImg($this->getReference(MediaFixtures::MEDIA_8_REFERENCE));
 
         $trick_9 = new Trick();
@@ -116,10 +102,8 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_9->setSlug('double-flip');
         $trick_9->setUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
         $trick_9->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
-        $trick_9->addMedia($this->getReference(MediaFixtures::MEDIA_1_REFERENCE));
-        $trick_9->addMedia($this->getReference(MediaFixtures::MEDIA_2_REFERENCE));
         $trick_9->addMedia($this->getReference(MediaFixtures::MEDIA_9_REFERENCE));
-        $trick_9->setCoverImg($this->getReference(MediaFixtures::MEDIA_1_REFERENCE));
+        $trick_9->setCoverImg($this->getReference(MediaFixtures::MEDIA_9_REFERENCE));
 
 
         $trick_10 = new Trick();
@@ -128,10 +112,8 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trick_10->setSlug('hakon-flip');
         $trick_10->setUser($this->getReference(UserFixtures::ADMIN_USER_REFERENCE));
         $trick_10->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
-        $trick_10->addMedia($this->getReference(MediaFixtures::MEDIA_2_REFERENCE));
-        $trick_10->addMedia($this->getReference(MediaFixtures::MEDIA_3_REFERENCE));
         $trick_10->addMedia($this->getReference(MediaFixtures::MEDIA_10_REFERENCE));
-        $trick_10->setCoverImg($this->getReference(MediaFixtures::MEDIA_2_REFERENCE));
+        $trick_10->setCoverImg($this->getReference(MediaFixtures::MEDIA_10_REFERENCE));
 
         $manager->persist($trick_1);
         $manager->persist($trick_2);

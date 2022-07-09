@@ -78,7 +78,7 @@ class AjaxController extends AbstractController
         $serializer = new Serializer($normalizers, $encoders);
 
         $jsonContent = $serializer->normalize($elements, null, [
-            AbstractNormalizer::ATTRIBUTES => ['id', 'content', 'status', 'createdAt', 'user' => ['username', 'imageF']]
+            AbstractNormalizer::ATTRIBUTES => ['id', 'content', 'status', 'createdAt', 'user' => ['username', 'image']]
         ]);
 
         /* Format JSON content with serializer */

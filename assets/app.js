@@ -37,7 +37,6 @@ $( "#load-more" ).click(function() {
             document.getElementById('load-more').dataset.offset = parseInt(document.getElementById('load-more').dataset.offset) + parseInt(document.getElementById('load-more').dataset.limit);
             $('#loader').hide();
             $(data.data).each(function(index, data) {
-                console.log(data);
                 if (infos.method=="load-tricks") {
                     renderTrick(data.element.name, data.element.slug, data.element.coverImg.link, data.element.coverImg.alt, data.permissions);
                 }

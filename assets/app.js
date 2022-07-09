@@ -37,13 +37,11 @@ $( "#load-more" ).click(function() {
             document.getElementById('load-more').dataset.offset = parseInt(document.getElementById('load-more').dataset.offset) + parseInt(document.getElementById('load-more').dataset.limit);
             $('#loader').hide();
             $(data.data).each(function(index, data) {
-                console.log(data);
-                console.log(data.element);
                 if (infos.method=="load-tricks") {
                     renderTrick(data.element.name, data.element.slug, data.element.coverImg.link, data.element.coverImg.alt, data.permissions);
                 }
                 if (infos.method=="load-comments") {
-                    renderComment(data.element.content, data.element.user.username, data.element.createdAt.timestamp);
+                    renderComment(data.content, data.user.username, data.user.image, data.createdAt.timestamp);
                 }
             });
             if (data.remain!==false) {
@@ -53,14 +51,13 @@ $( "#load-more" ).click(function() {
     });
 });
 
-function renderComment(content, username, date) {
-    let html = '<div class="mb-3 col-12 col-md-10 offset-md-1">';
-    html += '<div class="card bg-light d-flex flex-row flex-wrap card-body p-2 shadow-sm">';
-    html += '<em class="fas fa-comment text-primary reverse-h me-1"></em><span class="fw-bold text-primary">'+username+'</span>';
-    html += '<span class="ms-auto text-muted">'+convertToReadableDateTime(date)+'<em class="far fa-clock ms-1"></em></span>';
-    html += '<blockquote class="blockquote text-start col-12 m-0 px-0">';
-    html += '<small class="card card-text border-0 text-dark col-12 p-4 mt-2">'+content+'</small>';
-    html += '</blockquote></div></div>';
+function renderComment(content, username, image, date) {
+    let html = '<div class="mb-3 col-12 col-md-10 offset-md-1"><div class="d-flex flex-row flex-wrap card-body p-2 align-items-center justify-content-center">';
+    html += '<img class="profile-img-2  col-2 col-md-1" src="/uploads/medias/'+image+'" alt="Image de profil de '+username+'"/>';
+    html += '<div class="col-10 col-md-11 mb-2 px-3"><div class="w-100 text-start"><em class="fas fa-comment reverse-h me-1"></em>';
+    html += 'Posté par <span class="fw-bold text-primary">'+username+'</span>';
+    html += '<span class="ms-auto text-muted float-end">Le '+convertToReadableDateTime(date)+'<em class="far fa-clock ms-1"></em></span>';
+    html += '</div><blockquote class="blockquote text-start w-100 m-0 ms-1 px-0"><small class="card card-text border-0 text-dark col-12 p-4 mt-2">'+content+'</small></blockquote></div></div></div>';
     $('#comment-list').html($('#comment-list').html() + html);
 
 }
